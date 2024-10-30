@@ -5,7 +5,7 @@
 
 namespace rendell
 {
-	static Specification* s_specification;
+	static Specification* s_specification = nullptr;
 
 	static bool initOpenGLSpecification(const Initer& initer)
 	{
@@ -22,6 +22,15 @@ namespace rendell
 		}
 
 		return true;
+	}
+
+	void release()
+	{
+		if (s_specification)
+		{
+			delete s_specification;
+			s_specification = nullptr;
+		}
 	}
 
 	IndexBuffer* createIndexBuffer(const std::vector<uint32_t>& indices)

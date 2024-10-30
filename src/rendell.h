@@ -20,6 +20,7 @@ namespace rendell
 	};
 
 	bool init(const Initer &initer);
+	void release();
 
 	IndexBuffer* createIndexBuffer(const std::vector<uint32_t>& indices);
 	IndexBuffer* createIndexBuffer(std::vector<uint32_t>&& indices);
