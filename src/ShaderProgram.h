@@ -11,6 +11,8 @@ namespace rendell
 	public:
 		void setVertexShaderSrc(const std::string& vertexSrc);
 		void setFragmentShaderSrc(const std::string& fragmentSrc);
+		const std::string& getVertexShaderSrc() const;
+		const std::string& getFragmentShaderSrc() const;
 		virtual void setVertexShaderSrc(std::string&& vertexSrc);
 		virtual void setFragmentShaderSrc(std::string&& fragmentSrc);
 		virtual bool compile(std::string* vertexInfoLog = nullptr, std::string* fragmentInfoLog = nullptr) const = 0;

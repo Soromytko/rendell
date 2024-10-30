@@ -15,6 +15,8 @@ namespace rendell
 		virtual void unbind() const = 0;
 		virtual void setIndexBuffer(IndexBuffer* indexBuffer);
 		virtual void addVertexBuffer(VertexBuffer* vertexBuffer);
+		const std::vector<std::shared_ptr<VertexBuffer>>& getVertexBuffers() const;
+		const std::shared_ptr<IndexBuffer>& getIndexBuffer() const;
 
 	protected:
 		std::vector<std::shared_ptr<VertexBuffer>> _vertexBuffers{};

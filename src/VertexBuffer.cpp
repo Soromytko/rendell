@@ -9,6 +9,11 @@ VertexBuffer::VertexBuffer(std::vector<float>&& data)
 	_data = std::move(data);
 }
 
+const std::vector<float>& VertexBuffer::getData() const
+{
+	return _data;
+}
+
 int VertexBuffer::getStride() const
 {
 	return _stride;

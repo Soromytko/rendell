@@ -22,6 +22,16 @@ void ShaderProgram::setFragmentShaderSrc(const std::string& fragmentSrc)
 	setFragmentShaderSrc(std::move(fragment));
 }
 
+const std::string& rendell::ShaderProgram::getVertexShaderSrc() const
+{
+	return _vertexSrc;
+}
+
+const std::string& rendell::ShaderProgram::getFragmentShaderSrc() const
+{
+	return _fragmentSrc;
+}
+
 void ShaderProgram::setVertexShaderSrc(std::string&& vertexSrc)
 {
 	_vertexSrc = std::move(vertexSrc);

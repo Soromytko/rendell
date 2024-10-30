@@ -12,6 +12,7 @@ namespace rendell
 	public:
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
+		const std::vector<float>& getData() const;
 		int getStride() const;
 		const std::vector<VertexBufferLayout>& getLayouts() const;
 		void setLayouts(const std::vector<VertexBufferLayout>& layouts);
