@@ -1,10 +1,10 @@
 # What is Rendell?
 
-Rondell is a cross-platform rendering library.
+Rendell is a cross-platform rendering library.
 
 # Sample
 
-This is a sample of drawing a triangle using [Rondell](https://github.com/Soromytko/rendell) and [GLFW](https://github.com/glfw/glfw).
+This is a sample of drawing a triangle using [Rendell](https://github.com/Soromytko/rendell) and [GLFW](https://github.com/glfw/glfw).
 
 ```
 #include <GLFW/glfw3.h>
