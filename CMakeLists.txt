@@ -12,11 +12,14 @@ set(SOURCE_FILES
     src/VertexArray.cpp
     src/VertexBufferLayout.cpp
     src/ShaderProgram.cpp
+    src/Texture2D.cpp
     src/OpenGL/OpenGLSpecification.cpp
     src/OpenGL/OpenGLIndexBuffer.cpp
     src/OpenGL/OpenGLVertexBuffer.cpp
     src/OpenGL/OpenGLVertexArray.cpp
     src/OpenGL/OpenGLShaderProgram.cpp
+    src/OpenGL/OpenGLTexture2D.cpp
+
 )
 
 add_library(rendell STATIC ${SOURCE_FILES})

@@ -82,6 +82,11 @@ namespace rendell
 		return s_specification->createshaderProgram(std::move(vertexSrc), std::move(fragmentSrc));
 	}
 
+	Texture2D* createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels)
+	{
+		return s_specification->createTexture2D(width, height, format, pixels);
+	}
+
 	void clearColor(float r, float g, float b, float a)
 	{
 		s_specification->clearColor(r, g, b, a);

@@ -4,6 +4,7 @@
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "ShaderProgram.h"
+#include "Texture2D.h"
 
 namespace rendell
 {
@@ -33,6 +34,8 @@ namespace rendell
 
 	ShaderProgram* createShaderProgram(const std::string& vertexSrc, const std::string& fragmentSrc);
 	ShaderProgram* createShaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc);
+
+	Texture2D* createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels);
 
 	void clearColor(float r, float g, float b, float a);
 	void drawTriangles(size_t count);
