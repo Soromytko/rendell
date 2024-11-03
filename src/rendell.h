@@ -38,5 +38,20 @@ namespace rendell
 	Texture2D* createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels);
 
 	void clearColor(float r, float g, float b, float a);
-	void drawTriangles(size_t count);
+
+	void drawLineArrays(uint32_t firstIndex, uint32_t length);
+	void drawLineArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount);
+	void drawLineElements(uint32_t count);
+	void drawLineElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount);
+	
+	void drawTriangleArrays(uint32_t firstIndex, uint32_t length);
+	void drawTriangleArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount);
+	void drawTriangleElements(uint32_t count);
+	void drawTriangleElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount);
+
+	void drawTriangleStripArrays(uint32_t firstIndex, uint32_t length);
+	void drawTriangleStripArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount);
+	void drawTriangleStripElements(uint32_t count);
+	void drawTriangleStripElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount);
+
 }

@@ -37,9 +37,64 @@ namespace rendell
 		glClearColor(r, g, b, a);
 	}
 
-	void OpenGLSpecification::drawTriangles(size_t count) const
+	void OpenGLSpecification::drawLineArrays(uint32_t firstIndex, uint32_t length) const
 	{
-		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0);
+		glDrawArrays(GL_LINES, firstIndex, length);
+	}
+
+	void OpenGLSpecification::drawLineArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount) const
+	{
+		glDrawArraysInstanced(GL_LINES, firstIndex, length, instanceCount);
+	}
+
+	void OpenGLSpecification::drawLineElements(uint32_t primitiveCount) const
+	{
+		glDrawElements(GL_LINES, primitiveCount, GL_UNSIGNED_INT, 0);
+	}
+
+	void OpenGLSpecification::drawLineElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount) const
+	{
+		glDrawElementsInstanced(GL_LINES, primitiveCount, GL_UNSIGNED_INT, 0, instanceCount);
+	}
+
+	void OpenGLSpecification::drawTriangleArrays(uint32_t firstIndex, uint32_t length) const
+	{
+		glDrawArrays(GL_TRIANGLES, firstIndex, length);
+	}
+
+	void OpenGLSpecification::drawTriangleArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount) const
+	{
+		glDrawArraysInstanced(GL_TRIANGLES, firstIndex, length, instanceCount);
+	}
+
+	void OpenGLSpecification::drawTriangleElements(uint32_t primitiveCount) const
+	{
+		glDrawElements(GL_TRIANGLES, primitiveCount, GL_UNSIGNED_INT, 0);
+	}
+
+	void OpenGLSpecification::drawTriangleElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount) const
+	{
+		glDrawElementsInstanced(GL_TRIANGLES, primitiveCount, GL_UNSIGNED_INT, 0, instanceCount);
+	}
+
+	void OpenGLSpecification::drawTriangleStripArrays(uint32_t firstIndex, uint32_t length) const
+	{
+		glDrawArrays(GL_TRIANGLE_STRIP, firstIndex, length);
+	}
+
+	void OpenGLSpecification::drawTriangleStripArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount) const
+	{
+		glDrawArraysInstanced(GL_TRIANGLE_STRIP, firstIndex, length, instanceCount);
+	}
+
+	void OpenGLSpecification::drawTriangleStripElements(uint32_t primitiveCount) const
+	{
+		glDrawElements(GL_TRIANGLE_STRIP, primitiveCount, GL_UNSIGNED_INT, 0);
+	}
+
+	void OpenGLSpecification::drawTriangleStripElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount) const
+	{
+		glDrawElementsInstanced(GL_TRIANGLE_STRIP, primitiveCount, GL_UNSIGNED_INT, 0, instanceCount);
 	}
 
 }

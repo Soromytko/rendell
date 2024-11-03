@@ -92,9 +92,64 @@ namespace rendell
 		s_specification->clearColor(r, g, b, a);
 	}
 
-	void drawTriangles(size_t count)
+	void drawLineArrays(uint32_t firstIndex, uint32_t length)
 	{
-		s_specification->drawTriangles(count);
+		s_specification->drawLineArrays(firstIndex, length);
+	}
+
+	void drawLineArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount)
+	{
+		s_specification->drawLineArraysInstanced(firstIndex, length, instanceCount);
+	}
+
+	void drawLineElements(uint32_t primitiveCount)
+	{
+		s_specification->drawLineElements(primitiveCount);
+	}
+
+	void drawLineElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount)
+	{
+		s_specification->drawLineElementsInstanced(primitiveCount, instanceCount);
+	}
+
+	void drawTriangleArrays(uint32_t firstIndex, uint32_t length)
+	{
+		s_specification->drawTriangleArrays(firstIndex, length);
+	}
+
+	void drawTriangleArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount)
+	{
+		s_specification->drawTriangleArraysInstanced(firstIndex, length, instanceCount);
+	}
+
+	void drawTriangleElements(uint32_t primitiveCount)
+	{
+		s_specification->drawTriangleElements(primitiveCount);
+	}
+
+	void drawTriangleElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount)
+	{
+		s_specification->drawTriangleElementsInstanced(primitiveCount, instanceCount);
+	}
+
+	void drawTriangleStripArrays(uint32_t firstIndex, uint32_t length)
+	{
+		s_specification->drawTriangleStripArrays(firstIndex, length);
+	}
+
+	void drawTriangleStripArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount)
+	{
+		s_specification->drawTriangleStripArraysInstanced(firstIndex, length, instanceCount);
+	}
+
+	void drawTriangleStripElements(uint32_t primitiveCount)
+	{
+		s_specification->drawTriangleStripElements(primitiveCount);
+	}
+
+	void drawTriangleStripElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount)
+	{
+		s_specification->drawTriangleStripElementsInstanced(primitiveCount, instanceCount);
 	}
 
 }

@@ -12,7 +12,21 @@ namespace rendell
 		Texture2D* createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const override;
 
 		void clearColor(float r, float g, float b, float a) const override;
-		void drawTriangles(size_t count) const override;
+
+		void drawLineArrays(uint32_t firstIndex, uint32_t length) const override;
+		void drawLineArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount) const override;
+		void drawLineElements(uint32_t primitiveCount) const override;
+		void drawLineElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount) const override;
+
+		void drawTriangleArrays(uint32_t firstIndex, uint32_t length) const override;
+		void drawTriangleArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount) const override;
+		void drawTriangleElements(uint32_t primitiveCount) const override;
+		void drawTriangleElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount) const override;
+
+		void drawTriangleStripArrays(uint32_t firstIndex, uint32_t length) const override;
+		void drawTriangleStripArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount) const override;
+		void drawTriangleStripElements(uint32_t primitiveCount) const override;
+		void drawTriangleStripElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount) const override;
 
 	};
 }
