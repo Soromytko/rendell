@@ -1,6 +1,5 @@
 #include "VertexBuffer.h"
 #include "OpenGL/OpenGlVertexBuffer.h"
-#include "Renderer.h"
 
 using namespace rendell;
 

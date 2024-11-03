@@ -1,5 +1,4 @@
 #include "ShaderProgram.h"
-#include "Renderer.h"
 #include "OpenGL/OpenGLShaderProgram.h"
 
 using namespace rendell;

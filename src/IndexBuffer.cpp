@@ -1,6 +1,5 @@
 #include "IndexBuffer.h"
 #include "OpenGL/OpenGLIndexBuffer.h"
-#include "Renderer.h"
 
 using namespace rendell;
 

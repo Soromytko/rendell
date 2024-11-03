@@ -6,7 +6,6 @@ set(EXE_NAME waxedit)
 
 set(SOURCE_FILES
     src/rendell.cpp
-    src/Renderer.cpp
     src/IndexBuffer.cpp
     src/VertexBuffer.cpp
     src/VertexArray.cpp
