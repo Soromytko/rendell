@@ -22,18 +22,18 @@ rendell::VertexBufferLayout colorLayout{ rendell::ShaderDataType::float3, false,
 std::string vertSrc = R"(
 	#version 330 core
 	layout (location = 0) in vec3 aPos;
-    layout (location = 1) in vec3 aColor;
-    out vec3 vColor;
+	layout (location = 1) in vec3 aColor;
+	out vec3 vColor;
 	void main()
 	{
-        vColor = aColor;
+		vColor = aColor;
 		gl_Position = vec4(aPos, 1.0);
 	}
 )";
 
 std::string fragSrc = R"(
 	out vec4 FragColor;
-    in vec3 vColor;
+	in vec3 vColor;
 	void main()
 	{
 		FragColor = vec4(vColor, 1.0f);
@@ -57,7 +57,7 @@ int main(void)
 	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
 	if (!window)
 	{
-        std::cout << "Failed to initialize GLFW" << std::endl;
+		std::cout << "Failed to initialize GLFW" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
@@ -79,12 +79,14 @@ int main(void)
 	vertexBuffer->setLayouts({ vertexLayout, colorLayout });
 
 	// Create vertex array
-	rendell::VertexArray* vertexArray = rendell::createVertexArray();
+	std::unique_ptr<rendell::VertexArray> vertexArray{ rendell::createVertexArray() };
 	vertexArray->addVertexBuffer(vertexBuffer);
 	vertexArray->setIndexBuffer(indexBuffer);
 
 	// Create and prepare shader program
-	rendell::ShaderProgram* shaderProgram = rendell::createShaderProgram(vertSrc, fragSrc);
+	std::unique_ptr<rendell::ShaderProgram> shaderProgram{
+		rendell::createShaderProgram(vertSrc, fragSrc)
+	};
 	std::string infoLog;
 	if (!shaderProgram->compile(&infoLog))
 	{
@@ -109,7 +111,7 @@ int main(void)
 		// Draw triangle with rendell
 		vertexArray->bind();
 		shaderProgram->bind();
-		rendell::drawTriangles(indexBuffer->getIndices().size());
+		rendell::drawTriangleElements(indexBuffer->getIndices().size());
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
