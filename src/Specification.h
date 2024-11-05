@@ -4,7 +4,9 @@
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "ShaderProgram.h"
+#include "TextureFormat.h"
 #include "Texture2D.h"
+#include "Texture2DArray.h"
 
 namespace rendell
 {
@@ -16,6 +18,7 @@ namespace rendell
 		virtual VertexArray* createVertexArray() const = 0;
 		virtual ShaderProgram* createshaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) const = 0;
 		virtual Texture2D* createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const = 0;
+		virtual Texture2DArray* createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) const = 0;
 
 		virtual void clearColor(float r, float g, float b, float a) const = 0;
 

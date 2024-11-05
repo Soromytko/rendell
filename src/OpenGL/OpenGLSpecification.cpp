@@ -4,6 +4,7 @@
 #include "OpenGLVertexArray.h"
 #include "OpenGLShaderProgram.h"
 #include "OpenGLTexture2D.h"
+#include "OpenGLTexture2DArray.h"
 
 namespace rendell
 {
@@ -30,6 +31,11 @@ namespace rendell
 	Texture2D* OpenGLSpecification::createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const
 	{
 		return new OpenGLTexture2D(width, height, format, pixels);
+	}
+
+	Texture2DArray* OpenGLSpecification::createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) const
+	{
+		return new OpenGLTexture2DArray(width, height, count, format);
 	}
 
 	void OpenGLSpecification::clearColor(float r, float g, float b, float a) const

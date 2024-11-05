@@ -10,6 +10,7 @@ namespace rendell
 		VertexArray* createVertexArray() const override;
 		ShaderProgram* createshaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) const override;
 		Texture2D* createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const override;
+		Texture2DArray* createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) const override;
 
 		void clearColor(float r, float g, float b, float a) const override;
 

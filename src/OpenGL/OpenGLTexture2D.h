@@ -1,6 +1,6 @@
 #pragma once
 #include "../Texture2D.h"
-#include <glad/glad.h>
+#include "OpenGLUtils.h"
 
 namespace rendell
 {

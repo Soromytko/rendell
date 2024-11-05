@@ -12,12 +12,15 @@ set(SOURCE_FILES
     src/VertexBufferLayout.cpp
     src/ShaderProgram.cpp
     src/Texture2D.cpp
+    src/Texture2DArray.cpp
+    src/OpenGL/OpenGLUtils.cpp
     src/OpenGL/OpenGLSpecification.cpp
     src/OpenGL/OpenGLIndexBuffer.cpp
     src/OpenGL/OpenGLVertexBuffer.cpp
     src/OpenGL/OpenGLVertexArray.cpp
     src/OpenGL/OpenGLShaderProgram.cpp
     src/OpenGL/OpenGLTexture2D.cpp
+    src/OpenGL/OpenGLTexture2DArray.cpp
 
 )
 
