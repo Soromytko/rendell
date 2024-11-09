@@ -13,6 +13,7 @@ set(SOURCE_FILES
     src/ShaderProgram.cpp
     src/Texture2D.cpp
     src/Texture2DArray.cpp
+    src/ShaderBuffer.cpp
     src/OpenGL/OpenGLUtils.cpp
     src/OpenGL/OpenGLSpecification.cpp
     src/OpenGL/OpenGLIndexBuffer.cpp
@@ -21,6 +22,7 @@ set(SOURCE_FILES
     src/OpenGL/OpenGLShaderProgram.cpp
     src/OpenGL/OpenGLTexture2D.cpp
     src/OpenGL/OpenGLTexture2DArray.cpp
+    src/OpenGL/OpenGLShaderBuffer.cpp
 
 )
 

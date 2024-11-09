@@ -70,6 +70,11 @@ namespace rendell
 		return s_specification->createVertexArray();
 	}
 
+	ShaderBuffer* createShaderBuffer(const void* data, size_t size)
+	{
+		return s_specification->createShaderBuffer(data, size);
+	}
+
 	ShaderProgram* createShaderProgram(const std::string& vertexSrc, const std::string& fragmentSrc)
 	{
 		std::string vertex = vertexSrc;

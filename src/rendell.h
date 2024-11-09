@@ -6,6 +6,7 @@
 #include "ShaderProgram.h"
 #include "Texture2D.h"
 #include "Texture2DArray.h"
+#include "ShaderBuffer.h"
 
 namespace rendell
 {
@@ -32,6 +33,8 @@ namespace rendell
 	VertexBuffer* createVertexBuffer(const float* data, size_t size);
 
 	VertexArray* createVertexArray();
+
+	ShaderBuffer* createShaderBuffer(const void* data, size_t size);
 
 	ShaderProgram* createShaderProgram(const std::string& vertexSrc, const std::string& fragmentSrc);
 	ShaderProgram* createShaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc);
