@@ -1,6 +1,6 @@
 # What is Rendell?
 
-Rendell is a cross-platform rendering library.
+Rendell is a cross-platform rendering library. Rendell does not impose its own data formats (e.g., shader language, images, etc.), by creating a black box. Its task is to be clear and provide a convenient and cross-platform API.
 
 # Build
 
