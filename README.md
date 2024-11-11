@@ -2,6 +2,16 @@
 
 Rendell is a cross-platform rendering library.
 
+# Build
+
+To use [Rendell](https://github.com/Soromytko/rendell) in your own project
+clone this repository into your project folder and add the following code to your CMakeLists.txt file:
+
+```
+add_subdirectory(rendell)
+target_link_libraries(${EXE_NAME} rendell)
+```
+
 # Sample
 
 This is a sample of drawing a triangle using [Rendell](https://github.com/Soromytko/rendell) and [GLFW](https://github.com/glfw/glfw).
