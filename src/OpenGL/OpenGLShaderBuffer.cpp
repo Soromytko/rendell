@@ -27,7 +27,7 @@ namespace rendell
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	}
 
-	void OpenGLShaderBuffer::setSubData(const void* data, size_t offset, size_t size)
+	void OpenGLShaderBuffer::setSubData(const void* data, size_t size, size_t offset)
 	{
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, _ssbo);
 		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, size, data);

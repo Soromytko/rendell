@@ -14,7 +14,7 @@ namespace rendell
 		const void* getData() const;
 		size_t getSize() const;
 
-		virtual void setSubData(const void* data, size_t offset, size_t size) = 0;
+		virtual void setSubData(const void* data, size_t size, size_t offset = 0) = 0;
 
 	protected:
 		const void* _data;

@@ -13,7 +13,7 @@ namespace rendell
 		void bind(uint32_t layoutIndex = 0) const override;
 		void unbind() const override;
 
-		void setSubData(const void* data, size_t offset, size_t size) override;
+		void setSubData(const void* data, size_t size, size_t offset = 0) override;
 
 	private:
 		GLuint _ssbo;
