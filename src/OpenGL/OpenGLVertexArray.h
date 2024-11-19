@@ -7,6 +7,7 @@ namespace rendell
 	{
 	public:
 		OpenGLVertexArray();
+		OpenGLVertexArray(std::initializer_list<VertexBuffer*> buffers);
 		~OpenGLVertexArray();
 		void bind() const override;
 		void unbind() const override;

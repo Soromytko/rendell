@@ -24,6 +24,11 @@ namespace rendell
 		return new OpenGLVertexArray();
 	}
 
+	VertexArray* OpenGLSpecification::createVertexArray(std::initializer_list<VertexBuffer*> buffers) const
+	{
+		return new OpenGLVertexArray(std::move(buffers));
+	}
+
 	ShaderProgram* OpenGLSpecification::createshaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) const
 	{
 		return new OpenGLShaderProgram(std::move(vertexSrc), std::move(fragmentSrc));

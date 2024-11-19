@@ -8,6 +8,7 @@ namespace rendell
 		IndexBuffer* createIndexBuffer(std::vector<uint32_t>&& indices) const override;
 		VertexBuffer* createVertexBuffer(std::vector<float>&& data) const override;
 		VertexArray* createVertexArray() const override;
+		VertexArray* createVertexArray(std::initializer_list<VertexBuffer*> buffers) const override;
 		ShaderProgram* createshaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) const override;
 		Texture2D* createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const override;
 		Texture2DArray* createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) const override;

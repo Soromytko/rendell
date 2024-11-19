@@ -7,6 +7,12 @@ OpenGLVertexArray::OpenGLVertexArray()
 	glCreateVertexArrays(1, &_vertexArrayId);
 }
 
+rendell::OpenGLVertexArray::OpenGLVertexArray(std::initializer_list<VertexBuffer*> buffers) :
+	VertexArray(std::move(buffers))
+{
+	glCreateVertexArrays(1, &_vertexArrayId);
+}
+
 OpenGLVertexArray::~OpenGLVertexArray()
 {
 	glCreateVertexArrays(1, &_vertexArrayId);

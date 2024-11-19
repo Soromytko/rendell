@@ -17,6 +17,7 @@ namespace rendell
 		virtual IndexBuffer* createIndexBuffer(std::vector<uint32_t>&& indices) const = 0;
 		virtual VertexBuffer* createVertexBuffer(std::vector<float>&& data) const = 0;
 		virtual VertexArray* createVertexArray() const = 0;
+		virtual VertexArray* createVertexArray(std::initializer_list<VertexBuffer*> buffers) const = 0;
 		virtual ShaderProgram* createshaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) const = 0;
 		virtual Texture2D* createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const = 0;
 		virtual Texture2DArray* createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) const = 0;

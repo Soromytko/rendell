@@ -9,6 +9,7 @@ namespace rendell
 	{
 	protected:
 		VertexArray() = default;
+		VertexArray(std::initializer_list<VertexBuffer*> buffers);
 
 	public:
 		virtual void bind() const = 0;

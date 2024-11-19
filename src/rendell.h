@@ -22,7 +22,7 @@ namespace rendell
 		void* context = nullptr;
 	};
 
-	bool init(const Initer &initer);
+	bool init(const Initer& initer);
 	void release();
 
 	IndexBuffer* createIndexBuffer(const std::vector<uint32_t>& indices);
@@ -33,6 +33,7 @@ namespace rendell
 	VertexBuffer* createVertexBuffer(const float* data, size_t size);
 
 	VertexArray* createVertexArray();
+	VertexArray* createVertexArray(std::initializer_list<VertexBuffer*> buffers);
 
 	ShaderBuffer* createShaderBuffer(const void* data, size_t size);
 
@@ -48,7 +49,7 @@ namespace rendell
 	void drawLineArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount);
 	void drawLineElements(uint32_t count);
 	void drawLineElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount);
-	
+
 	void drawTriangleArrays(uint32_t firstIndex, uint32_t length);
 	void drawTriangleArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount);
 	void drawTriangleElements(uint32_t count);

@@ -3,6 +3,14 @@
 
 using namespace rendell;
 
+VertexArray::VertexArray(std::initializer_list<VertexBuffer*> buffers)
+{
+	for (auto it = buffers.begin(); it != buffers.end(); it++)
+	{
+		_vertexBuffers.push_back(std::shared_ptr<VertexBuffer>(*it));
+	}
+}
+
 void VertexArray::setIndexBuffer(IndexBuffer* indexBuffer)
 {
 	_indexBuffer.reset(indexBuffer);
