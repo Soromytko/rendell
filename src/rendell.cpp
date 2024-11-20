@@ -76,6 +76,11 @@ namespace rendell
 		return s_specification->createVertexArray(std::move(buffers));
 	}
 
+	UniformBuffer* createUniformBuffer(const void* data, size_t size)
+	{
+		return s_specification->createUniformBuffer(data, size);
+	}
+
 	ShaderBuffer* createShaderBuffer(const void* data, size_t size)
 	{
 		return s_specification->createShaderBuffer(data, size);

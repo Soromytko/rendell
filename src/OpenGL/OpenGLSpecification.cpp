@@ -6,6 +6,7 @@
 #include "OpenGLTexture2D.h"
 #include "OpenGLTexture2DArray.h"
 #include "OpenGLShaderBuffer.h"
+#include "OpenGLUniformBuffer.h"
 
 namespace rendell
 {
@@ -47,6 +48,11 @@ namespace rendell
 	ShaderBuffer* OpenGLSpecification::createShaderBuffer(const void* data, size_t size) const
 	{
 		return new OpenGLShaderBuffer(data, size);
+	}
+
+	UniformBuffer* OpenGLSpecification::createUniformBuffer(const void* data, size_t size) const
+	{
+		return new OpenGLUniformBuffer(data, size);
 	}
 
 	void OpenGLSpecification::clearColor(float r, float g, float b, float a) const

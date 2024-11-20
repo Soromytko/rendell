@@ -8,6 +8,7 @@
 #include "Texture2D.h"
 #include "Texture2DArray.h"
 #include "ShaderBuffer.h"
+#include "UniformBuffer.h"
 
 namespace rendell
 {
@@ -22,6 +23,7 @@ namespace rendell
 		virtual Texture2D* createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const = 0;
 		virtual Texture2DArray* createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) const = 0;
 		virtual ShaderBuffer* createShaderBuffer(const void* data, size_t size) const = 0;
+		virtual UniformBuffer* createUniformBuffer(const void* data, size_t size) const = 0;
 
 		virtual void clearColor(float r, float g, float b, float a) const = 0;
 

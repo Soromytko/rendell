@@ -7,6 +7,7 @@
 #include "Texture2D.h"
 #include "Texture2DArray.h"
 #include "ShaderBuffer.h"
+#include "UniformBuffer.h"
 
 namespace rendell
 {
@@ -34,6 +35,8 @@ namespace rendell
 
 	VertexArray* createVertexArray();
 	VertexArray* createVertexArray(std::initializer_list<VertexBuffer*> buffers);
+
+	UniformBuffer* createUniformBuffer(const void* data, size_t size);
 
 	ShaderBuffer* createShaderBuffer(const void* data, size_t size);
 
