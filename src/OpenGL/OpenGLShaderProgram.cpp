@@ -96,3 +96,22 @@ void OpenGLShaderProgram::unbind() const
 	glUseProgram(0);
 }
 
+uint32_t OpenGLShaderProgram::getUniformIndex(const std::string& uniformName) const
+{
+	return glGetUniformBlockIndex(
+		_shaderProgramId,
+		static_cast<const GLchar*>(uniformName.c_str())
+	);
+}
+
+void OpenGLShaderProgram::setUniformBindings(const std::string& uniformName, uint32_t dataBinding)
+{
+	const uint32_t index = getUniformIndex(uniformName);
+	setUniformBindings(index, dataBinding);
+}
+
+void OpenGLShaderProgram::setUniformBindings(uint32_t uniformIndex, uint32_t dataBinding)
+{
+	glUniformBlockBinding(_shaderProgramId, uniformIndex, dataBinding);
+}
+

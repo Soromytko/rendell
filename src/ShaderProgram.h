@@ -20,6 +20,9 @@ namespace rendell
 		virtual void freeSrc() = 0;
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
+		virtual uint32_t getUniformIndex(const std::string& uniformName) const = 0;
+		virtual void setUniformBindings(const std::string& uniformName, uint32_t dataBinding) = 0;
+		virtual void setUniformBindings(uint32_t uniformIndex, uint32_t dataBinding) = 0;
 
 	protected:
 		std::string _vertexSrc;
