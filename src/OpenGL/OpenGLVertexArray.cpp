@@ -35,12 +35,12 @@ void OpenGLVertexArray::setIndexBuffer(IndexBuffer* indexBuffer)
 	indexBuffer->bind();
 }
 
-static GLenum convertShaderTypeToOpenGLType(ShaderDataType type)
+static GLenum convertShaderTypeToOpenGLType(DataType type)
 {
 	switch (type)
 	{
-	case ShaderDataType::int1: case ShaderDataType::int2: case ShaderDataType::int3: return GL_INT;
-	case ShaderDataType::float1: case ShaderDataType::float2: case ShaderDataType::float3: return GL_FLOAT;
+	case DataType::int1: case DataType::int2: case DataType::int3: return GL_INT;
+	case DataType::float1: case DataType::float2: case DataType::float3: return GL_FLOAT;
 	}
 	return 0;
 }
@@ -65,12 +65,12 @@ void OpenGLVertexArray::addVertexBuffer(VertexBuffer* vertexBuffer)
 
 		switch (layout.getType())
 		{
-		case ShaderDataType::int1: case ShaderDataType::int2: case ShaderDataType::int3: case ShaderDataType::int4:
+		case DataType::int1: case DataType::int2: case DataType::int3: case DataType::int4:
 		{
 			glVertexAttribIPointer(index, size, type, stride, offset);
 			break;
 		}
-		case ShaderDataType::float1: case ShaderDataType::float2: case ShaderDataType::float3: case ShaderDataType::float4:
+		case DataType::float1: case DataType::float2: case DataType::float3: case DataType::float4:
 			glVertexAttribPointer(index, size, type, normalized, stride, offset);
 			break;
 		}

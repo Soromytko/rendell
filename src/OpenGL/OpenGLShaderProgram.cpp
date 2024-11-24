@@ -98,19 +98,38 @@ namespace rendell
 
 	uint32_t OpenGLShaderProgram::getUniformIndex(const std::string& uniformName) const
 	{
+		return glGetUniformLocation(_shaderProgramId, static_cast<const GLchar*>(uniformName.c_str()));
+	}
+
+	uint32_t OpenGLShaderProgram::getUniformBlockIndex(const std::string& uniformName) const
+	{
 		return glGetUniformBlockIndex(
 			_shaderProgramId,
 			static_cast<const GLchar*>(uniformName.c_str())
 		);
 	}
 
-	void OpenGLShaderProgram::setUniformBindings(const std::string& uniformName, uint32_t dataBinding)
+	void OpenGLShaderProgram::setUniformValue(const std::string& uniformName, DataType type, const char* data)
 	{
 		const uint32_t index = getUniformIndex(uniformName);
-		setUniformBindings(index, dataBinding);
+		setUniformValue(index, type, data);
 	}
 
-	void OpenGLShaderProgram::setUniformBindings(uint32_t uniformIndex, uint32_t dataBinding)
+	void OpenGLShaderProgram::setUniformValue(uint32_t uniformIndex, DataType type, const char* data)
+	{
+		switch (type)
+		{
+		case DataType::int1: glUniform1i(uniformIndex, static_cast<GLint>(&data));
+		}
+	}
+
+	void OpenGLShaderProgram::setUniformBlockBindings(const std::string& uniformName, uint32_t dataBinding)
+	{
+		const uint32_t index = getUniformIndex(uniformName);
+		setUniformBlockBindings(index, dataBinding);
+	}
+
+	void OpenGLShaderProgram::setUniformBlockBindings(uint32_t uniformIndex, uint32_t dataBinding)
 	{
 		glUniformBlockBinding(_shaderProgramId, uniformIndex, dataBinding);
 	}
