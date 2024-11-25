@@ -114,4 +114,21 @@ namespace rendell
 	{
 		glUniformBlockBinding(_shaderProgramId, uniformIndex, dataBinding);
 	}
+
+	uint32_t OpenGLShaderProgram::getShaderBufferIndex(const std::string& bufferName) const
+	{
+		return glGetProgramResourceIndex(_shaderProgramId, GL_SHADER_STORAGE_BLOCK, bufferName.c_str());
+	}
+
+	void OpenGLShaderProgram::setShaderBufferBinding(const std::string& bufferName, uint32_t binding) const
+	{
+		const uint32_t index = getShaderBufferIndex(bufferName);
+		setShaderBufferBinding(index, binding);
+	}
+
+	void OpenGLShaderProgram::setShaderBufferBinding(uint32_t bufferIndex, uint32_t binding) const
+	{
+		glShaderStorageBlockBinding(_shaderProgramId, bufferIndex, binding);
+	}
+
 }

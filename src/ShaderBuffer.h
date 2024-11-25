@@ -9,7 +9,7 @@ namespace rendell
 		ShaderBuffer(const void* data, size_t size);
 
 	public:
-		virtual void bind(uint32_t layoutIndex = 0) const = 0;
+		virtual void bind(uint32_t binding = 0) const = 0;
 		virtual void unbind() const = 0;
 		const void* getData() const;
 		size_t getSize() const;

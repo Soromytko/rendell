@@ -19,6 +19,9 @@ namespace rendell
 		uint32_t getUniformIndex(const std::string& uniformName) const;
 		void setUniformBindings(const std::string& uniformName, uint32_t dataBinding);
 		void setUniformBindings(uint32_t uniformIndex, uint32_t dataBinding);
+		uint32_t getShaderBufferIndex(const std::string& bufferName) const override;
+		void setShaderBufferBinding(const std::string& bufferName, uint32_t binding) const override;
+		void setShaderBufferBinding(uint32_t bufferIndex, uint32_t binding) const override;
 
 	private:
 		GLuint _vertexShaderId{};
