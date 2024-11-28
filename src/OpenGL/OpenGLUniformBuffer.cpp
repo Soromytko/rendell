@@ -22,8 +22,6 @@ namespace rendell
 
 	void OpenGLUniformBuffer::setSubData(const void* data, size_t size, size_t offset) const
 	{
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, _id);
-		glBufferSubData(GL_UNIFORM_BUFFER, offset, size, data);
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+		glNamedBufferSubData(_id, offset, size, data);
 	}
 }
