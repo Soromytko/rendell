@@ -55,6 +55,18 @@ namespace rendell
 		return new OpenGLUniformBuffer(data, size);
 	}
 
+	void OpenGLSpecification::setClearBits(uint32_t clearBits)
+	{
+		_clearBits = 0;
+		_clearBits |= (clearBits & colorBufferBit) ? GL_COLOR_BUFFER_BIT : 0;
+		_clearBits |= (clearBits & depthBufferBit) ? GL_DEPTH_BUFFER_BIT : 0;
+	}
+
+	void OpenGLSpecification::clear()
+	{
+		glClear(_clearBits);
+	}
+
 	void OpenGLSpecification::clearColor(float r, float g, float b, float a) const
 	{
 		glClearColor(r, g, b, a);

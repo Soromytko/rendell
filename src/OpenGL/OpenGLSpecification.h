@@ -15,6 +15,8 @@ namespace rendell
 		ShaderBuffer* createShaderBuffer(const void* data, size_t size) const override;
 		UniformBuffer* createUniformBuffer(const void* data, size_t size) const override;
 
+		void setClearBits(uint32_t clearBits) override;
+		void clear() override;
 		void clearColor(float r, float g, float b, float a) const override;
 
 		void drawLineArrays(uint32_t firstIndex, uint32_t length) const override;

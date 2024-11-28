@@ -8,21 +8,10 @@
 #include "Texture2DArray.h"
 #include "ShaderBuffer.h"
 #include "UniformBuffer.h"
+#include "defines.h"
 
 namespace rendell
 {
-	enum class SpecificationAPI
-	{
-		OpenGL,
-
-	};
-
-	struct Initer
-	{
-		SpecificationAPI api = SpecificationAPI::OpenGL;
-		void* context = nullptr;
-	};
-
 	bool init(const Initer& initer);
 	void release();
 
@@ -46,6 +35,8 @@ namespace rendell
 	Texture2D* createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels);
 	Texture2DArray* createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format);
 
+	void setClearBits(uint32_t clearBits);
+	void clear();
 	void clearColor(float r, float g, float b, float a);
 
 	void drawLineArrays(uint32_t firstIndex, uint32_t length);

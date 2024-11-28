@@ -108,6 +108,16 @@ namespace rendell
 		return s_specification->createTexture2DArray(width, height, count, format);
 	}
 
+	void setClearBits(uint32_t clearBits)
+	{
+		s_specification->setClearBits(clearBits);
+	}
+
+	void clear()
+	{
+		s_specification->clear();
+	}
+
 	void clearColor(float r, float g, float b, float a)
 	{
 		s_specification->clearColor(r, g, b, a);

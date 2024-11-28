@@ -9,6 +9,7 @@
 #include "Texture2DArray.h"
 #include "ShaderBuffer.h"
 #include "UniformBuffer.h"
+#include "defines.h"
 
 namespace rendell
 {
@@ -25,6 +26,8 @@ namespace rendell
 		virtual ShaderBuffer* createShaderBuffer(const void* data, size_t size) const = 0;
 		virtual UniformBuffer* createUniformBuffer(const void* data, size_t size) const = 0;
 
+		virtual void setClearBits(uint32_t clearBits) = 0;
+		virtual void clear() = 0;
 		virtual void clearColor(float r, float g, float b, float a) const = 0;
 
 		virtual void drawLineArrays(uint32_t firstIndex, uint32_t count) const = 0;
@@ -42,5 +45,7 @@ namespace rendell
 		virtual void drawTriangleStripElements(uint32_t primitiveCount) const = 0;
 		virtual void drawTriangleStripElementsInstanced(uint32_t primitiveCount, uint32_t instanceCount) const = 0;
 
+	protected:
+		uint32_t _clearBits;
 	};
 }
