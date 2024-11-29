@@ -5,6 +5,8 @@ namespace rendell
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) :
 		Texture2D(width, height, format, pixels)
 	{
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
 		glGenTextures(1, &_textureId);
 		glBindTexture(GL_TEXTURE_2D, _textureId);
 		const GLint internalFormat = convertTextureFormatToInternalFormat(_format);
@@ -31,8 +33,10 @@ namespace rendell
 		glDeleteTextures(1, &_textureId);
 	}
 
-	void OpenGLTexture2D::bind() const
+	void OpenGLTexture2D::bind(uint32_t textureBlock) const
 	{
+		_textureBlock = textureBlock;
+		glActiveTexture(GL_TEXTURE0 + _textureBlock);
 		glBindTexture(GL_TEXTURE_2D, _textureId);
 	}
 
@@ -40,4 +44,5 @@ namespace rendell
 	{
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
+
 }

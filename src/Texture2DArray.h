@@ -12,7 +12,7 @@ namespace rendell
 
 	public:
 		virtual void setSubTextureData(uint32_t index, const uint8_t *pixels) = 0;
-		virtual void bind() const = 0;
+		virtual void bind(uint32_t textureBlock = 0) const = 0;
 		virtual void unbind() const = 0;
 
 		uint32_t getWidth() const;

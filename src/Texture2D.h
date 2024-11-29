@@ -11,7 +11,7 @@ namespace rendell
 		Texture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels);
 
 	public:
-		virtual void bind() const = 0;
+		virtual void bind(uint32_t textureBlock = 0) const = 0;
 		virtual void unbind() const = 0;
 
 		uint32_t getWidth() const;

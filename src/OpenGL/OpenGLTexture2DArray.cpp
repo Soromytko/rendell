@@ -28,7 +28,7 @@ namespace rendell
 		glDeleteTextures(1, &_id);
 	}
 
-	void OpenGLTexture2DArray::setSubTextureData(uint32_t index, const uint8_t* pixels)
+	void OpenGLTexture2DArray::setSubTextureData(uint32_t index, uint32_t width, uint32_t height, const uint8_t* pixels)
 	{
 		glTextureSubImage3D(
 			_id,
@@ -36,17 +36,19 @@ namespace rendell
 			0,
 			0,
 			static_cast<GLint>(index),
-			static_cast<GLint>(_width),
-			static_cast<GLint>(_height),
-			static_cast<GLint>(_count),
+			static_cast<GLint>(width),
+			static_cast<GLint>(width),
+			static_cast<GLint>(1),
 			_internalFormat,
 			GL_UNSIGNED_BYTE,
 			static_cast<const void*>(pixels)
 		);
 	}
 
-	void OpenGLTexture2DArray::bind() const
+	void OpenGLTexture2DArray::bind(uint32_t textureBlock) const
 	{
+		_textureBlock = textureBlock;
+		glActiveTexture(GL_TEXTURE0 + _textureBlock);
 		glBindTexture(GL_TEXTURE_2D_ARRAY, _id);
 	}
 
