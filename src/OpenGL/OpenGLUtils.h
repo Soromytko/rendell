@@ -4,6 +4,7 @@
 
 namespace rendell
 {
-	GLint convertTextureFormatToInternalFormat(TextureFormat format);
+	GLint convertTextureFormatToBaseFormat(TextureFormat format);
+	GLint convertTextureFormatToSizedFormat(TextureFormat format);
 
 }

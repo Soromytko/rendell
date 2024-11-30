@@ -14,7 +14,6 @@ namespace rendell
 		void unbind() const override;
 
 	private:
-		GLint _internalFormat;
 		GLuint _id;
 		mutable uint32_t _textureBlock{ 0 };
 

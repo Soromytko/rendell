@@ -3,24 +3,23 @@
 namespace rendell
 {
 	OpenGLTexture2DArray::OpenGLTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) :
-		Texture2DArray(width, height, count, format), _internalFormat(convertTextureFormatToInternalFormat(format))
+		Texture2DArray(width, height, count, format)
 	{
 		glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &_id);
+
 		glTextureStorage3D(
 			_id,
-			0,
-			_internalFormat,
+			1,
+			convertTextureFormatToSizedFormat(_format),
 			static_cast<GLsizei>(_width),
 			static_cast<GLsizei>(_height),
 			static_cast<GLsizei>(_count)
 		);
 
-		glBindTexture(GL_TEXTURE_2D_ARRAY, _id);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+		glTextureParameteri(_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(_id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTextureParameteri(_id, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(_id, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	}
 
 	OpenGLTexture2DArray::~OpenGLTexture2DArray()
@@ -32,14 +31,12 @@ namespace rendell
 	{
 		glTextureSubImage3D(
 			_id,
-			0,
-			0,
-			0,
+			0, 0, 0,
 			static_cast<GLint>(index),
 			static_cast<GLint>(width),
-			static_cast<GLint>(width),
-			static_cast<GLint>(1),
-			_internalFormat,
+			static_cast<GLint>(height),
+			1,
+			convertTextureFormatToBaseFormat(_format),
 			GL_UNSIGNED_BYTE,
 			static_cast<const void*>(pixels)
 		);
@@ -48,13 +45,12 @@ namespace rendell
 	void OpenGLTexture2DArray::bind(uint32_t textureBlock) const
 	{
 		_textureBlock = textureBlock;
-		glActiveTexture(GL_TEXTURE0 + _textureBlock);
-		glBindTexture(GL_TEXTURE_2D_ARRAY, _id);
+		glBindTextureUnit(_textureBlock, _id);
 	}
 
 	void OpenGLTexture2DArray::unbind() const
 	{
-		glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
+		glBindTextureUnit(_textureBlock, 0);
 	}
 
 }

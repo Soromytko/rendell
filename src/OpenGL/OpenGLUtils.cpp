@@ -2,7 +2,7 @@
 
 namespace rendell
 {
-	GLint convertTextureFormatToInternalFormat(TextureFormat format)
+	GLint convertTextureFormatToBaseFormat(TextureFormat format)
 	{
 		switch (format)
 		{
@@ -22,5 +22,24 @@ namespace rendell
 		return 0;
 	}
 
+	GLint convertTextureFormatToSizedFormat(TextureFormat format)
+	{
+		switch (format)
+		{
+		case TextureFormat::R: return GL_R8;
+		case TextureFormat::RG: return GL_RG8;
+		case TextureFormat::RGB: return GL_RGB8;
+		case TextureFormat::BGR: return GL_RGB8;
+		case TextureFormat::RGBA: return GL_RGBA8;
+		case TextureFormat::BGRA: return GL_RGBA8;
+		case TextureFormat::R_INT: return GL_R32I;
+		case TextureFormat::RG_INT: return GL_R32I;
+		case TextureFormat::RGB_INT: return GL_RGB32I;
+		case TextureFormat::BGR_INT: return GL_RGB32I;
+		case TextureFormat::RGBA_INT: return GL_RGBA32I;
+		case TextureFormat::BGRA_INT: return GL_RGBA32I;
+		}
+		return 0;
+	}
 
 }

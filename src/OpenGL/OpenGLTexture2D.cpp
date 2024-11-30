@@ -5,29 +5,30 @@ namespace rendell
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) :
 		Texture2D(width, height, format, pixels)
 	{
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+		glCreateTextures(GL_TEXTURE_2D, 1, &_textureId);
+		
+		glTextureStorage2D(
+			_textureId,
+			1,
+			convertTextureFormatToSizedFormat(_format),
+			static_cast<GLsizei>(_width),
+			static_cast<GLsizei>(_height)
+		);
 
-		glGenTextures(1, &_textureId);
-		glBindTexture(GL_TEXTURE_2D, _textureId);
-		const GLint internalFormat = convertTextureFormatToInternalFormat(_format);
-		glTexImage2D(
-			GL_TEXTURE_2D,
-			0,
-			internalFormat,
+		glTextureSubImage2D(
+			_textureId, 
+			0, 0, 0,
 			static_cast<GLsizei>(_width),
 			static_cast<GLsizei>(_height),
-			0,
-			internalFormat,
-			GL_UNSIGNED_BYTE,
+			convertTextureFormatToBaseFormat(_format),
+			GL_UNSIGNED_BYTE, 
 			static_cast<const void*>(_pixels)
 		);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
+		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	}
 
 	OpenGLTexture2D::~OpenGLTexture2D()
@@ -38,13 +39,12 @@ namespace rendell
 	void OpenGLTexture2D::bind(uint32_t textureBlock) const
 	{
 		_textureBlock = textureBlock;
-		glActiveTexture(GL_TEXTURE0 + _textureBlock);
-		glBindTexture(GL_TEXTURE_2D, _textureId);
+		glBindTextureUnit(_textureBlock, _textureId);
 	}
 
 	void OpenGLTexture2D::unbind() const
 	{
-		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindTextureUnit(_textureBlock, 0);
 	}
 
 }
