@@ -19,6 +19,8 @@ namespace rendell
 		void clear() override;
 		void clearColor(float r, float g, float b, float a) const override;
 
+		void setPixelUnpackAlignment(int param) const override;
+
 		void drawLineArrays(uint32_t firstIndex, uint32_t length) const override;
 		void drawLineArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount) const override;
 		void drawLineElements(uint32_t primitiveCount) const override;

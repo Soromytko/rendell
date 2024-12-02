@@ -30,6 +30,8 @@ namespace rendell
 		virtual void clear() = 0;
 		virtual void clearColor(float r, float g, float b, float a) const = 0;
 
+		virtual void setPixelUnpackAlignment(int param) const = 0;
+
 		virtual void drawLineArrays(uint32_t firstIndex, uint32_t count) const = 0;
 		virtual void drawLineArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount) const = 0;
 		virtual void drawLineElements(uint32_t primitiveCount) const = 0;

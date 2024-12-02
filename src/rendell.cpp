@@ -123,6 +123,11 @@ namespace rendell
 		s_specification->clearColor(r, g, b, a);
 	}
 
+	void setPixelUnpackAlignment(int param)
+	{
+		s_specification->setPixelUnpackAlignment(param);
+	}
+
 	void drawLineArrays(uint32_t firstIndex, uint32_t length)
 	{
 		s_specification->drawLineArrays(firstIndex, length);

@@ -72,6 +72,11 @@ namespace rendell
 		glClearColor(r, g, b, a);
 	}
 
+	void OpenGLSpecification::setPixelUnpackAlignment(int param) const
+	{
+		glPixelStorei(GL_UNPACK_ALIGNMENT, param);
+	}
+
 	void OpenGLSpecification::drawLineArrays(uint32_t firstIndex, uint32_t length) const
 	{
 		glDrawArrays(GL_LINES, firstIndex, length);
