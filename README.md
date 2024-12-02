@@ -4,6 +4,14 @@ Rendell is a cross-platform rendering library. Rendell does not impose its own d
 
 # Build
 
+```
+cd build
+cmake ..
+cmake --build .
+```
+
+# How to use Rendell?
+
 To use [Rendell](https://github.com/Soromytko/rendell) in your own project
 clone this repository into your project folder and add the following code to your CMakeLists.txt file:
 
