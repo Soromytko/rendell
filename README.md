@@ -90,21 +90,17 @@ int main(void)
 	}
 
 	// Create index buffer
-	rendell::IndexBuffer* indexBuffer = rendell::createIndexBuffer(indices);
+	const auto indexBuffer = rendell::createIndexBuffer(indices);
 
 	// Create vertex buffer and layouts
-	rendell::VertexBuffer* vertexBuffer = rendell::createVertexBuffer(vertices);
+	const auto vertexBuffer = rendell::createVertexBuffer(vertices);
 	vertexBuffer->setLayouts({ vertexLayout, colorLayout });
 
 	// Create vertex array
-	std::unique_ptr<rendell::VertexArray> vertexArray{ rendell::createVertexArray() };
-	vertexArray->addVertexBuffer(vertexBuffer);
-	vertexArray->setIndexBuffer(indexBuffer);
+	const auto vertexArray = rendell::createVertexArray(indexBuffer, { vertexBuffer });
 
 	// Create and prepare shader program
-	std::unique_ptr<rendell::ShaderProgram> shaderProgram{
-		rendell::createShaderProgram(vertSrc, fragSrc)
-	};
+	const auto shaderProgram = rendell::createShaderProgram(vertSrc, fragSrc);
 	std::string infoLog;
 	if (!shaderProgram->compile(&infoLog))
 	{
