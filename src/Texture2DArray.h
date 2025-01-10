@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <memory>
 #include "TextureFormat.h"
 
 namespace rendell
@@ -26,4 +27,6 @@ namespace rendell
 		uint32_t _count;
 		TextureFormat _format;
 	};
+
+	typedef std::shared_ptr<Texture2DArray> Texture2DArraySharedPtr;
 }

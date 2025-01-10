@@ -10,18 +10,21 @@ namespace rendell
 	{
 	protected:
 		VertexArray() = default;
-		VertexArray(std::initializer_list<VertexBuffer*> buffers);
+		VertexArray(std::initializer_list<VertexBufferSharedPtr> buffers);
+		virtual ~VertexArray() = default;
 
 	public:
 		virtual void bind() const = 0;
 		virtual void unbind() const = 0;
-		virtual void setIndexBuffer(IndexBuffer* indexBuffer);
-		virtual void addVertexBuffer(VertexBuffer* vertexBuffer);
-		const std::vector<std::shared_ptr<VertexBuffer>>& getVertexBuffers() const;
-		const std::shared_ptr<IndexBuffer>& getIndexBuffer() const;
+		virtual void setIndexBuffer(IndexBufferSharedPtr indexBuffer);
+		virtual void addVertexBuffer(VertexBufferSharedPtr vertexBuffer);
+		const std::vector<VertexBufferSharedPtr>& getVertexBuffers() const;
+		const IndexBufferSharedPtr& getIndexBuffer() const;
 
 	protected:
-		std::vector<std::shared_ptr<VertexBuffer>> _vertexBuffers{};
-		std::shared_ptr<IndexBuffer> _indexBuffer{};
+		std::vector<VertexBufferSharedPtr> _vertexBuffers{};
+		IndexBufferSharedPtr _indexBuffer{};
 	};
+
+	typedef std::shared_ptr<VertexArray> VertexArraySharedPtr;
 }

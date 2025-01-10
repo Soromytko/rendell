@@ -16,15 +16,15 @@ namespace rendell
 	class Specification
 	{
 	public:
-		virtual IndexBuffer* createIndexBuffer(std::vector<uint32_t>&& indices) const = 0;
-		virtual VertexBuffer* createVertexBuffer(std::vector<float>&& data) const = 0;
-		virtual VertexArray* createVertexArray() const = 0;
-		virtual VertexArray* createVertexArray(std::initializer_list<VertexBuffer*> buffers) const = 0;
-		virtual ShaderProgram* createshaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) const = 0;
-		virtual Texture2D* createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const = 0;
-		virtual Texture2DArray* createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) const = 0;
-		virtual ShaderBuffer* createShaderBuffer(const void* data, size_t size) const = 0;
-		virtual UniformBuffer* createUniformBuffer(const void* data, size_t size) const = 0;
+		virtual IndexBufferSharedPtr createIndexBuffer(std::vector<uint32_t>&& indices) const = 0;
+		virtual VertexBufferSharedPtr createVertexBuffer(std::vector<float>&& data) const = 0;
+		virtual VertexArraySharedPtr createVertexArray() const = 0;
+		virtual VertexArraySharedPtr createVertexArray(std::initializer_list<VertexBufferSharedPtr> buffers) const = 0;
+		virtual ShaderProgramSharedPtr createshaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) const = 0;
+		virtual Texture2DSharedPtr createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const = 0;
+		virtual Texture2DArraySharedPtr createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) const = 0;
+		virtual ShaderBufferSharedPtr createShaderBuffer(const void* data, size_t size) const = 0;
+		virtual UniformBufferSharedPtr createUniformBuffer(const void* data, size_t size) const = 0;
 
 		virtual void setClearBits(uint32_t clearBits) = 0;
 		virtual void clear() = 0;

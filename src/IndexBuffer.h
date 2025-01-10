@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <memory>
 #include <cstdint>
 
 namespace rendell
@@ -18,4 +19,6 @@ namespace rendell
 		std::vector<uint32_t> _indices;
 
 	};
+
+	typedef std::shared_ptr<IndexBuffer> IndexBufferSharedPtr;
 }

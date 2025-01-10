@@ -3,32 +3,30 @@
 
 namespace rendell
 {
-	VertexArray::VertexArray(std::initializer_list<VertexBuffer*> buffers)
+	VertexArray::VertexArray(std::initializer_list<VertexBufferSharedPtr> buffers)
 	{
 		for (auto it = buffers.begin(); it != buffers.end(); it++)
 		{
-			_vertexBuffers.push_back(std::shared_ptr<VertexBuffer>(*it));
+			_vertexBuffers.push_back(*it);
 		}
 	}
 
-	void VertexArray::setIndexBuffer(IndexBuffer* indexBuffer)
+	void VertexArray::setIndexBuffer(IndexBufferSharedPtr indexBuffer)
 	{
-		_indexBuffer.reset(indexBuffer);
+		_indexBuffer = indexBuffer;
 	}
 
-	void VertexArray::addVertexBuffer(VertexBuffer* vertexBuffer)
+	void VertexArray::addVertexBuffer(VertexBufferSharedPtr vertexBuffer)
 	{
-		std::shared_ptr<VertexBuffer> p;
-		p.reset(vertexBuffer);
-		_vertexBuffers.push_back(std::move(p));
+		_vertexBuffers.push_back(vertexBuffer);
 	}
 
-	const std::vector<std::shared_ptr<VertexBuffer>>& VertexArray::getVertexBuffers() const
+	const std::vector<VertexBufferSharedPtr>& VertexArray::getVertexBuffers() const
 	{
 		return _vertexBuffers;
 	}
 
-	const std::shared_ptr<IndexBuffer>& VertexArray::getIndexBuffer() const
+	const IndexBufferSharedPtr& VertexArray::getIndexBuffer() const
 	{
 		return _indexBuffer;
 	}

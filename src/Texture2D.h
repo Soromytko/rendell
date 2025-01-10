@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <memory>
 #include "TextureFormat.h"
 
 namespace rendell
@@ -25,4 +26,6 @@ namespace rendell
 		TextureFormat _format;
 		const uint8_t* _pixels;
 	};
+
+	typedef std::shared_ptr<Texture2D> Texture2DSharedPtr;
 }

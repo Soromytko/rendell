@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <memory>
 #include "VertexBufferLayout.h"
 
 namespace rendell
@@ -25,4 +26,6 @@ namespace rendell
 		std::vector<VertexBufferLayout> _layouts{};
 
 	};
+
+	typedef std::shared_ptr<VertexBuffer> VertexBufferSharedPtr;
 }

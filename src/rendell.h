@@ -15,25 +15,25 @@ namespace rendell
 	bool init(const Initer& initer);
 	void release();
 
-	IndexBuffer* createIndexBuffer(const std::vector<uint32_t>& indices);
-	IndexBuffer* createIndexBuffer(std::vector<uint32_t>&& indices);
+	IndexBufferSharedPtr createIndexBuffer(const std::vector<uint32_t>& indices);
+	IndexBufferSharedPtr createIndexBuffer(std::vector<uint32_t>&& indices);
 
-	VertexBuffer* createVertexBuffer(const std::vector<float>& data);
-	VertexBuffer* createVertexBuffer(std::vector<float>&& data);
-	VertexBuffer* createVertexBuffer(const float* data, size_t size);
+	VertexBufferSharedPtr createVertexBuffer(const std::vector<float>& data);
+	VertexBufferSharedPtr createVertexBuffer(std::vector<float>&& data);
+	VertexBufferSharedPtr createVertexBuffer(const float* data, size_t size);
 
-	VertexArray* createVertexArray();
-	VertexArray* createVertexArray(std::initializer_list<VertexBuffer*> buffers);
+	VertexArraySharedPtr createVertexArray();
+	VertexArraySharedPtr createVertexArray(std::initializer_list<VertexBufferSharedPtr> buffers);
 
-	UniformBuffer* createUniformBuffer(const void* data, size_t size);
+	UniformBufferSharedPtr createUniformBuffer(const void* data, size_t size);
 
-	ShaderBuffer* createShaderBuffer(const void* data, size_t size);
+	ShaderBufferSharedPtr createShaderBuffer(const void* data, size_t size);
 
-	ShaderProgram* createShaderProgram(const std::string& vertexSrc, const std::string& fragmentSrc);
-	ShaderProgram* createShaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc);
+	ShaderProgramSharedPtr createShaderProgram(const std::string& vertexSrc, const std::string& fragmentSrc);
+	ShaderProgramSharedPtr createShaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc);
 
-	Texture2D* createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels);
-	Texture2DArray* createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format);
+	Texture2DSharedPtr createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels);
+	Texture2DArraySharedPtr createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format);
 
 	void setClearBits(uint32_t clearBits);
 	void clear();

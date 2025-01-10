@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <memory>
 
 namespace rendell
 {
@@ -49,4 +50,6 @@ namespace rendell
 		std::string _fragmentSrc;
 
 	};
+
+	typedef std::shared_ptr<ShaderProgram> ShaderProgramSharedPtr;
 }

@@ -10,49 +10,49 @@
 
 namespace rendell
 {
-	IndexBuffer* OpenGLSpecification::createIndexBuffer(std::vector<uint32_t>&& indices) const
+	IndexBufferSharedPtr OpenGLSpecification::createIndexBuffer(std::vector<uint32_t>&& indices) const
 	{
-		return new OpenGLIndexBuffer(std::move(indices));
+		return std::make_shared<OpenGLIndexBuffer>(std::move(indices));
 	}
 
-	VertexBuffer* OpenGLSpecification::createVertexBuffer(std::vector<float>&& data) const
+	VertexBufferSharedPtr OpenGLSpecification::createVertexBuffer(std::vector<float>&& data) const
 	{
-		return new OpenGLVertexBuffer(std::move(data));
+		return std::make_shared<OpenGLVertexBuffer>(std::move(data));
 	}
 
-	VertexArray* OpenGLSpecification::createVertexArray() const
+	VertexArraySharedPtr OpenGLSpecification::createVertexArray() const
 	{
-		return new OpenGLVertexArray();
+		return std::make_shared<OpenGLVertexArray>();
 	}
 
-	VertexArray* OpenGLSpecification::createVertexArray(std::initializer_list<VertexBuffer*> buffers) const
+	VertexArraySharedPtr OpenGLSpecification::createVertexArray(std::initializer_list<VertexBufferSharedPtr> buffers) const
 	{
-		return new OpenGLVertexArray(std::move(buffers));
+		return std::make_shared<OpenGLVertexArray>(std::move(buffers));
 	}
 
-	ShaderProgram* OpenGLSpecification::createshaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) const
+	ShaderProgramSharedPtr OpenGLSpecification::createshaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) const
 	{
-		return new OpenGLShaderProgram(std::move(vertexSrc), std::move(fragmentSrc));
+		return std::make_shared<OpenGLShaderProgram>(std::move(vertexSrc), std::move(fragmentSrc));
 	}
 
-	Texture2D* OpenGLSpecification::createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const
+	Texture2DSharedPtr OpenGLSpecification::createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const
 	{
-		return new OpenGLTexture2D(width, height, format, pixels);
+		return std::make_shared<OpenGLTexture2D>(width, height, format, pixels);
 	}
 
-	Texture2DArray* OpenGLSpecification::createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) const
+	Texture2DArraySharedPtr OpenGLSpecification::createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) const
 	{
-		return new OpenGLTexture2DArray(width, height, count, format);
+		return std::make_shared<OpenGLTexture2DArray>(width, height, count, format);
 	}
 
-	ShaderBuffer* OpenGLSpecification::createShaderBuffer(const void* data, size_t size) const
+	ShaderBufferSharedPtr OpenGLSpecification::createShaderBuffer(const void* data, size_t size) const
 	{
-		return new OpenGLShaderBuffer(data, size);
+		return std::make_shared<OpenGLShaderBuffer>(data, size);
 	}
 
-	UniformBuffer* OpenGLSpecification::createUniformBuffer(const void* data, size_t size) const
+	UniformBufferSharedPtr OpenGLSpecification::createUniformBuffer(const void* data, size_t size) const
 	{
-		return new OpenGLUniformBuffer(data, size);
+		return std::make_shared<OpenGLUniformBuffer>(data, size);
 	}
 
 	void OpenGLSpecification::setClearBits(uint32_t clearBits)

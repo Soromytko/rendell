@@ -2,13 +2,13 @@
 
 namespace rendell
 {
-	OpenGLVertexArray::OpenGLVertexArray()
+	OpenGLVertexArray::OpenGLVertexArray() : VertexArray()
 	{
 		glCreateVertexArrays(1, &_vertexArrayId);
 	}
 
-	rendell::OpenGLVertexArray::OpenGLVertexArray(std::initializer_list<VertexBuffer*> buffers) :
-		VertexArray(std::move(buffers))
+	OpenGLVertexArray::OpenGLVertexArray(std::initializer_list<VertexBufferSharedPtr> buffers) :
+		VertexArray(buffers)
 	{
 		glCreateVertexArrays(1, &_vertexArrayId);
 	}
@@ -28,7 +28,7 @@ namespace rendell
 		glBindVertexArray(0);
 	}
 
-	void OpenGLVertexArray::setIndexBuffer(IndexBuffer* indexBuffer)
+	void OpenGLVertexArray::setIndexBuffer(IndexBufferSharedPtr indexBuffer)
 	{
 		VertexArray::setIndexBuffer(indexBuffer);
 		bind();
@@ -45,7 +45,7 @@ namespace rendell
 		return 0;
 	}
 
-	void OpenGLVertexArray::addVertexBuffer(VertexBuffer* vertexBuffer)
+	void OpenGLVertexArray::addVertexBuffer(VertexBufferSharedPtr vertexBuffer)
 	{
 		VertexArray::addVertexBuffer(vertexBuffer);
 
