@@ -25,9 +25,9 @@ namespace rendell
 		return std::make_shared<OpenGLVertexArray>();
 	}
 
-	VertexArraySharedPtr OpenGLSpecification::createVertexArray(std::initializer_list<VertexBufferSharedPtr> buffers) const
+	VertexArraySharedPtr OpenGLSpecification::createVertexArray(IndexBufferSharedPtr indexBuffer, std::initializer_list<VertexBufferSharedPtr> buffers) const
 	{
-		return std::make_shared<OpenGLVertexArray>(std::move(buffers));
+		return std::make_shared<OpenGLVertexArray>(indexBuffer, buffers);
 	}
 
 	ShaderProgramSharedPtr OpenGLSpecification::createshaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) const

@@ -8,7 +8,7 @@ namespace rendell
 		IndexBufferSharedPtr createIndexBuffer(std::vector<uint32_t>&& indices) const override;
 		VertexBufferSharedPtr createVertexBuffer(std::vector<float>&& data) const override;
 		VertexArraySharedPtr createVertexArray() const override;
-		VertexArraySharedPtr createVertexArray(std::initializer_list<VertexBufferSharedPtr> buffers) const override;
+		VertexArraySharedPtr createVertexArray(IndexBufferSharedPtr indexBuffer, std::initializer_list<VertexBufferSharedPtr> buffers) const override;
 		ShaderProgramSharedPtr createshaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) const override;
 		Texture2DSharedPtr createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const override;
 		Texture2DArraySharedPtr createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) const override;

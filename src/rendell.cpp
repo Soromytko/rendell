@@ -71,9 +71,9 @@ namespace rendell
 		return s_specification->createVertexArray();
 	}
 
-	VertexArraySharedPtr createVertexArray(std::initializer_list<VertexBufferSharedPtr> buffers)
+	VertexArraySharedPtr createVertexArray(IndexBufferSharedPtr indexBuffer, std::initializer_list<VertexBufferSharedPtr> buffers)
 	{
-		return s_specification->createVertexArray(std::move(buffers));
+		return s_specification->createVertexArray(indexBuffer, buffers);
 	}
 
 	UniformBufferSharedPtr createUniformBuffer(const void* data, size_t size)

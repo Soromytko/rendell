@@ -10,7 +10,6 @@ namespace rendell
 	{
 	protected:
 		VertexArray() = default;
-		VertexArray(std::initializer_list<VertexBufferSharedPtr> buffers);
 		virtual ~VertexArray() = default;
 
 	public:

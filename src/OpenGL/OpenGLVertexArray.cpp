@@ -7,10 +7,16 @@ namespace rendell
 		glCreateVertexArrays(1, &_vertexArrayId);
 	}
 
-	OpenGLVertexArray::OpenGLVertexArray(std::initializer_list<VertexBufferSharedPtr> buffers) :
-		VertexArray(buffers)
+	OpenGLVertexArray::OpenGLVertexArray(IndexBufferSharedPtr indexBuffer, std::initializer_list<VertexBufferSharedPtr> buffers) :
+		VertexArray()
 	{
 		glCreateVertexArrays(1, &_vertexArrayId);
+
+		setIndexBuffer(indexBuffer);
+		for (auto it = buffers.begin(); it != buffers.end(); it++)
+		{
+			addVertexBuffer(*it);
+		}
 	}
 
 	OpenGLVertexArray::~OpenGLVertexArray()
@@ -31,6 +37,12 @@ namespace rendell
 	void OpenGLVertexArray::setIndexBuffer(IndexBufferSharedPtr indexBuffer)
 	{
 		VertexArray::setIndexBuffer(indexBuffer);
+		
+		if (!indexBuffer)
+		{
+			return;
+		}
+
 		bind();
 		indexBuffer->bind();
 	}

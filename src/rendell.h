@@ -23,7 +23,7 @@ namespace rendell
 	VertexBufferSharedPtr createVertexBuffer(const float* data, size_t size);
 
 	VertexArraySharedPtr createVertexArray();
-	VertexArraySharedPtr createVertexArray(std::initializer_list<VertexBufferSharedPtr> buffers);
+	VertexArraySharedPtr createVertexArray(IndexBufferSharedPtr indexBuffer, std::initializer_list<VertexBufferSharedPtr> buffers);
 
 	UniformBufferSharedPtr createUniformBuffer(const void* data, size_t size);
 
