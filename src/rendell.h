@@ -39,7 +39,10 @@ namespace rendell
 	void clear();
 	void clearColor(float r, float g, float b, float a);
 
+	void setViewport(int x, int y, int width, int height);
 	void setPixelUnpackAlignment(int param);
+	
+	void finish();
 
 	void drawLineArrays(uint32_t firstIndex, uint32_t length);
 	void drawLineArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount);

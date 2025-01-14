@@ -123,9 +123,19 @@ namespace rendell
 		s_specification->clearColor(r, g, b, a);
 	}
 
+	void setViewport(int x, int y, int width, int height)
+	{
+		glViewport(x, y, width, height);
+	}
+
 	void setPixelUnpackAlignment(int param)
 	{
 		s_specification->setPixelUnpackAlignment(param);
+	}
+
+	void finish()
+	{
+		glFinish();
 	}
 
 	void drawLineArrays(uint32_t firstIndex, uint32_t length)
