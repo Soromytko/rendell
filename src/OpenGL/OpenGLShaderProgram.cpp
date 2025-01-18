@@ -187,7 +187,7 @@ namespace rendell
 		glProgramUniform2fv(
 			_shaderProgramId,
 			static_cast<GLint>(uniformIndex),
-			0,
+			1,
 			static_cast<const GLfloat*>(data)
 		);
 	}
