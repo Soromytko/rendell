@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
 project(Rendell)
 
-set(EXE_NAME waxedit)
+set(BINARY_NAME rendell)
 
 set(SOURCE_FILES
     src/rendell.cpp
@@ -28,9 +28,21 @@ set(SOURCE_FILES
 
 )
 
-add_library(rendell STATIC ${SOURCE_FILES})
-target_include_directories(rendell PUBLIC include)
+option(BUILD_SHARED_LIBS "Build shared libraries instead of static" OFF)
+
+if(BUILD_SHARED_LIBS)
+    add_library(${BINARY_NAME} SHARED ${SOURCE_FILES})
+    target_compile_definitions(${BINARY_NAME} PRIVATE RENDELL_BUILD_DLL)
+else()
+    add_library(${BINARY_NAME} STATIC ${SOURCE_FILES})
+endif()
 
 # Gald
 add_subdirectory(glad)
-target_link_libraries(rendell glad)
+#target_include_directories(glad INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/glad/include)
+target_link_libraries(${BINARY_NAME} PRIVATE glad)
+
+
+install(TARGETS ${BINARY_NAME} EXPORT RendellConfig LIBRARY DESTINATION lib)
+export(PACKAGE  ${BINARY_NAME})
+install(EXPORT RendellConfig DESTINATION lib/cmake/${PROJECT_NAME})
