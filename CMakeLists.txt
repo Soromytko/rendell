@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
-project(Rendell)
-
 set(EXE_NAME waxedit)
 
 set(SOURCE_FILES
@@ -31,6 +29,6 @@ set(SOURCE_FILES
 add_library(rendell STATIC ${SOURCE_FILES})
 target_include_directories(rendell PUBLIC include)
 
-# Gald
+# Glad
 add_subdirectory(glad)
 target_link_libraries(rendell glad)
