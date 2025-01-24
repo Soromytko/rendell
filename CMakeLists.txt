@@ -26,7 +26,31 @@ set(SOURCE_FILES
 
 )
 
-add_library(rendell STATIC ${SOURCE_FILES})
+set(HEADER_FILES
+    src/rendell.h
+    src/IndexBuffer.h
+    src/VertexBuffer.h
+    src/VertexArray.h
+    src/VertexBufferLayout.h
+    src/ShaderProgram.h
+    src/Texture2D.h
+    src/Texture2DArray.h
+    src/ShaderBuffer.h
+    src/UniformBuffer.h
+    src/OpenGL/OpenGLUtils.h
+    src/OpenGL/OpenGLSpecification.h
+    src/OpenGL/OpenGLIndexBuffer.h
+    src/OpenGL/OpenGLVertexBuffer.h
+    src/OpenGL/OpenGLVertexArray.h
+    src/OpenGL/OpenGLShaderProgram.h
+    src/OpenGL/OpenGLTexture2D.h
+    src/OpenGL/OpenGLTexture2DArray.h
+    src/OpenGL/OpenGLShaderBuffer.h
+    src/OpenGL/OpenGLUniformBuffer.h
+
+)
+
+add_library(rendell STATIC ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(rendell PUBLIC include)
 
 # Glad
