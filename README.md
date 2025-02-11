@@ -61,7 +61,7 @@ std::string fragSrc = R"(
 bool initRendell()
 {
 	rendell::Initer initer;
-	initer.context = static_cast<void*>(glfwGetProcAddress);
+	initer.context = reinterpret_cast<void*>(glfwGetProcAddress);
 	return rendell::init(initer);
 }
 
