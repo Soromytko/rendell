@@ -3,6 +3,7 @@
 #include <memory>
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
+#include "defines.h"
 
 namespace rendell
 {
@@ -25,5 +26,5 @@ namespace rendell
 		IndexBufferSharedPtr _indexBuffer{};
 	};
 
-	typedef std::shared_ptr<VertexArray> VertexArraySharedPtr;
+	DECLARE_SHARED_PTR_FACTORY(VertexArray)
 }

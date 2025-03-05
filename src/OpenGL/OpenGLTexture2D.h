@@ -18,4 +18,6 @@ namespace rendell
 		mutable uint32_t _textureBlock{ 0 };
 
 	};
+
+	DECLARE_SHARED_PTR_FACTORY(OpenGLTexture2D)
 }

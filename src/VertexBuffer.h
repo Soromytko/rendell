@@ -2,6 +2,7 @@
 #include <vector>
 #include <memory>
 #include "VertexBufferLayout.h"
+#include "defines.h"
 
 namespace rendell
 {
@@ -27,5 +28,5 @@ namespace rendell
 
 	};
 
-	typedef std::shared_ptr<VertexBuffer> VertexBufferSharedPtr;
+	DECLARE_SHARED_PTR_FACTORY(VertexBuffer)
 }

@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include "TextureFormat.h"
+#include "defines.h"
 
 namespace rendell
 {
@@ -27,5 +28,5 @@ namespace rendell
 		const uint8_t* _pixels;
 	};
 
-	typedef std::shared_ptr<Texture2D> Texture2DSharedPtr;
+	DECLARE_SHARED_PTR_FACTORY(Texture2D)
 }

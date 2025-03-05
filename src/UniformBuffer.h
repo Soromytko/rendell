@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include <memory>
+#include "defines.h"
 
 namespace rendell
 {
@@ -22,5 +23,5 @@ namespace rendell
 		const size_t _size;
 	};
 
-	typedef std::shared_ptr<UniformBuffer> UniformBufferSharedPtr;
+	DECLARE_SHARED_PTR_FACTORY(UniformBuffer)
 }

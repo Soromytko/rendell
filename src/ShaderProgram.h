@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
+#include "defines.h"
 
 namespace rendell
 {
@@ -51,5 +52,5 @@ namespace rendell
 
 	};
 
-	typedef std::shared_ptr<ShaderProgram> ShaderProgramSharedPtr;
+	DECLARE_SHARED_PTR_FACTORY(ShaderProgram)
 }

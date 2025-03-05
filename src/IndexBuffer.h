@@ -2,6 +2,7 @@
 #include <vector>
 #include <memory>
 #include <cstdint>
+#include "defines.h"
 
 namespace rendell
 {
@@ -20,5 +21,5 @@ namespace rendell
 
 	};
 
-	typedef std::shared_ptr<IndexBuffer> IndexBufferSharedPtr;
+	DECLARE_SHARED_PTR_FACTORY(IndexBuffer)
 }

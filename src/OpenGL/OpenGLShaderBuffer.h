@@ -20,4 +20,6 @@ namespace rendell
 		mutable uint32_t _binding{ 0 };
 
 	};
+
+	DECLARE_SHARED_PTR_FACTORY(OpenGLShaderBuffer)
 }

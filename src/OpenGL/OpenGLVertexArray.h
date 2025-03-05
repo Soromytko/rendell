@@ -17,4 +17,7 @@ namespace rendell
 	private:
 		GLuint _vertexArrayId{};
 	};
+
+	DECLARE_SHARED_PTR_FACTORY(OpenGLVertexArray)
+	
 }

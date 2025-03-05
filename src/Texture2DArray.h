@@ -3,6 +3,7 @@
 #include <vector>
 #include <memory>
 #include "TextureFormat.h"
+#include "defines.h"
 
 namespace rendell
 {
@@ -28,5 +29,5 @@ namespace rendell
 		TextureFormat _format;
 	};
 
-	typedef std::shared_ptr<Texture2DArray> Texture2DArraySharedPtr;
+	DECLARE_SHARED_PTR_FACTORY(Texture2DArray)
 }

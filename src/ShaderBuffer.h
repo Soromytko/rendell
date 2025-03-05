@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <memory>
+#include "defines.h"
 
 namespace rendell
 {
@@ -22,5 +23,5 @@ namespace rendell
 		size_t _size;
 	};
 
-	typedef std::shared_ptr<ShaderBuffer> ShaderBufferSharedPtr;
+	DECLARE_SHARED_PTR_FACTORY(ShaderBuffer)
 }

@@ -17,4 +17,6 @@ namespace rendell
 		mutable uint32_t _binding{ 0 };
 		GLuint _id;
 	};
+
+	DECLARE_SHARED_PTR_FACTORY(OpenGLUniformBuffer)
 }

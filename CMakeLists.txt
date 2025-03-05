@@ -48,6 +48,7 @@ set(HEADER_FILES
     src/OpenGL/OpenGLShaderBuffer.h
     src/OpenGL/OpenGLUniformBuffer.h
 
+    src/defines.h
 )
 
 add_library(rendell STATIC ${SOURCE_FILES} ${HEADER_FILES})

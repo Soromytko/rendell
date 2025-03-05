@@ -12,47 +12,47 @@ namespace rendell
 {
 	IndexBufferSharedPtr OpenGLSpecification::createIndexBuffer(std::vector<uint32_t>&& indices) const
 	{
-		return std::make_shared<OpenGLIndexBuffer>(std::move(indices));
+		return makeOpenGLIndexBuffer(std::move(indices));
 	}
 
 	VertexBufferSharedPtr OpenGLSpecification::createVertexBuffer(std::vector<float>&& data) const
 	{
-		return std::make_shared<OpenGLVertexBuffer>(std::move(data));
+		return makeOpenGLVertexBuffer(std::move(data));
 	}
 
 	VertexArraySharedPtr OpenGLSpecification::createVertexArray() const
 	{
-		return std::make_shared<OpenGLVertexArray>();
+		return makeOpenGLVertexArray();
 	}
 
 	VertexArraySharedPtr OpenGLSpecification::createVertexArray(IndexBufferSharedPtr indexBuffer, std::initializer_list<VertexBufferSharedPtr> buffers) const
 	{
-		return std::make_shared<OpenGLVertexArray>(indexBuffer, buffers);
+		return makeOpenGLVertexArray(indexBuffer, buffers);
 	}
 
 	ShaderProgramSharedPtr OpenGLSpecification::createshaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc) const
 	{
-		return std::make_shared<OpenGLShaderProgram>(std::move(vertexSrc), std::move(fragmentSrc));
+		return makeOpenGLShaderProgram(std::move(vertexSrc), std::move(fragmentSrc));
 	}
 
 	Texture2DSharedPtr OpenGLSpecification::createTexture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t* pixels) const
 	{
-		return std::make_shared<OpenGLTexture2D>(width, height, format, pixels);
+		return makeOpenGLTexture2D(width, height, format, pixels);
 	}
 
 	Texture2DArraySharedPtr OpenGLSpecification::createTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format) const
 	{
-		return std::make_shared<OpenGLTexture2DArray>(width, height, count, format);
+		return makeOpenGLTexture2DArray(width, height, count, format);
 	}
 
 	ShaderBufferSharedPtr OpenGLSpecification::createShaderBuffer(const void* data, size_t size) const
 	{
-		return std::make_shared<OpenGLShaderBuffer>(data, size);
+		return makeOpenGLShaderBuffer(data, size);
 	}
 
 	UniformBufferSharedPtr OpenGLSpecification::createUniformBuffer(const void* data, size_t size) const
 	{
-		return std::make_shared<OpenGLUniformBuffer>(data, size);
+		return makeOpenGLUniformBuffer(data, size);
 	}
 
 	void OpenGLSpecification::setClearBits(uint32_t clearBits)

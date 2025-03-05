@@ -15,4 +15,6 @@ namespace rendell
 	private:
 		GLuint _bufferId{};
 	};
+
+	DECLARE_SHARED_PTR_FACTORY(OpenGLIndexBuffer)
 }
