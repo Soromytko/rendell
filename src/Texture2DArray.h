@@ -29,5 +29,5 @@ namespace rendell
 		TextureFormat _format;
 	};
 
-	DECLARE_SHARED_PTR_FACTORY(Texture2DArray)
+	RENDELL_DECLARE_SHARED_PTR_FACTORY(Texture2DArray)
 }

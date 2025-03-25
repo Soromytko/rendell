@@ -46,5 +46,5 @@ namespace rendell
 		GLuint _shaderProgramId{};
 	};
 
-	DECLARE_SHARED_PTR_FACTORY(OpenGLShaderProgram)
+	RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLShaderProgram)
 }

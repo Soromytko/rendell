@@ -18,6 +18,6 @@ namespace rendell
 		GLuint _vertexArrayId{};
 	};
 
-	DECLARE_SHARED_PTR_FACTORY(OpenGLVertexArray)
+	RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLVertexArray)
 	
 }

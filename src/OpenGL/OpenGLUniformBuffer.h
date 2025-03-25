@@ -18,5 +18,5 @@ namespace rendell
 		GLuint _id;
 	};
 
-	DECLARE_SHARED_PTR_FACTORY(OpenGLUniformBuffer)
+	RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLUniformBuffer)
 }

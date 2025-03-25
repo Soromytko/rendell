@@ -28,5 +28,5 @@ namespace rendell
 		const uint8_t* _pixels;
 	};
 
-	DECLARE_SHARED_PTR_FACTORY(Texture2D)
+	RENDELL_DECLARE_SHARED_PTR_FACTORY(Texture2D)
 }

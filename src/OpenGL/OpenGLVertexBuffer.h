@@ -17,5 +17,5 @@ namespace rendell
 		GLuint _bufferId{};
 	};
 
-	DECLARE_SHARED_PTR_FACTORY(OpenGLVertexBuffer)
+	RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLVertexBuffer)
 }

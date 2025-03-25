@@ -26,5 +26,5 @@ namespace rendell
 		IndexBufferSharedPtr _indexBuffer{};
 	};
 
-	DECLARE_SHARED_PTR_FACTORY(VertexArray)
+	RENDELL_DECLARE_SHARED_PTR_FACTORY(VertexArray)
 }

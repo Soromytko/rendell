@@ -23,5 +23,5 @@ namespace rendell
 		const size_t _size;
 	};
 
-	DECLARE_SHARED_PTR_FACTORY(UniformBuffer)
+	RENDELL_DECLARE_SHARED_PTR_FACTORY(UniformBuffer)
 }

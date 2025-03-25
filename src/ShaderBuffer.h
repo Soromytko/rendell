@@ -23,5 +23,5 @@ namespace rendell
 		size_t _size;
 	};
 
-	DECLARE_SHARED_PTR_FACTORY(ShaderBuffer)
+	RENDELL_DECLARE_SHARED_PTR_FACTORY(ShaderBuffer)
 }

@@ -21,5 +21,5 @@ namespace rendell
 
 	};
 
-	DECLARE_SHARED_PTR_FACTORY(IndexBuffer)
+	RENDELL_DECLARE_SHARED_PTR_FACTORY(IndexBuffer)
 }

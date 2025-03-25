@@ -19,5 +19,5 @@ namespace rendell
 
 	};
 
-	DECLARE_SHARED_PTR_FACTORY(OpenGLTexture2DArray)
+	RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLTexture2DArray)
 }

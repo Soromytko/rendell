@@ -28,5 +28,5 @@ namespace rendell
 
 	};
 
-	DECLARE_SHARED_PTR_FACTORY(VertexBuffer)
+	RENDELL_DECLARE_SHARED_PTR_FACTORY(VertexBuffer)
 }
