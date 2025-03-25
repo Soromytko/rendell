@@ -31,13 +31,13 @@ namespace rendell
 
 	void VertexBuffer::calculateOffsetsAndStride()
 	{
-		uint32_t offset = 0;
+		size_t offset = 0;
 		_stride = 0;
 		for (VertexBufferLayout& layout : _layouts)
 		{
 			layout.setOffset(offset);
 			offset += layout.getSize();
-			_stride += layout.getSize();
+			_stride += static_cast<int>(layout.getSize());
 		}
 	}
 }

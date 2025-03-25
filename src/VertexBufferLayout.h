@@ -15,19 +15,19 @@ namespace rendell
 	class VertexBufferLayout
 	{
 	public:
-		VertexBufferLayout(ShaderDataType type, bool normalized = false, uint32_t offset = 0);
+		VertexBufferLayout(ShaderDataType type, bool normalized = false, size_t offset = 0);
 		ShaderDataType getType() const;
-		uint32_t getSize() const;
-		uint32_t getOffset() const;
+		size_t getSize() const;
+		size_t getOffset() const;
 		bool getNormalized() const;
 		int getComponentCountByShaderType() const;
-		void setOffset(uint32_t value);
+		void setOffset(size_t value);
 
 	private:
 		ShaderDataType _type;
 		//std::string name;
-		uint32_t _size;
-		uint32_t _offset;
+		size_t _size;
+		size_t _offset;
 		bool _normalized;
 
 	};

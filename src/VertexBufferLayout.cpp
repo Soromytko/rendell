@@ -7,7 +7,6 @@ namespace rendell
 {
 	static uint32_t getSizeByType(ShaderDataType type)
 	{
-		const int intSize = 4;
 		switch (type)
 		{
 		case ShaderDataType::int1: return INT_SIZE * 1;
@@ -19,9 +18,10 @@ namespace rendell
 		case ShaderDataType::float3: return FLOAT_SIZE * 3;
 		case ShaderDataType::float4: return FLOAT_SIZE * 4;
 		}
+		return 0;
 	}
 
-	VertexBufferLayout::VertexBufferLayout(ShaderDataType type, bool normalized, uint32_t offset) :
+	VertexBufferLayout::VertexBufferLayout(ShaderDataType type, bool normalized, size_t offset) :
 		_type(type), _normalized(normalized), _offset(offset)
 	{
 		_size = getSizeByType(type);
@@ -32,12 +32,12 @@ namespace rendell
 		return _type;
 	}
 
-	uint32_t VertexBufferLayout::getSize() const
+	size_t VertexBufferLayout::getSize() const
 	{
 		return _size;
 	}
 
-	uint32_t VertexBufferLayout::getOffset() const
+	size_t VertexBufferLayout::getOffset() const
 	{
 		return _offset;
 	}
@@ -59,7 +59,7 @@ namespace rendell
 		return 0;
 	}
 
-	void VertexBufferLayout::setOffset(uint32_t value)
+	void VertexBufferLayout::setOffset(size_t value)
 	{
 		_offset = value;
 	}
