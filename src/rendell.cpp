@@ -1,37 +1,76 @@
 #include <rendell/rendell_static.h>
 #include <glad/glad.h>
 #include <memory>
+#include <unordered_map>
 #include "Specification.h"
+#include "IContext.h"
+#include "context_creation.h"
 #include "OpenGL/OpenGLSpecification.h"
 
 namespace rendell
 {
 	static Specification* s_specification = nullptr;
+	static std::unordered_map<context_id, IContextSharedPtr> s_contexts;
+	static IContextSharedPtr s_currentContext = nullptr;
 
-	static bool initOpenGLSpecification(const Initer& initer)
+	static context_id generate_context_id()
 	{
-		s_specification = new OpenGLSpecification();
-		return gladLoadGLLoader((GLADloadproc)initer.context);
+		static size_t counter;
+		return ++counter;
 	}
 
-	bool init(const Initer& initer)
+	context_id init(const Initer& initer)
 	{
-		switch (initer.api)
+		const IContextSharedPtr context = createContext(initer);
+		if (!context->isInitialized())
 		{
-		case SpecificationAPI::OpenGL: return initOpenGLSpecification(initer);
-		default: return false;
+			std::cerr << "ERROR: Failed to initialize OpenGL context" << std::endl;
+			return 0;
 		}
 
-		return true;
+		std::cout << context->getName() << std::endl;
+
+		s_currentContext = context;
+		context->makeCurrent();
+		s_specification = context->getSpecification();
+
+		const context_id contextId = generate_context_id();
+		s_contexts[contextId] = context;
+		return contextId;
 	}
 
 	void release()
 	{
-		if (s_specification)
+		s_contexts.clear();
+	}
+
+	void releaseContext(context_id contextId)
+	{
+		auto it = s_contexts.find(contextId);
+		if (it == s_contexts.end())
 		{
-			delete s_specification;
-			s_specification = nullptr;
+			std::cerr << "ERROR: Invalid context ID " << contextId << std::endl;
 		}
+
+		s_contexts.erase(it);
+	}
+
+	void makeCurrent(context_id contextId)
+	{
+		auto it = s_contexts.find(contextId);
+		if (it == s_contexts.end())
+		{
+			std::cerr << "ERROR: Invalid context ID " << contextId << std::endl;
+		}
+
+		s_currentContext = it->second;
+		s_currentContext->makeCurrent();
+		s_specification = s_currentContext->getSpecification();
+	}
+
+	bool swapBuffers()
+	{
+		return s_currentContext->swapBuffers();
 	}
 
 	IndexBufferSharedPtr createIndexBuffer(const std::vector<uint32_t>& indices)

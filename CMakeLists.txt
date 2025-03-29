@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
-set(EXE_NAME waxedit)
-
 set(SOURCE_FILES
     src/rendell.cpp
+    src/context_creation.cpp
     src/IndexBuffer.cpp
     src/VertexBuffer.cpp
     src/VertexArray.cpp
@@ -13,6 +12,7 @@ set(SOURCE_FILES
     src/Texture2DArray.cpp
     src/ShaderBuffer.cpp
     src/UniformBuffer.cpp
+    src/OpenGL/glad_initialization.cpp
     src/OpenGL/OpenGLUtils.cpp
     src/OpenGL/OpenGLSpecification.cpp
     src/OpenGL/OpenGLIndexBuffer.cpp
@@ -27,6 +27,8 @@ set(SOURCE_FILES
 )
 
 set(HEADER_FILES
+    include/gl/wglext.h
+
     include/rendell/rendell.h
     include/rendell/rendell_static.h
     include/rendell/IndexBuffer.h
@@ -41,6 +43,10 @@ set(HEADER_FILES
 
     include/rendell/private/defines.h
 
+    src/context_creation.h
+    src/IContext.h
+    src/OpenGL/glad_initialization.h
+    src/OpenGL/OpenGLContext.h
     src/OpenGL/OpenGLUtils.h
     src/OpenGL/OpenGLSpecification.h
     src/OpenGL/OpenGLIndexBuffer.h
@@ -54,8 +60,45 @@ set(HEADER_FILES
 
 )
 
+set(WINDOWS_SOURCES
+    src/OpenGL/Platform/WindowsOpenGLContext.cpp
+)
+
+set(WINDOWS_HEADERS
+    src/OpenGL/Platform/WindowsOpenGLContext.h
+)
+
+set(LINUX_SOURCES
+    src/OpenGL/Platform/LinuxOpenGLContext.cpp
+)
+
+set(LINUX_HEADERS
+    src/OpenGL/Platform/LinuxOpenGLContext.h
+)
+
 add_library(rendell STATIC ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(rendell PUBLIC include)
+
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    target_sources(rendell PRIVATE ${WINDOWS_SOURCES} ${WINDOWS_HEADERS})
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    target_sources(rendell PRIVATE ${LINUX_SOURCES} ${LINUX_HEADERS})
+
+    #x11
+    find_package(X11 REQUIRED)
+    include_directories(rendell PRIVATE ${X11_INCLUDE_DIR})
+    target_link_libraries(rendell ${X11_LIBRARIES})
+
+endif()
+
+# OpenGL
+find_package(OpenGL REQUIRED)
+if(OPENGL_FOUND)
+    include_directories(rendell PRIVATE ${OPENGL_INCLUDE_DIR})
+    target_link_libraries(rendell ${OPENGL_LIBRARIES})
+else()
+    message(FATAL_ERROR "OpenGL not found!")
+endif()
 
 # Glad
 add_subdirectory(glad)

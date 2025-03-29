@@ -27,6 +27,7 @@ namespace rendell
 	struct Initer
 	{
 		SpecificationAPI api = SpecificationAPI::OpenGL;
-		void* context = nullptr;
+		void* nativeWindowHandle = nullptr;
+		void* x11Display = nullptr;
 	};
 }

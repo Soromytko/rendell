@@ -1,3 +1,4 @@
+#include <glad/glad.h>
 #include "OpenGLSpecification.h"
 #include "OpenGLIndexBuffer.h"
 #include "OpenGLVertexBuffer.h"

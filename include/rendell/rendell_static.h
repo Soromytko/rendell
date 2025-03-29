@@ -12,8 +12,13 @@
 
 namespace rendell
 {
-	bool init(const Initer& initer);
+	typedef size_t context_id;
+
+	context_id init(const Initer& initer);
 	void release();
+	void releaseContext(context_id contextId);
+	void makeCurrent(context_id contextId);
+	bool swapBuffers();
 
 	IndexBufferSharedPtr createIndexBuffer(const std::vector<uint32_t>& indices);
 	IndexBufferSharedPtr createIndexBuffer(std::vector<uint32_t>&& indices);
