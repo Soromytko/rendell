@@ -1,4 +1,4 @@
-#include "VertexBufferLayout.h"
+#include <rendell/VertexBufferLayout.h>
 
 #define INT_SIZE 4
 #define FLOAT_SIZE 4

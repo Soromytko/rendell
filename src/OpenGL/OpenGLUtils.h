@@ -1,6 +1,6 @@
 #pragma once
 #include <glad/glad.h>
-#include "../TextureFormat.h"
+#include <rendell/TextureFormat.h>
 
 namespace rendell
 {

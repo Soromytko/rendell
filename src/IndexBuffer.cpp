@@ -1,6 +1,6 @@
-#include "IndexBuffer.h"
-#include "OpenGL/OpenGLIndexBuffer.h"
+#include <rendell/IndexBuffer.h>
 #include <memory>
+#include "OpenGL/OpenGLIndexBuffer.h"
 
 namespace rendell
 {

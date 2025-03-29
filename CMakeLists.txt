@@ -27,16 +27,20 @@ set(SOURCE_FILES
 )
 
 set(HEADER_FILES
-    src/rendell.h
-    src/IndexBuffer.h
-    src/VertexBuffer.h
-    src/VertexArray.h
-    src/VertexBufferLayout.h
-    src/ShaderProgram.h
-    src/Texture2D.h
-    src/Texture2DArray.h
-    src/ShaderBuffer.h
-    src/UniformBuffer.h
+    include/rendell/rendell.h
+    include/rendell/rendell_static.h
+    include/rendell/IndexBuffer.h
+    include/rendell/VertexBuffer.h
+    include/rendell/VertexArray.h
+    include/rendell/VertexBufferLayout.h
+    include/rendell/ShaderProgram.h
+    include/rendell/Texture2D.h
+    include/rendell/Texture2DArray.h
+    include/rendell/ShaderBuffer.h
+    include/rendell/UniformBuffer.h
+
+    include/rendell/private/defines.h
+
     src/OpenGL/OpenGLUtils.h
     src/OpenGL/OpenGLSpecification.h
     src/OpenGL/OpenGLIndexBuffer.h
@@ -48,7 +52,6 @@ set(HEADER_FILES
     src/OpenGL/OpenGLShaderBuffer.h
     src/OpenGL/OpenGLUniformBuffer.h
 
-    src/defines.h
 )
 
 add_library(rendell STATIC ${SOURCE_FILES} ${HEADER_FILES})

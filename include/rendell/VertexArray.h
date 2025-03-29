@@ -3,7 +3,7 @@
 #include <memory>
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
-#include "defines.h"
+#include "private/defines.h"
 
 namespace rendell
 {

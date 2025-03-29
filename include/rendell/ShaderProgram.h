@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
-#include "defines.h"
+#include "private/defines.h"
 
 namespace rendell
 {

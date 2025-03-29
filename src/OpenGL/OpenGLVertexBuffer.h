@@ -1,5 +1,5 @@
 #pragma once
-#include "../VertexBuffer.h"
+#include <rendell/VertexBuffer.h>
 #include <glad/glad.h>
 
 namespace rendell

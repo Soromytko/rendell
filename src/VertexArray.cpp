@@ -1,4 +1,4 @@
-#include "VertexArray.h"
+#include <rendell/VertexArray.h>
 #include "OpenGL/OpenGLVertexArray.h"
 
 namespace rendell

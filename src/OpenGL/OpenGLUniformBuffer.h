@@ -1,6 +1,6 @@
 #pragma once
 #include <glad/glad.h>
-#include "../UniformBuffer.h"
+#include <rendell/UniformBuffer.h>
 
 namespace rendell
 {

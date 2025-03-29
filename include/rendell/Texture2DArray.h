@@ -3,7 +3,7 @@
 #include <vector>
 #include <memory>
 #include "TextureFormat.h"
-#include "defines.h"
+#include "private/defines.h"
 
 namespace rendell
 {

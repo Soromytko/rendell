@@ -1,4 +1,4 @@
-#include "UniformBuffer.h"
+#include <rendell/UniformBuffer.h>
 
 namespace rendell
 {

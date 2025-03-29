@@ -1,6 +1,6 @@
 #pragma once
+#include <rendell/ShaderBuffer.h>
 #include "OpenGLUtils.h"
-#include "../ShaderBuffer.h"
 
 namespace rendell
 {

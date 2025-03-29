@@ -1,5 +1,5 @@
 #pragma once
-#include "../ShaderProgram.h"
+#include <rendell/ShaderProgram.h>
 #include <glad/glad.h>
 
 namespace rendell

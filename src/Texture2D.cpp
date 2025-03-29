@@ -1,4 +1,4 @@
-#include "Texture2D.h"
+#include <rendell/Texture2D.h>
 
 namespace rendell
 {

@@ -1,4 +1,4 @@
-#include "../VertexArray.h"
+#include <rendell/VertexArray.h>
 #include <glad/glad.h>
 
 namespace rendell

@@ -1,4 +1,4 @@
-#include "VertexBuffer.h"
+#include <rendell/VertexBuffer.h>
 #include "OpenGL/OpenGLVertexBuffer.h"
 
 namespace rendell

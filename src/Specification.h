@@ -1,15 +1,14 @@
 #pragma once
 #include <vector>
-#include "IndexBuffer.h"
-#include "VertexBuffer.h"
-#include "VertexArray.h"
-#include "ShaderProgram.h"
-#include "TextureFormat.h"
-#include "Texture2D.h"
-#include "Texture2DArray.h"
-#include "ShaderBuffer.h"
-#include "UniformBuffer.h"
-#include "defines.h"
+#include <rendell/IndexBuffer.h>
+#include <rendell/VertexBuffer.h>
+#include <rendell/VertexArray.h>
+#include <rendell/ShaderProgram.h>
+#include <rendell/TextureFormat.h>
+#include <rendell/Texture2D.h>
+#include <rendell/Texture2DArray.h>
+#include <rendell/ShaderBuffer.h>
+#include <rendell/UniformBuffer.h>
 
 namespace rendell
 {

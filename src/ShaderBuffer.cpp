@@ -1,4 +1,4 @@
-#include "ShaderBuffer.h"
+#include <rendell/ShaderBuffer.h>
 
 namespace rendell
 {

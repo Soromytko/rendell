@@ -2,7 +2,7 @@
 #include <vector>
 #include <memory>
 #include <cstdint>
-#include "defines.h"
+#include "private/defines.h"
 
 namespace rendell
 {

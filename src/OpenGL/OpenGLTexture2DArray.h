@@ -1,5 +1,5 @@
 #pragma once
-#include "../Texture2DArray.h"
+#include <rendell/Texture2DArray.h>
 #include "OpenGLUtils.h"
 
 namespace rendell

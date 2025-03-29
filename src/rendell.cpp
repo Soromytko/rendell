@@ -1,6 +1,6 @@
+#include <rendell/rendell_static.h>
 #include <glad/glad.h>
 #include <memory>
-#include "rendell.h"
 #include "Specification.h"
 #include "OpenGL/OpenGLSpecification.h"
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "../IndexBuffer.h"
+#include <rendell/IndexBuffer.h>
 #include <glad/glad.h>
 
 namespace rendell
