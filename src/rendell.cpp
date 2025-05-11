@@ -73,36 +73,26 @@ namespace rendell
 		return s_currentContext->swapBuffers();
 	}
 
-	IndexBufferSharedPtr createIndexBuffer(const std::vector<uint32_t>& indices)
-	{
-		std::vector<uint32_t> value = indices;
-		return createIndexBuffer(std::move(value));
-	}
-
-	IndexBufferSharedPtr createIndexBuffer(std::vector<uint32_t>&& indices)
+	IndexBufferSharedPtr createIndexBuffer(std::vector<uint32_t> indices)
 	{
 		return s_specification->createIndexBuffer(std::move(indices));
 	}
 
-	VertexBufferSharedPtr createVertexBuffer(const std::vector<float>& data)
+	IndexBufferSharedPtr createIndexBuffer(const uint32_t* data, size_t size)
 	{
-		std::vector<float> value = data;
-		return createVertexBuffer(std::move(value));
+		std::vector<uint32_t> vectorData(data, data + size);
+		return s_specification->createIndexBuffer(std::move(vectorData));
 	}
 
-	VertexBufferSharedPtr createVertexBuffer(std::vector<float>&& data)
+	VertexBufferSharedPtr createVertexBuffer(std::vector<float> data)
 	{
 		return s_specification->createVertexBuffer(std::move(data));
 	}
 
 	VertexBufferSharedPtr createVertexBuffer(const float* data, size_t size)
 	{
-		std::vector<float> value;
-		value.resize(size);
-		for (size_t i = 0; i < size; i++) {
-			value[i] = data[i];
-		}
-		return createVertexBuffer(std::move(value));
+		std::vector<float> vectorData(data, data + size);
+		return s_specification->createVertexBuffer(std::move(vectorData));
 	}
 
 	VertexArraySharedPtr createVertexArray()
@@ -125,14 +115,7 @@ namespace rendell
 		return s_specification->createShaderBuffer(data, size);
 	}
 
-	ShaderProgramSharedPtr createShaderProgram(const std::string& vertexSrc, const std::string& fragmentSrc)
-	{
-		std::string vertex = vertexSrc;
-		std::string fragment = fragmentSrc;
-		return createShaderProgram(std::move(vertex), std::move(fragment));
-	}
-
-	ShaderProgramSharedPtr createShaderProgram(std::string&& vertexSrc, std::string&& fragmentSrc)
+	ShaderProgramSharedPtr createShaderProgram(std::string vertexSrc, std::string fragmentSrc)
 	{
 		return s_specification->createshaderProgram(std::move(vertexSrc), std::move(fragmentSrc));
 	}
