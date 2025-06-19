@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
+project(Rendell)
+
 set(SOURCE_FILES
     src/rendell.cpp
     src/context_creation.cpp
