@@ -8,7 +8,6 @@
 #include "Texture2DArray.h"
 #include "ShaderBuffer.h"
 #include "UniformBuffer.h"
-#include "defines.h"
 
 namespace rendell
 {
