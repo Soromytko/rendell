@@ -29,7 +29,7 @@ set(SOURCE_FILES
 )
 
 set(HEADER_FILES
-    include/gl/wglext.h
+    internal/gl/wglext.h
 
     include/rendell/rendell.h
     include/rendell/rendell_static.h
@@ -80,6 +80,7 @@ set(LINUX_HEADERS
 
 add_library(rendell STATIC ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(rendell PUBLIC include)
+target_include_directories(rendell PRIVATE internal)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     target_sources(rendell PRIVATE ${WINDOWS_SOURCES} ${WINDOWS_HEADERS})
@@ -97,11 +98,11 @@ endif()
 find_package(OpenGL REQUIRED)
 if(OPENGL_FOUND)
     include_directories(rendell PRIVATE ${OPENGL_INCLUDE_DIR})
-    target_link_libraries(rendell ${OPENGL_LIBRARIES})
+    target_link_libraries(rendell PRIVATE ${OPENGL_LIBRARIES})
 else()
     message(FATAL_ERROR "OpenGL not found!")
 endif()
 
 # Glad
 add_subdirectory(glad)
-target_link_libraries(rendell glad)
+target_link_libraries(rendell PRIVATE glad)
