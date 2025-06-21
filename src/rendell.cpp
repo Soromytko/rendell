@@ -1,4 +1,5 @@
 #include <rendell/rendell_static.h>
+#include <logging.h>
 #include <glad/glad.h>
 #include <memory>
 #include <unordered_map>
@@ -24,11 +25,11 @@ namespace rendell
 		const IContextSharedPtr context = createContext(initer);
 		if (!context->isInitialized())
 		{
-			std::cerr << "ERROR: Failed to initialize OpenGL context" << std::endl;
+			RENDELL_ERROR("Failed to initialize OpenGL context");
 			return 0;
 		}
 
-		std::cout << context->getName() << std::endl;
+		RENDELL_INFO("{}", context->getName());
 
 		s_currentContext = context;
 		context->makeCurrent();
@@ -49,7 +50,7 @@ namespace rendell
 		auto it = s_contexts.find(contextId);
 		if (it == s_contexts.end())
 		{
-			std::cerr << "ERROR: Invalid context ID " << contextId << std::endl;
+			RENDELL_ERROR("Invalid context ID {}", contextId);
 		}
 
 		s_contexts.erase(it);
@@ -60,7 +61,7 @@ namespace rendell
 		auto it = s_contexts.find(contextId);
 		if (it == s_contexts.end())
 		{
-			std::cerr << "ERROR: Invalid context ID " << contextId << std::endl;
+			RENDELL_ERROR("Invalid context ID {}", contextId);
 		}
 
 		s_currentContext = it->second;

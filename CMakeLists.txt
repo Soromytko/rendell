@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
+set(CMAKE_CXX_STANDARD 23)
+
 project(Rendell)
 
 set(SOURCE_FILES
+    src/logging.cpp
+
     src/rendell.cpp
     src/context_creation.cpp
     src/IndexBuffer.cpp
@@ -30,6 +34,7 @@ set(SOURCE_FILES
 
 set(HEADER_FILES
     internal/gl/wglext.h
+    internal/logging.h
 
     include/rendell/rendell.h
     include/rendell/rendell_static.h

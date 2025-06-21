@@ -1,5 +1,5 @@
 #include "WindowsOpenGLContext.h"
-#include <iostream>
+#include <logging.h>
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include <gl/wglext.h>
@@ -14,7 +14,7 @@ namespace rendell
 	{
 		if (initer.nativeWindowHandle == nullptr)
 		{
-			std::cerr << "ERROR: Initer::nativeWindowHandle field is nullptr" << std::endl;
+			RENDELL_ERROR("Initer::nativeWindowHandle field is nullptr");
 			return;
 		}
 		_hwnd = static_cast<HWND>(initer.nativeWindowHandle);
@@ -22,14 +22,14 @@ namespace rendell
 		_hdc = GetDC(_hwnd);
 		if (_hdc == NULL)
 		{
-			std::cerr << "ERROR: HDC of main HWND is NULL" << std::endl;
+			RENDELL_ERROR("HDC of main HWND is NULL");
 			return;
 		}
 
 		_isInitialized = init();
 		if (!_isInitialized)
 		{
-			std::cerr << "ERROR: Failed to initialize Windows OpenGL context" << std::endl;
+			RENDELL_ERROR("Failed to initialize Windows OpenGL context");
 		}
 	}
 
@@ -60,7 +60,7 @@ namespace rendell
 	{
 		if (!wglMakeCurrent(_hdc, _hglrc))
 		{
-			std::cerr << "ERROR: Failed to activate OpenGL rendering context" << std::endl;
+			RENDELL_ERROR("Failed to activate OpenGL rendering context");
 			return false;
 		}
 
@@ -143,19 +143,19 @@ namespace rendell
 
 		if (!getFuncPointers(wglChoosePixelFormatARB, wglCreateContextAttribsARB))
 		{
-			std::cerr << "ERROR: Failed to create temporary OpenGL context" << std::endl;
+			RENDELL_ERROR("Failed to create temporary OpenGL context");
 			return false;
 		}
 
 		if (!wglChoosePixelFormatARB)
 		{
-			std::cerr << "ERROR: wglChoosePixelFormatARB is not available" << std::endl;
+			RENDELL_ERROR("wglChoosePixelFormatARB is not available");
 			return false;
 		}
 
 		if (!wglCreateContextAttribsARB)
 		{
-			std::cerr << "ERROR: wglCreateContextAttribsARB is not available" << std::endl;
+			RENDELL_ERROR("wglCreateContextAttribsARB is not available");
 			return false;
 		}
 
@@ -174,7 +174,7 @@ namespace rendell
 		UINT numFormats;
 		if (!wglChoosePixelFormatARB(_hdc, pixelAttribs, nullptr, 1, &pixelFormat, &numFormats) || numFormats == 0)
 		{
-			std::cerr << "ERROR: Failed to choose pixel format" << std::endl;
+			RENDELL_ERROR("Failed to choose pixel format");
 			return false;
 		}
 
@@ -209,19 +209,19 @@ namespace rendell
 	{
 		if (!createContext(4, 5))
 		{
-			std::cerr << "ERROR: Failed to create OpenGL context" << std::endl;
+			RENDELL_ERROR("Failed to create OpenGL context");
 			return false;
 		}
 
 		if (!makeCurrent())
 		{
-			std::cerr << "ERROR: Failed to make context current" << std::endl;
+			RENDELL_ERROR("Failed to make context current");
 			return false;
 		}
 
 		if (!init_glad())
 		{
-			std::cout << "ERROR: Failed to initialize GLAD" << std::endl;
+			RENDELL_ERROR("Failed to initialize GLAD");
 			return false;
 		}
 

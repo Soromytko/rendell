@@ -31,7 +31,7 @@ namespace rendell
 #else
 	static bool init_glad_platform()
 	{
-		std::cerr << "ERROR: Unknown or unsupported operating system!" << std::endl;
+		RENDELL_ERROR("Unknown or unsupported operating system!");
 		return false;
 	}
 #endif

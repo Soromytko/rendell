@@ -1,5 +1,5 @@
 #include "LinuxOpenGLContext.h"
-#include <iostream>
+#include <logging.h>
 #include <cstring>
 #include "../OpenGLSpecification.h"
 #include "../glad_initialization.h"
@@ -12,14 +12,14 @@ namespace rendell
 	{
 		if (initer.nativeWindowHandle == nullptr)
 		{
-			std::cerr << "ERROR: Initer::nativeWindowHandle field is nullptr" << std::endl;
+			RENDELL_ERROR("Initer::nativeWindowHandle field is nullptr");
 			return;
 		}
 		_window = static_cast<Window>(reinterpret_cast<size_t>(initer.nativeWindowHandle));
 
 		if (initer.x11Display == nullptr)
 		{
-			std::cerr << "ERROR: Initer::x11Display field is nullptr" << std::endl;
+			RENDELL_ERROR("Initer::x11Display field is nullptr");
 			return;
 		}
 		_display = reinterpret_cast<Display*>(initer.x11Display);
@@ -27,7 +27,7 @@ namespace rendell
 		_isInitialized = init();
 		if (!_isInitialized)
 		{
-			std::cerr << "ERROR: Failed to initialize X11 OpenGL context" << std::endl;
+			RENDELL_ERROR("Failed to initialize X11 OpenGL context");
 		}
 	}
 
@@ -58,7 +58,7 @@ namespace rendell
 	{
 		if (!glXMakeCurrent(_display, _window, _glContext))
 		{
-			std::cerr << "ERROR: Failed to make GL context current" << std::endl;
+			RENDELL_ERROR("Failed to make GL context current");
 			return false;
 		}
 
@@ -91,15 +91,15 @@ namespace rendell
 		int glxMajor, glxMinor;
 		if (!glXQueryVersion(_display, &glxMajor, &glxMinor))
 		{
-			std::cerr << "ERROR: Failed to query GLX version" << std::endl;
+			RENDELL_ERROR("Failed to query GLX version");
 			return false;
 		}
 
-		std::cout << "GLX version: " << glxMajor << "." << glxMinor << std::endl;
+		RENDELL_INFO("GLX version: {}.{}", glxMajor, glxMinor);
 
 		if (glxMajor < 1 || (glxMajor == 1 && glxMinor < 3))
 		{
-			std::cerr << "ERROR: GLX version 1.3 or higher is required" << std::endl;
+			RENDELL_ERROR("ERROR: GLX version 1.3 or higher is required");
 			return false;
 		}
 
@@ -107,7 +107,7 @@ namespace rendell
 		GLXFBConfig* fbConfigs = glXChooseFBConfig(_display, DefaultScreen(_display), fbConfigAttribs, &fbCount);
 		if (!fbConfigs || fbCount == 0)
 		{
-			std::cerr << "ERROR: Failed to get framebuffer config" << std::endl;
+			RENDELL_ERROR("Failed to get framebuffer config");
 			return false;
 		}
 
@@ -124,7 +124,7 @@ namespace rendell
 		const char* glxExts = glXQueryExtensionsString(_display, DefaultScreen(_display));
 		if (!strstr(glxExts, "GLX_ARB_create_context"))
 		{
-			std::cerr << "ERROR: GLX_ARB_create_context extension not found" << std::endl;
+			RENDELL_ERROR("GLX_ARB_create_context extension not found");
 			return false;
 		}
 
@@ -133,14 +133,14 @@ namespace rendell
 
 		if (!glXCreateContextAttribsARB)
 		{
-			std::cerr << "ERROR: Failed to get glXCreateContextAttribsARB address" << std::endl;
+			RENDELL_ERROR("ERROR: Failed to get glXCreateContextAttribsARB address");
 			return false;
 		}
 
 		_glContext = glXCreateContextAttribsARB(_display, fbConfig, nullptr, True, contextAttribs);
 		if (!_glContext)
 		{
-			std::cerr << "ERROR: Failed to create modern OpenGL context" << std::endl;
+			RENDELL_ERROR("Failed to create modern OpenGL context");
 			return false;
 		}
 		return true;
@@ -163,19 +163,19 @@ namespace rendell
 	{
 		if (!createContext(4, 5))
 		{
-			std::cerr << "ERROR: Failed to create OpenGL context" << std::endl;
+			RENDELL_ERROR("Failed to create OpenGL context");
 			return false;
 		}
 
 		if (!makeCurrent())
 		{
-			std::cerr << "ERROR: Failed to make context current" << std::endl;
+			RENDELL_ERROR("Failed to make context current");
 			return false;
 		}
 
 		if (!init_glad())
 		{
-			std::cout << "ERROR: Failed to initialize GLAD" << std::endl;
+			RENDELL_ERROR("Failed to initialize GLAD");
 			return false;
 		}
 
