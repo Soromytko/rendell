@@ -95,7 +95,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     #x11
     find_package(X11 REQUIRED)
     include_directories(rendell PRIVATE ${X11_INCLUDE_DIR})
-    target_link_libraries(rendell ${X11_LIBRARIES})
+    target_link_libraries(rendell PRIVATE ${X11_LIBRARIES})
 
 endif()
 
