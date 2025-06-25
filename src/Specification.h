@@ -25,6 +25,7 @@ namespace rendell
 		virtual ShaderBufferSharedPtr createShaderBuffer(const void* data, size_t size) const = 0;
 		virtual UniformBufferSharedPtr createUniformBuffer(const void* data, size_t size) const = 0;
 
+		virtual void setViewport(int x, int y, int width, int height, int windowWidth, int windowHeight) = 0;
 		virtual void setClearBits(uint32_t clearBits) = 0;
 		virtual void clear() = 0;
 		virtual void clearColor(float r, float g, float b, float a) const = 0;

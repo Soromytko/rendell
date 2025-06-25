@@ -41,7 +41,7 @@ namespace rendell
 	void clear();
 	void clearColor(float r, float g, float b, float a);
 
-	void setViewport(int x, int y, int width, int height);
+	void setViewport(int x, int y, int width, int height, int windowWidth, int windowHeight);
 	void setPixelUnpackAlignment(int param);
 
 	void finish();

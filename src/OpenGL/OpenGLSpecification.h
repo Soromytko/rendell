@@ -15,6 +15,7 @@ namespace rendell
 		ShaderBufferSharedPtr createShaderBuffer(const void* data, size_t size) const override;
 		UniformBufferSharedPtr createUniformBuffer(const void* data, size_t size) const override;
 
+		void setViewport(int x, int y, int width, int height, int windowWidth, int windowHeight) override;
 		void setClearBits(uint32_t clearBits) override;
 		void clear() override;
 		void clearColor(float r, float g, float b, float a) const override;

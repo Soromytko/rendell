@@ -56,6 +56,12 @@ namespace rendell
 		return makeOpenGLUniformBuffer(data, size);
 	}
 
+	void OpenGLSpecification::setViewport(int x, int y, int width, int height, int windowWidth, int windowHeight)
+	{
+		y = windowHeight - y - height;
+		glViewport(x, y, width, height);
+	}
+
 	void OpenGLSpecification::setClearBits(uint32_t clearBits)
 	{
 		_clearBits = 0;

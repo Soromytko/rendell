@@ -146,9 +146,9 @@ namespace rendell
 		s_specification->clearColor(r, g, b, a);
 	}
 
-	void setViewport(int x, int y, int width, int height)
+	void setViewport(int x, int y, int width, int height, int windowWidth, int windowHeight)
 	{
-		glViewport(x, y, width, height);
+		s_specification->setViewport(x, y, width, height, windowWidth, windowHeight);
 	}
 
 	void setPixelUnpackAlignment(int param)
