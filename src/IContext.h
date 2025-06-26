@@ -18,6 +18,7 @@ namespace rendell
 		virtual bool isInitialized() const = 0;
 		virtual bool makeCurrent() = 0;
 		virtual bool swapBuffers() = 0;
+
 	};
 
 	RENDELL_DECLARE_SHARED_PTR(IContext)

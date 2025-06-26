@@ -22,6 +22,9 @@ namespace rendell
 
 		void setPixelUnpackAlignment(int param) const override;
 
+		void startScissors(int x, int y, int width, int height) const override;
+		void endScissors() const override;
+
 		void drawLineArrays(uint32_t firstIndex, uint32_t length) const override;
 		void drawLineArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount) const override;
 		void drawLineElements(uint32_t primitiveCount) const override;

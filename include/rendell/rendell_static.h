@@ -44,6 +44,9 @@ namespace rendell
 	void setViewport(int x, int y, int width, int height, int windowWidth, int windowHeight);
 	void setPixelUnpackAlignment(int param);
 
+	void startScissors(int x, int y, int width, int height);
+	void endScissors();
+
 	void finish();
 
 	void drawLineArrays(uint32_t firstIndex, uint32_t length);

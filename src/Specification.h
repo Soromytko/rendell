@@ -32,6 +32,9 @@ namespace rendell
 
 		virtual void setPixelUnpackAlignment(int param) const = 0;
 
+		virtual void startScissors(int x, int y, int width, int height) const = 0;
+		virtual void endScissors() const = 0;
+
 		virtual void drawLineArrays(uint32_t firstIndex, uint32_t count) const = 0;
 		virtual void drawLineArraysInstanced(uint32_t firstIndex, uint32_t length, uint32_t instanceCount) const = 0;
 		virtual void drawLineElements(uint32_t primitiveCount) const = 0;

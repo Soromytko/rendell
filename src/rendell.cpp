@@ -156,6 +156,16 @@ namespace rendell
 		s_specification->setPixelUnpackAlignment(param);
 	}
 
+	void startScissors(int x, int y, int width, int height)
+	{
+		s_specification->startScissors(x, y, width, height);
+	}
+
+	void endScissors()
+	{
+		s_specification->endScissors();
+	}
+
 	void finish()
 	{
 		glFinish();

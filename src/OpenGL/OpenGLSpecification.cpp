@@ -11,6 +11,9 @@
 
 namespace rendell
 {
+	static uint32_t s_viewportWidth{ 0 };
+	static uint32_t s_viewportHeight{ 0 };
+
 	IndexBufferSharedPtr OpenGLSpecification::createIndexBuffer(std::vector<uint32_t>&& indices) const
 	{
 		return makeOpenGLIndexBuffer(std::move(indices));
@@ -58,6 +61,9 @@ namespace rendell
 
 	void OpenGLSpecification::setViewport(int x, int y, int width, int height, int windowWidth, int windowHeight)
 	{
+		s_viewportWidth = width;
+		s_viewportHeight = height;
+
 		y = windowHeight - y - height;
 		glViewport(x, y, width, height);
 	}
@@ -82,6 +88,21 @@ namespace rendell
 	void OpenGLSpecification::setPixelUnpackAlignment(int param) const
 	{
 		glPixelStorei(GL_UNPACK_ALIGNMENT, param);
+	}
+
+	void OpenGLSpecification::startScissors(int x, int y, int width, int height) const
+	{
+		// Set the origin to the center for consistency.
+		x = x + (s_viewportWidth - width) / 2;
+		y = y + (s_viewportHeight - height) / 2;
+
+		glEnable(GL_SCISSOR_TEST);
+		glScissor(x, y, width, height);
+	}
+
+	void OpenGLSpecification::endScissors() const
+	{
+		glDisable(GL_SCISSOR_TEST);
 	}
 
 	void OpenGLSpecification::drawLineArrays(uint32_t firstIndex, uint32_t length) const
