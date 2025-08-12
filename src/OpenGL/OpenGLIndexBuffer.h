@@ -1,20 +1,18 @@
 #pragma once
-#include <rendell/IndexBuffer.h>
 #include <glad/glad.h>
+#include <rendell/IndexBuffer.h>
 
-namespace rendell
-{
-	class OpenGLIndexBuffer : public rendell::IndexBuffer
-	{
-	public:
-		OpenGLIndexBuffer(std::vector<uint32_t>&& indices);
-		~OpenGLIndexBuffer();
-		void bind() const override;
-		void unbind()  const override;
+namespace rendell {
+class OpenGLIndexBuffer : public rendell::IndexBuffer {
+public:
+    OpenGLIndexBuffer(std::vector<uint32_t> &&indices);
+    ~OpenGLIndexBuffer();
+    void bind() const override;
+    void unbind() const override;
 
-	private:
-		GLuint _bufferId{};
-	};
+private:
+    GLuint _bufferId{};
+};
 
-	RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLIndexBuffer)
-}
+RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLIndexBuffer)
+} // namespace rendell

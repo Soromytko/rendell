@@ -1,32 +1,29 @@
 #pragma once
-#include <vector>
-#include <memory>
 #include "VertexBufferLayout.h"
 #include "private/defines.h"
+#include <memory>
+#include <vector>
 
-namespace rendell
-{
-	class VertexBuffer
-	{
-	protected:
-		VertexBuffer(std::vector<float>&& data);
+namespace rendell {
+class VertexBuffer {
+protected:
+    VertexBuffer(std::vector<float> &&data);
 
-	public:
-		virtual void bind() const = 0;
-		virtual void unbind() const = 0;
-		const std::vector<float>& getData() const;
-		int getStride() const;
-		const std::vector<VertexBufferLayout>& getLayouts() const;
-		void setLayouts(const std::vector<VertexBufferLayout>& layouts);
+public:
+    virtual void bind() const = 0;
+    virtual void unbind() const = 0;
+    const std::vector<float> &getData() const;
+    int getStride() const;
+    const std::vector<VertexBufferLayout> &getLayouts() const;
+    void setLayouts(const std::vector<VertexBufferLayout> &layouts);
 
-	protected:
-		void calculateOffsetsAndStride();
+protected:
+    void calculateOffsetsAndStride();
 
-		std::vector<float> _data;
-		int _stride = 0;
-		std::vector<VertexBufferLayout> _layouts{};
+    std::vector<float> _data;
+    int _stride = 0;
+    std::vector<VertexBufferLayout> _layouts{};
+};
 
-	};
-
-	RENDELL_DECLARE_SHARED_PTR_FACTORY(VertexBuffer)
-}
+RENDELL_DECLARE_SHARED_PTR_FACTORY(VertexBuffer)
+} // namespace rendell
