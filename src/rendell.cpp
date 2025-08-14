@@ -2,11 +2,13 @@
 #include "OpenGL/OpenGLSpecification.h"
 #include "Specification.h"
 #include "context_creation.h"
+#include <Factory.h>
 #include <glad/glad.h>
 #include <logging.h>
 #include <memory>
 #include <rendell/rendell_static.h>
 #include <unordered_map>
+#include "rendell_factory.h"
 
 namespace rendell {
 static Specification *s_specification = nullptr;
@@ -30,6 +32,8 @@ context_id init(const Initer &initer) {
     s_currentContext = context;
     context->makeCurrent();
     s_specification = context->getSpecification();
+
+    setCurrentFactory(context->getFactory());
 
     const context_id contextId = generate_context_id();
     s_contexts[contextId] = context;
@@ -58,59 +62,11 @@ void makeCurrent(context_id contextId) {
     s_currentContext = it->second;
     s_currentContext->makeCurrent();
     s_specification = s_currentContext->getSpecification();
+    setCurrentFactory(s_currentContext->getFactory());
 }
 
 bool swapBuffers() {
     return s_currentContext->swapBuffers();
-}
-
-IndexBufferSharedPtr createIndexBuffer(std::vector<uint32_t> indices) {
-    return s_specification->createIndexBuffer(std::move(indices));
-}
-
-IndexBufferSharedPtr createIndexBuffer(const uint32_t *data, size_t size) {
-    std::vector<uint32_t> vectorData(data, data + size);
-    return s_specification->createIndexBuffer(std::move(vectorData));
-}
-
-VertexBufferSharedPtr createVertexBuffer(std::vector<float> data) {
-    return s_specification->createVertexBuffer(std::move(data));
-}
-
-VertexBufferSharedPtr createVertexBuffer(const float *data, size_t size) {
-    std::vector<float> vectorData(data, data + size);
-    return s_specification->createVertexBuffer(std::move(vectorData));
-}
-
-VertexArraySharedPtr createVertexArray() {
-    return s_specification->createVertexArray();
-}
-
-VertexArraySharedPtr createVertexArray(IndexBufferSharedPtr indexBuffer,
-                                       std::initializer_list<VertexBufferSharedPtr> buffers) {
-    return s_specification->createVertexArray(indexBuffer, buffers);
-}
-
-UniformBufferSharedPtr createUniformBuffer(const void *data, size_t size) {
-    return s_specification->createUniformBuffer(data, size);
-}
-
-ShaderBufferSharedPtr createShaderBuffer(const void *data, size_t size) {
-    return s_specification->createShaderBuffer(data, size);
-}
-
-ShaderProgramSharedPtr createShaderProgram(std::string vertexSrc, std::string fragmentSrc) {
-    return s_specification->createshaderProgram(std::move(vertexSrc), std::move(fragmentSrc));
-}
-
-Texture2DSharedPtr createTexture2D(uint32_t width, uint32_t height, TextureFormat format,
-                                   const uint8_t *pixels) {
-    return s_specification->createTexture2D(width, height, format, pixels);
-}
-
-Texture2DArraySharedPtr createTexture2DArray(uint32_t width, uint32_t height, uint32_t count,
-                                             TextureFormat format) {
-    return s_specification->createTexture2DArray(width, height, count, format);
 }
 
 void setClearBits(uint32_t clearBits) {

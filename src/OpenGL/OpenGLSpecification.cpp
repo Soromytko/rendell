@@ -13,50 +13,6 @@ namespace rendell {
 static uint32_t s_viewportWidth{0};
 static uint32_t s_viewportHeight{0};
 
-IndexBufferSharedPtr OpenGLSpecification::createIndexBuffer(std::vector<uint32_t> &&indices) const {
-    return makeOpenGLIndexBuffer(std::move(indices));
-}
-
-VertexBufferSharedPtr OpenGLSpecification::createVertexBuffer(std::vector<float> &&data) const {
-    return makeOpenGLVertexBuffer(std::move(data));
-}
-
-VertexArraySharedPtr OpenGLSpecification::createVertexArray() const {
-    return makeOpenGLVertexArray();
-}
-
-VertexArraySharedPtr
-OpenGLSpecification::createVertexArray(IndexBufferSharedPtr indexBuffer,
-                                       std::initializer_list<VertexBufferSharedPtr> buffers) const {
-    return makeOpenGLVertexArray(indexBuffer, buffers);
-}
-
-ShaderProgramSharedPtr OpenGLSpecification::createshaderProgram(std::string &&vertexSrc,
-                                                                std::string &&fragmentSrc) const {
-    return makeOpenGLShaderProgram(std::move(vertexSrc), std::move(fragmentSrc));
-}
-
-Texture2DSharedPtr OpenGLSpecification::createTexture2D(uint32_t width, uint32_t height,
-                                                        TextureFormat format,
-                                                        const uint8_t *pixels) const {
-    return makeOpenGLTexture2D(width, height, format, pixels);
-}
-
-Texture2DArraySharedPtr OpenGLSpecification::createTexture2DArray(uint32_t width, uint32_t height,
-                                                                  uint32_t count,
-                                                                  TextureFormat format) const {
-    return makeOpenGLTexture2DArray(width, height, count, format);
-}
-
-ShaderBufferSharedPtr OpenGLSpecification::createShaderBuffer(const void *data, size_t size) const {
-    return makeOpenGLShaderBuffer(data, size);
-}
-
-UniformBufferSharedPtr OpenGLSpecification::createUniformBuffer(const void *data,
-                                                                size_t size) const {
-    return makeOpenGLUniformBuffer(data, size);
-}
-
 void OpenGLSpecification::setViewport(int x, int y, int width, int height, int windowWidth,
                                       int windowHeight) {
     s_viewportWidth = width;

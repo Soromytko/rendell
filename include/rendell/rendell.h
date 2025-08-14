@@ -8,4 +8,5 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
 #include "VertexBufferLayout.h"
+#include "rendell_factory.h"
 #include "rendell_static.h"

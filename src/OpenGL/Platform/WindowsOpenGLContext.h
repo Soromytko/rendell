@@ -1,5 +1,6 @@
 #pragma once
 #include "../../IContext.h"
+#include <Factory.h>
 #include <Windows.h>
 #include <rendell/private/defines.h>
 
@@ -10,6 +11,7 @@ public:
     ~WindowsOpenGLContext();
 
     Specification *getSpecification() const override;
+    Factory *getFactory() const override;
     std::string getName() const override;
     bool isInitialized() const override;
     bool makeCurrent() override;

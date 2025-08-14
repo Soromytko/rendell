@@ -8,6 +8,8 @@ set(SOURCE_FILES
     src/logging.cpp
 
     src/rendell.cpp
+    src/rendell_static.cpp
+    src/rendell_factory.cpp
     src/context_creation.cpp
     src/IndexBuffer.cpp
     src/VertexBuffer.cpp
@@ -20,6 +22,7 @@ set(SOURCE_FILES
     src/UniformBuffer.cpp
     src/OpenGL/glad_initialization.cpp
     src/OpenGL/OpenGLUtils.cpp
+    src/OpenGL/OpenGLFactory.cpp
     src/OpenGL/OpenGLSpecification.cpp
     src/OpenGL/OpenGLIndexBuffer.cpp
     src/OpenGL/OpenGLVertexBuffer.cpp
@@ -35,8 +38,10 @@ set(SOURCE_FILES
 set(HEADER_FILES
     internal/gl/wglext.h
     internal/logging.h
+    internal/Factory.h
 
     include/rendell/rendell.h
+    include/rendell/rendell_factory.h
     include/rendell/rendell_static.h
     include/rendell/IndexBuffer.h
     include/rendell/VertexBuffer.h
@@ -56,6 +61,7 @@ set(HEADER_FILES
     src/OpenGL/OpenGLContext.h
     src/OpenGL/OpenGLUtils.h
     src/OpenGL/OpenGLSpecification.h
+    src/OpenGL/OpenGLFactory.h
     src/OpenGL/OpenGLIndexBuffer.h
     src/OpenGL/OpenGLVertexBuffer.h
     src/OpenGL/OpenGLVertexArray.h

@@ -1,4 +1,5 @@
 #include "WindowsOpenGLContext.h"
+#include "../OpenGLFactory.h"
 #include "../OpenGLSpecification.h"
 #include "../glad_initialization.h"
 #include <gl/GL.h>
@@ -8,6 +9,7 @@
 
 namespace rendell {
 static OpenGLSpecification s_openGLSpecification{};
+static OpenGLFactory s_openGLFactory{};
 
 WindowsOpenGLContext::WindowsOpenGLContext(const Initer &initer) {
     if (initer.nativeWindowHandle == nullptr) {
@@ -36,6 +38,10 @@ WindowsOpenGLContext::~WindowsOpenGLContext() {
 
 Specification *WindowsOpenGLContext::getSpecification() const {
     return &s_openGLSpecification;
+}
+
+Factory *WindowsOpenGLContext::getFactory() const {
+    return &s_openGLFactory;
 }
 
 std::string WindowsOpenGLContext::getName() const {

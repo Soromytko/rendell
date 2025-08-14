@@ -1,5 +1,6 @@
 #pragma once
 #include "Specification.h"
+#include <Factory.h>
 #include <memory>
 #include <rendell/private/defines.h>
 
@@ -12,6 +13,7 @@ public:
     ~IContext() = default;
 
     virtual Specification *getSpecification() const = 0;
+    virtual Factory *getFactory() const = 0;
     virtual std::string getName() const = 0;
     virtual bool isInitialized() const = 0;
     virtual bool makeCurrent() = 0;
