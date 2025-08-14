@@ -6,10 +6,10 @@
 
 namespace rendell {
 class IndexBuffer {
-protected:
-    IndexBuffer(std::vector<uint32_t> &&indices);
-
 public:
+    IndexBuffer(std::vector<uint32_t> &&indices);
+    virtual ~IndexBuffer() = default;
+
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
     const std::vector<uint32_t> &getIndices() const;
@@ -18,5 +18,5 @@ protected:
     std::vector<uint32_t> _indices;
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(IndexBuffer)
+RENDELL_USE_RAII(IndexBuffer)
 } // namespace rendell

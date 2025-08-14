@@ -18,5 +18,5 @@ private:
     mutable uint32_t _binding{0};
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLShaderBuffer)
+RENDELL_USE_RAII_FACTORY(OpenGLShaderBuffer)
 } // namespace rendell

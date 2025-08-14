@@ -16,5 +16,5 @@ private:
     GLuint _bufferId{};
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLVertexBuffer)
+RENDELL_USE_RAII_FACTORY(OpenGLVertexBuffer)
 } // namespace rendell

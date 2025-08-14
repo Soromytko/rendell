@@ -6,7 +6,7 @@
 #include <rendell/private/defines.h>
 
 namespace rendell {
-class LinuxOpenGLContext : public IContext {
+class LinuxOpenGLContext final : public IContext {
 public:
     LinuxOpenGLContext(const Initer &initer);
     ~LinuxOpenGLContext();
@@ -29,5 +29,5 @@ private:
     bool _isInitialized{false};
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(LinuxOpenGLContext)
+RENDELL_USE_RAII_FACTORY(LinuxOpenGLContext)
 } // namespace rendell

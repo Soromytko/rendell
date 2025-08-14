@@ -5,10 +5,10 @@
 
 namespace rendell {
 class UniformBuffer {
-protected:
-    UniformBuffer(const void *data, size_t size);
-
 public:
+    UniformBuffer(const void *data, size_t size);
+    virtual ~UniformBuffer() = default;
+
     virtual void bind(uint32_t binding = 0) const = 0;
     virtual void unbind() const = 0;
     virtual void setSubData(const void *data, size_t size, size_t offset = 0) const = 0;
@@ -21,5 +21,5 @@ protected:
     const size_t _size;
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(UniformBuffer)
+RENDELL_USE_RAII(UniformBuffer)
 } // namespace rendell

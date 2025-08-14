@@ -7,11 +7,10 @@
 
 namespace rendell {
 class VertexArray {
-protected:
+public:
     VertexArray() = default;
     virtual ~VertexArray() = default;
 
-public:
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
     virtual void setIndexBuffer(IndexBufferSharedPtr indexBuffer);
@@ -24,5 +23,5 @@ protected:
     IndexBufferSharedPtr _indexBuffer{};
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(VertexArray)
+RENDELL_USE_RAII(VertexArray)
 } // namespace rendell

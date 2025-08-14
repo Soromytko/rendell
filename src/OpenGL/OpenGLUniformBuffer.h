@@ -6,6 +6,7 @@ namespace rendell {
 class OpenGLUniformBuffer final : public UniformBuffer {
 public:
     OpenGLUniformBuffer(const void *data, size_t size);
+    ~OpenGLUniformBuffer() = default;
 
     void bind(uint32_t binding = 0) const override;
     void unbind() const override;
@@ -16,5 +17,5 @@ private:
     GLuint _id;
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLUniformBuffer)
+RENDELL_USE_RAII_FACTORY(OpenGLUniformBuffer)
 } // namespace rendell

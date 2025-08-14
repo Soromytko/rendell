@@ -16,5 +16,5 @@ private:
     mutable uint32_t _textureBlock{0};
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLTexture2D)
+RENDELL_USE_RAII_FACTORY(OpenGLTexture2D)
 } // namespace rendell

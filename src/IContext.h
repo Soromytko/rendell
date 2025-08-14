@@ -18,6 +18,6 @@ public:
     virtual bool swapBuffers() = 0;
 };
 
-RENDELL_DECLARE_SHARED_PTR(IContext)
+RENDELL_USE_RAII(IContext)
 
 } // namespace rendell

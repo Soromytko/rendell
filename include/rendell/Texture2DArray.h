@@ -7,10 +7,10 @@
 
 namespace rendell {
 class Texture2DArray {
-protected:
-    Texture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format);
-
 public:
+    Texture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format);
+    virtual ~Texture2DArray() = default;
+
     virtual void setSubTextureData(uint32_t index, uint32_t width, uint32_t height,
                                    const uint8_t *pixels) = 0;
     virtual void bind(uint32_t textureBlock = 0) const = 0;
@@ -28,5 +28,5 @@ protected:
     TextureFormat _format;
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(Texture2DArray)
+RENDELL_USE_RAII(Texture2DArray)
 } // namespace rendell

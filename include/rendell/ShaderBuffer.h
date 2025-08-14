@@ -5,10 +5,10 @@
 
 namespace rendell {
 class ShaderBuffer {
-protected:
-    ShaderBuffer(const void *data, size_t size);
-
 public:
+    ShaderBuffer(const void *data, size_t size);
+    virtual ~ShaderBuffer() = default;
+
     virtual void bind(uint32_t binding = 0) const = 0;
     virtual void unbind() const = 0;
     const void *getData() const;
@@ -21,5 +21,5 @@ protected:
     size_t _size;
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(ShaderBuffer)
+RENDELL_USE_RAII(ShaderBuffer)
 } // namespace rendell

@@ -8,6 +8,7 @@ public:
     OpenGLVertexArray(IndexBufferSharedPtr indexBuffer,
                       std::initializer_list<VertexBufferSharedPtr> buffers);
     ~OpenGLVertexArray();
+
     void bind() const override;
     void unbind() const override;
     void setIndexBuffer(IndexBufferSharedPtr indexBuffer) override;
@@ -17,6 +18,6 @@ private:
     GLuint _vertexArrayId{};
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLVertexArray)
+RENDELL_USE_RAII_FACTORY(OpenGLVertexArray)
 
 } // namespace rendell

@@ -6,10 +6,10 @@
 
 namespace rendell {
 class VertexBuffer {
-protected:
-    VertexBuffer(std::vector<float> &&data);
-
 public:
+    VertexBuffer(std::vector<float> &&data);
+    virtual ~VertexBuffer() = default;
+
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
     const std::vector<float> &getData() const;
@@ -25,5 +25,5 @@ protected:
     std::vector<VertexBufferLayout> _layouts{};
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(VertexBuffer)
+RENDELL_USE_RAII(VertexBuffer)
 } // namespace rendell

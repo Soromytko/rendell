@@ -7,6 +7,7 @@ class OpenGLTexture2DArray final : public Texture2DArray {
 public:
     OpenGLTexture2DArray(uint32_t width, uint32_t height, uint32_t count, TextureFormat format);
     ~OpenGLTexture2DArray();
+
     void setSubTextureData(uint32_t index, uint32_t width, uint32_t height,
                            const uint8_t *pixels) override;
     void bind(uint32_t textureBlock = 0) const override;
@@ -17,5 +18,5 @@ private:
     mutable uint32_t _textureBlock{0};
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLTexture2DArray)
+RENDELL_USE_RAII_FACTORY(OpenGLTexture2DArray)
 } // namespace rendell

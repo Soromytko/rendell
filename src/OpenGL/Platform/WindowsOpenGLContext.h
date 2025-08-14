@@ -4,7 +4,7 @@
 #include <rendell/private/defines.h>
 
 namespace rendell {
-class WindowsOpenGLContext : public IContext {
+class WindowsOpenGLContext final : public IContext {
 public:
     WindowsOpenGLContext(const Initer &initer);
     ~WindowsOpenGLContext();
@@ -28,5 +28,5 @@ private:
     bool _isInitialized{false};
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(WindowsOpenGLContext)
+RENDELL_USE_RAII_FACTORY(WindowsOpenGLContext)
 } // namespace rendell

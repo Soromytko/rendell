@@ -7,10 +7,10 @@
 
 namespace rendell {
 class Texture2D {
-protected:
-    Texture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t *pixels);
-
 public:
+    Texture2D(uint32_t width, uint32_t height, TextureFormat format, const uint8_t *pixels);
+    virtual ~Texture2D() = default;
+
     virtual void bind(uint32_t textureBlock = 0) const = 0;
     virtual void unbind() const = 0;
 
@@ -26,5 +26,5 @@ protected:
     const uint8_t *_pixels;
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(Texture2D)
+RENDELL_USE_RAII(Texture2D)
 } // namespace rendell

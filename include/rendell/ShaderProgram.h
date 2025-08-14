@@ -5,10 +5,10 @@
 
 namespace rendell {
 class ShaderProgram {
-protected:
-    ShaderProgram(std::string &&vertexSrc, std::string &&fragmentSrc);
-
 public:
+    ShaderProgram(std::string &&vertexSrc, std::string &&fragmentSrc);
+    virtual ~ShaderProgram() = default;
+
     void setVertexShaderSrc(const std::string &vertexSrc);
     void setFragmentShaderSrc(const std::string &fragmentSrc);
     const std::string &getVertexShaderSrc() const;
@@ -51,5 +51,5 @@ protected:
     std::string _fragmentSrc;
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(ShaderProgram)
+RENDELL_USE_RAII(ShaderProgram)
 } // namespace rendell

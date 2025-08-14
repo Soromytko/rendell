@@ -7,6 +7,7 @@ class OpenGLShaderProgram final : public ShaderProgram {
 public:
     OpenGLShaderProgram(std::string &&vertexSrc, std::string &&fragmentSrc);
     ~OpenGLShaderProgram();
+
     void setVertexShaderSrc(std::string &&vertexSrc) override;
     void setFragmentShaderSrc(std::string &&fragmentSrc) override;
     bool compile(std::string *vertexInfoLog = nullptr,
@@ -46,5 +47,5 @@ private:
     GLuint _shaderProgramId{};
 };
 
-RENDELL_DECLARE_SHARED_PTR_FACTORY(OpenGLShaderProgram)
+RENDELL_USE_RAII_FACTORY(OpenGLShaderProgram)
 } // namespace rendell
