@@ -1,12 +1,11 @@
+#include <Backend/VertexArray.h>
 #include <glad/glad.h>
-#include <rendell/VertexArray.h>
 
 namespace rendell {
 class OpenGLVertexArray final : public VertexArray {
 public:
-    OpenGLVertexArray();
-    OpenGLVertexArray(IndexBufferSharedPtr indexBuffer,
-                      std::initializer_list<VertexBufferSharedPtr> buffers);
+    OpenGLVertexArray(const IndexBufferSharedPtr &indexBuffer,
+                      const std::vector<VertexBufferSharedPtr> &vertexBuffers);
     ~OpenGLVertexArray();
 
     void bind() const override;

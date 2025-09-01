@@ -2,7 +2,7 @@
 #include "../Specification.h"
 
 namespace rendell {
-class OpenGLSpecification : public Specification {
+class OpenGLFactory : public Specification {
 public:
     IndexBufferSharedPtr createIndexBuffer(std::vector<uint32_t> &&indices) const override;
     VertexBufferSharedPtr createVertexBuffer(std::vector<float> &&data) const override;

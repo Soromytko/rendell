@@ -1,19 +1,15 @@
 #pragma once
+#include <Backend/ShaderProgram.h>
 #include <glad/glad.h>
-#include <rendell/ShaderProgram.h>
 
 namespace rendell {
 class OpenGLShaderProgram final : public ShaderProgram {
 public:
-    OpenGLShaderProgram(std::string &&vertexSrc, std::string &&fragmentSrc);
+    OpenGLShaderProgram(VertexShaderSharedPtr vertexShader, FragmentShaderSharedPtr fragmentShader);
     ~OpenGLShaderProgram();
 
-    void setVertexShaderSrc(std::string &&vertexSrc) override;
-    void setFragmentShaderSrc(std::string &&fragmentSrc) override;
-    bool compile(std::string *vertexInfoLog = nullptr,
-                 std::string *fragmentInfoLog = nullptr) const override;
     bool link(std::string *infoLog = nullptr) const override;
-    void freeSrc() override;
+
     void bind() const override;
     void unbind() const override;
 
@@ -42,8 +38,6 @@ public:
     void setShaderBufferBinding(uint32_t bufferIndex, uint32_t binding) const override;
 
 private:
-    GLuint _vertexShaderId{};
-    GLuint _fragmentShaderId{};
     GLuint _shaderProgramId{};
 };
 

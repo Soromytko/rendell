@@ -1,7 +1,7 @@
 #pragma once
 #include "VertexBufferLayout.h"
-#include "private/defines.h"
 #include <memory>
+#include <raii.h>
 #include <vector>
 
 namespace rendell {

@@ -1,24 +1,18 @@
 #pragma once
-#include "private/defines.h"
+#include "FragmentShader.h"
+#include "VertexShader.h"
 #include <memory>
+#include <raii.h>
 #include <string>
 
 namespace rendell {
 class ShaderProgram {
 public:
-    ShaderProgram(std::string &&vertexSrc, std::string &&fragmentSrc);
+    ShaderProgram() = default;
     virtual ~ShaderProgram() = default;
 
-    void setVertexShaderSrc(const std::string &vertexSrc);
-    void setFragmentShaderSrc(const std::string &fragmentSrc);
-    const std::string &getVertexShaderSrc() const;
-    const std::string &getFragmentShaderSrc() const;
-    virtual void setVertexShaderSrc(std::string &&vertexSrc);
-    virtual void setFragmentShaderSrc(std::string &&fragmentSrc);
-    virtual bool compile(std::string *vertexInfoLog = nullptr,
-                         std::string *fragmentInfoLog = nullptr) const = 0;
     virtual bool link(std::string *infoLog = nullptr) const = 0;
-    virtual void freeSrc() = 0;
+
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
 

@@ -1,18 +1,13 @@
 #include "OpenGLVertexArray.h"
 
 namespace rendell {
-OpenGLVertexArray::OpenGLVertexArray()
-    : VertexArray() {
-    glCreateVertexArrays(1, &_vertexArrayId);
-}
-
-OpenGLVertexArray::OpenGLVertexArray(IndexBufferSharedPtr indexBuffer,
-                                     std::initializer_list<VertexBufferSharedPtr> buffers)
+OpenGLVertexArray::OpenGLVertexArray(const IndexBufferSharedPtr &indexBuffer,
+                                     const std::vector<VertexBufferSharedPtr> &vertexBuffers)
     : VertexArray() {
     glCreateVertexArrays(1, &_vertexArrayId);
 
     setIndexBuffer(indexBuffer);
-    for (auto it = buffers.begin(); it != buffers.end(); it++) {
+    for (auto it = vertexBuffers.begin(); it != vertexBuffers.end(); it++) {
         addVertexBuffer(*it);
     }
 }

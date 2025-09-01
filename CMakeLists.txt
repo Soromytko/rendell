@@ -5,10 +5,15 @@ set(CMAKE_CXX_STANDARD 23)
 project(Rendell)
 
 set(SOURCE_FILES
+    src/CommandBuffer.cpp
+    src/CommandExecutor.cpp
     src/logging.cpp
 
+    src/init.cpp
     src/rendell.cpp
     src/context_creation.cpp
+    src/RenderContext.cpp
+    src/RenderContextManager.cpp
     src/IndexBuffer.cpp
     src/VertexBuffer.cpp
     src/VertexArray.cpp
@@ -18,8 +23,10 @@ set(SOURCE_FILES
     src/Texture2DArray.cpp
     src/ShaderBuffer.cpp
     src/UniformBuffer.cpp
+    src/Factory.cpp
     src/OpenGL/glad_initialization.cpp
     src/OpenGL/OpenGLUtils.cpp
+    src/OpenGL/OpenGLFactory.cpp
     src/OpenGL/OpenGLSpecification.cpp
     src/OpenGL/OpenGLIndexBuffer.cpp
     src/OpenGL/OpenGLVertexBuffer.cpp
@@ -29,32 +36,55 @@ set(SOURCE_FILES
     src/OpenGL/OpenGLTexture2DArray.cpp
     src/OpenGL/OpenGLShaderBuffer.cpp
     src/OpenGL/OpenGLUniformBuffer.cpp
-
+    src/OpenGL/OpenGLVertexShader.cpp
+    src/OpenGL/OpenGLFragmentShader.cpp
 )
 
 set(HEADER_FILES
-    internal/gl/wglext.h
-    internal/logging.h
-
     include/rendell/rendell.h
-    include/rendell/rendell_static.h
-    include/rendell/IndexBuffer.h
-    include/rendell/VertexBuffer.h
-    include/rendell/VertexArray.h
-    include/rendell/VertexBufferLayout.h
-    include/rendell/ShaderProgram.h
-    include/rendell/Texture2D.h
-    include/rendell/Texture2DArray.h
-    include/rendell/ShaderBuffer.h
-    include/rendell/UniformBuffer.h
+    include/rendell/init.h
+    include/rendell/ResourceId.h
+    include/rendell/DataType.h
+    include/rendell/Ref.h
+    include/rendell/TextureFormat.h
+    include/rendell/RenderContext.h
 
     include/rendell/private/defines.h
+    
+    internal/raii.h
+    internal/logging.h
+    internal/Command.h
+    internal/CommandBuffer.h
+    internal/CommandExecutor.h
+    internal/RenderContextManager.h
+    internal/RenderContextImpl.h
+    internal/ResourceIdStorage.h
+    internal/DrawCallState.h
+
+    internal/backend/Factory.h
+    internal/backend/IndexBuffer.h
+    internal/backend/VertexBuffer.h
+    internal/backend/VertexArray.h
+    internal/backend/VertexBufferLayout.h
+    internal/backend/Texture2D.h
+    internal/backend/Texture2DArray.h
+    internal/backend/ShaderBuffer.h
+    internal/backend/UniformBuffer.h
+    internal/backend/VertexShader.h
+    internal/backend/FragmentShader.h
+    internal/backend/ShaderProgram.h
+    internal/backend/Uniform.h
+
+    # OpenGL specific
+    internal/gl/wglext.h
 
     src/context_creation.h
     src/IContext.h
     src/OpenGL/glad_initialization.h
+    src/OpenGL/OpenGLShaderCompilation.h
     src/OpenGL/OpenGLContext.h
     src/OpenGL/OpenGLUtils.h
+    src/OpenGL/OpenGLFactory.h
     src/OpenGL/OpenGLSpecification.h
     src/OpenGL/OpenGLIndexBuffer.h
     src/OpenGL/OpenGLVertexBuffer.h
@@ -64,7 +94,8 @@ set(HEADER_FILES
     src/OpenGL/OpenGLTexture2DArray.h
     src/OpenGL/OpenGLShaderBuffer.h
     src/OpenGL/OpenGLUniformBuffer.h
-
+    src/OpenGL/OpenGLVertexShader.h
+    src/OpenGL/OpenGLFragmentShader.h
 )
 
 set(WINDOWS_SOURCES

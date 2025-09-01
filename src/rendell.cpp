@@ -1,12 +1,225 @@
+#include <rendell/rendell.h>
+
 #include "IContext.h"
 #include "OpenGL/OpenGLSpecification.h"
 #include "Specification.h"
 #include "context_creation.h"
-#include <glad/glad.h>
-#include <logging.h>
+
 #include <memory>
+#include <mutex>
+#include <thread>
+
+#include <rendell/DataType.h>
 #include <rendell/rendell_static.h>
-#include <unordered_map>
+
+#include <RenderContextManager.h>
+#include <Command.h>
+#include <CommandBuffer.h>
+#include <CommandExecutor.h>
+#include <logging.h>
+#include <DrawCallState.h>
+
+#include <Backend/Factory.h>
+#include <Backend/FragmentShader.h>
+#include <Backend/IndexBuffer.h>
+#include <Backend/ShaderProgram.h>
+#include <Backend/Texture2D.h>
+#include <Backend/Texture2DArray.h>
+#include <Backend/Uniform.h>
+#include <Backend/VertexArray.h>
+#include <Backend/VertexBuffer.h>
+#include <Backend/VertexShader.h>
+
+#define TO_BYTES(v) reinterpret_cast<const uint8_t *>(&v)
+
+// Static data
+namespace rendell {
+static const auto s_mainThreadId = std::this_thread::get_id();
+
+static CommandBuffer s_prepareCommandBuffer;
+static CommandBuffer s_runtimeCommandBuffer;
+
+} // namespace rendell
+
+// Implementation
+namespace rendell {
+static void readCmdType(CmdType &type) {
+}
+
+thread_local DrawCallState s_drawCallState;
+
+void setIndexBuffer(IndexBufferId indexBufferId) {
+    //s_drawCallState.indexBufferId = indexBufferId;
+}
+
+void setVertexBuffer(VertexBufferId vertexBufferId) {
+}
+
+void setVertexArrayBuffer(VertexArrayBufferId vertexArrayBufferId) {
+}
+
+void setShaderProgram(ShaderProgramId shaderProgramId) {
+}
+
+static std::mutex s_renderFrameMutex;
+static std::mutex s_submitMutex;
+
+void submit() {
+}
+
+class {
+public:
+    const std::vector<ThreadRenderer *> &get() const { return _threadRenderers; }
+
+    void add(ThreadRenderer *threadRenderer) {
+        auto it =
+            std::find(_threadRenderers.begin(), _threadRenderers.begin() + _size, threadRenderer);
+        if (it == _threadRenderers.begin() + _size) {
+            _threadRenderers.insert(it, threadRenderer);
+            _size++;
+        }
+    }
+
+    void reset() { _size = 0; }
+
+private:
+    std::vector<ThreadRenderer *> _threadRenderers;
+    size_t _size;
+
+} static s_usedThreadRenderers;
+
+static std::mutex s_threadRendererMutex;
+
+RenderContext *startThreadRender() {
+    std::lock_guard(s_threadRendererMutex);
+
+    RenderContext *renderContext = getRenderContext();
+    return renderContext;
+}
+
+void endThreadRender(RenderContext *renderContext) {
+    assert(renderContext);
+    std::lock_guard(s_threadRendererMutex);
+
+    CommandBufferSharedPtr prepareCommandBuffer = RenderContextManager::getAndSwap(renderContext);
+
+
+    s_usedThreadRenderers.add(threadRenderer);
+}
+
+void prepare() {
+    std::lock_guard<std::mutex> lock(s_renderFrameMutex);
+
+    if (s_prepareCommandBuffer.getSize() == 0) {
+        return;
+    }
+
+    while (true) {
+        CmdType type;
+        if (!readCmdType(s_prepareCommandBuffer, type)) {
+            return;
+        }
+        switch (type) {
+        case CmdType::createIndexBufferCmdType: {
+            CreateIndexBufferCmdData cmdData;
+            readCmdData(s_prepareCommandBuffer, cmdData);
+            IndexBufferSharedPtr indexBuffer = getFactory()->createIndexBuffer(cmdData.data);
+            s_indexBufferManager.setImpl(cmdData.id, indexBuffer);
+            cmdData.data.release();
+        } break;
+        case CmdType::createVertexBufferCmdType: {
+            CreateVertexBufferCmdData cmdData;
+            readCmdData(s_prepareCommandBuffer, cmdData);
+            VertexBufferSharedPtr vertexBuffer = getFactory()->createVertexBuffer(cmdData.data);
+            s_vertexBufferManager.setImpl(cmdData.id, vertexBuffer);
+            cmdData.data.release();
+
+        } break;
+        case CmdType::createVertexArrayBufferCmdType: {
+            CreateVertexArrayBufferCmdData cmdData;
+            readCmdData(s_prepareCommandBuffer, cmdData);
+
+            // IndexBuffer
+            IndexBufferSharedPtr indexBuffer = s_indexBufferManager.getImpl(cmdData.indexBufferId);
+
+            // VertexBuffer
+            std::vector<VertexBufferSharedPtr> vertexBuffers;
+            vertexBuffers.reserve(cmdData.vertexBuffers.size);
+            for (size_t i = 0; i < cmdData.vertexBuffers.size; i++) {
+                const VertexBufferSharedPtr &vertexBuffer =
+                    s_vertexBufferManager.getImpl(cmdData.vertexBuffers.data[i]);
+                vertexBuffers.push_back(vertexBuffer);
+            }
+
+            VertexArraySharedPtr vertexArray =
+                getFactory()->createVertexArrayBuffer(indexBuffer, vertexBuffers);
+            s_vertexArrayBufferManager.setImpl(cmdData.id, vertexArray);
+
+            cmdData.vertexBuffers.release();
+        } break;
+        case CmdType::createTexture2DCmdType: {
+            CreateTexture2DCmdData cmdData;
+            readCmdData(s_prepareCommandBuffer, cmdData);
+            Texture2DSharedPtr texture2D = getFactory()->createTexture2D(
+                cmdData.width, cmdData.height, cmdData.format, cmdData.data);
+            s_texture2DManager.setImpl(cmdData.id, texture2D);
+
+            cmdData.data.release();
+        } break;
+        case CmdType::createTexture2DArrayCmdType: {
+            CreateTexture2DArrayCmdData cmdData;
+            readCmdData(s_prepareCommandBuffer, cmdData);
+            Texture2DArraySharedPtr texture2DArray = getFactory()->createTexture2DArray(
+                cmdData.width, cmdData.height, cmdData.count, cmdData.format, cmdData.data);
+            s_texture2DArrayManager.setImpl(cmdData.id, texture2DArray);
+
+            cmdData.data.release();
+        } break;
+        case CmdType::createUniformBufferCmdType: {
+
+        } break;
+        case CmdType::createVertexShaderCmdType: {
+            CreateVertexShaderCmdData cmdData;
+            readCmdData(s_prepareCommandBuffer, cmdData);
+            VertexShaderSharedPtr vertexShader = getFactory()->createVertexShader(cmdData.src);
+            s_vertexShaderManager.setImpl(cmdData.id, vertexShader);
+
+            cmdData.src.release();
+        } break;
+        case CmdType::createFragmentShaderCmdType: {
+
+        } break;
+        case CmdType::createShaderProgramCmdType: {
+            CreateShaderProgramCmdData cmdData;
+            readCmdData(s_prepareCommandBuffer, cmdData);
+            VertexShaderSharedPtr vertexShader =
+                s_vertexShaderManager.getImpl(cmdData.vertexShaderId);
+            FragmentShaderSharedPtr fragmentShader =
+                s_fragmentShaderManager.getImpl(cmdData.fragmentShaderId);
+            ShaderProgramSharedPtr shaderProgram =
+                getFactory()->createShaderProgram(vertexShader, fragmentShader);
+            s_shaderProgramManager.setImpl(cmdData.id, shaderProgram);
+        } break;
+        case CmdType::createUniformCmdType: {
+
+        } break;
+        }
+    }
+}
+
+void renderFrame(NativeViewId nativeFrameId) {
+    {
+        s_rendererMutex;
+
+        returnThreadRenderer(threadRenderer);
+    }
+
+    prepare();
+
+    return getContext(nativeView)->draw();
+}
+
+} // namespace rendell
 
 namespace rendell {
 static Specification *s_specification = nullptr;
@@ -16,101 +229,6 @@ static IContextSharedPtr s_currentContext = nullptr;
 static context_id generate_context_id() {
     static size_t counter;
     return ++counter;
-}
-
-context_id init(const Initer &initer) {
-    const IContextSharedPtr context = createContext(initer);
-    if (!context->isInitialized()) {
-        RENDELL_ERROR("Failed to initialize OpenGL context");
-        return 0;
-    }
-
-    RENDELL_INFO("{}", context->getName());
-
-    s_currentContext = context;
-    context->makeCurrent();
-    s_specification = context->getSpecification();
-
-    const context_id contextId = generate_context_id();
-    s_contexts[contextId] = context;
-    return contextId;
-}
-
-void release() {
-    s_contexts.clear();
-}
-
-void releaseContext(context_id contextId) {
-    auto it = s_contexts.find(contextId);
-    if (it == s_contexts.end()) {
-        RENDELL_ERROR("Invalid context ID {}", contextId);
-    }
-
-    s_contexts.erase(it);
-}
-
-void makeCurrent(context_id contextId) {
-    auto it = s_contexts.find(contextId);
-    if (it == s_contexts.end()) {
-        RENDELL_ERROR("Invalid context ID {}", contextId);
-    }
-
-    s_currentContext = it->second;
-    s_currentContext->makeCurrent();
-    s_specification = s_currentContext->getSpecification();
-}
-
-bool swapBuffers() {
-    return s_currentContext->swapBuffers();
-}
-
-IndexBufferSharedPtr createIndexBuffer(std::vector<uint32_t> indices) {
-    return s_specification->createIndexBuffer(std::move(indices));
-}
-
-IndexBufferSharedPtr createIndexBuffer(const uint32_t *data, size_t size) {
-    std::vector<uint32_t> vectorData(data, data + size);
-    return s_specification->createIndexBuffer(std::move(vectorData));
-}
-
-VertexBufferSharedPtr createVertexBuffer(std::vector<float> data) {
-    return s_specification->createVertexBuffer(std::move(data));
-}
-
-VertexBufferSharedPtr createVertexBuffer(const float *data, size_t size) {
-    std::vector<float> vectorData(data, data + size);
-    return s_specification->createVertexBuffer(std::move(vectorData));
-}
-
-VertexArraySharedPtr createVertexArray() {
-    return s_specification->createVertexArray();
-}
-
-VertexArraySharedPtr createVertexArray(IndexBufferSharedPtr indexBuffer,
-                                       std::initializer_list<VertexBufferSharedPtr> buffers) {
-    return s_specification->createVertexArray(indexBuffer, buffers);
-}
-
-UniformBufferSharedPtr createUniformBuffer(const void *data, size_t size) {
-    return s_specification->createUniformBuffer(data, size);
-}
-
-ShaderBufferSharedPtr createShaderBuffer(const void *data, size_t size) {
-    return s_specification->createShaderBuffer(data, size);
-}
-
-ShaderProgramSharedPtr createShaderProgram(std::string vertexSrc, std::string fragmentSrc) {
-    return s_specification->createshaderProgram(std::move(vertexSrc), std::move(fragmentSrc));
-}
-
-Texture2DSharedPtr createTexture2D(uint32_t width, uint32_t height, TextureFormat format,
-                                   const uint8_t *pixels) {
-    return s_specification->createTexture2D(width, height, format, pixels);
-}
-
-Texture2DArraySharedPtr createTexture2DArray(uint32_t width, uint32_t height, uint32_t count,
-                                             TextureFormat format) {
-    return s_specification->createTexture2DArray(width, height, count, format);
 }
 
 void setClearBits(uint32_t clearBits) {

@@ -8,6 +8,7 @@
 #include "OpenGLVertexArray.h"
 #include "OpenGLVertexBuffer.h"
 #include <glad/glad.h>
+#include <typeinfo>
 
 namespace rendell {
 static uint32_t s_viewportWidth{0};

@@ -1,5 +1,5 @@
 #pragma once
-#include <cstdint>
+#include <memory>
 
 #define RENDELL_USE_RAII(ClassName)                                                                \
     using ClassName##SharedPtr = std::shared_ptr<ClassName>;                                       \
@@ -15,13 +15,3 @@
     inline ClassName##UniquePtr makeUnique##ClassName(Args &&...args) {                            \
         return std::make_unique<ClassName>(std::forward<Args>(args)...);                           \
     }
-
-namespace rendell {
-
-enum BufferBit : uint32_t {
-    colorBufferBit = 1,
-    depthBufferBit,
-};
-
-
-} // namespace rendell

@@ -1,11 +1,11 @@
 #pragma once
 #include <glad/glad.h>
-#include <rendell/IndexBuffer.h>
+#include <Backend/IndexBuffer.h>
 
 namespace rendell {
 class OpenGLIndexBuffer final : public rendell::IndexBuffer {
 public:
-    OpenGLIndexBuffer(std::vector<uint32_t> &&indices);
+    OpenGLIndexBuffer(ArrayRef<uint32_t> indices);
     ~OpenGLIndexBuffer();
 
     void bind() const override;

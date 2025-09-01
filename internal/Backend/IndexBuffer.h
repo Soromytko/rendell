@@ -1,21 +1,20 @@
 #pragma once
-#include "private/defines.h"
 #include <cstdint>
 #include <memory>
+#include <raii.h>
+#include <rendell/Ref.h>
 #include <vector>
 
 namespace rendell {
 class IndexBuffer {
 public:
-    IndexBuffer(std::vector<uint32_t> &&indices);
+    IndexBuffer(ArrayRef<uint32_t> indices);
     virtual ~IndexBuffer() = default;
 
     virtual void bind() const = 0;
     virtual void unbind() const = 0;
-    const std::vector<uint32_t> &getIndices() const;
 
-protected:
-    std::vector<uint32_t> _indices;
+    virtual void setData(ArrayRef<uint32_t> indices) = 0;
 };
 
 RENDELL_USE_RAII(IndexBuffer)

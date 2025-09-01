@@ -1,15 +1,17 @@
 #pragma once
-#include "Specification.h"
 #include <memory>
 #include <rendell/private/defines.h>
+#include <string>
+
+namespace rendell {
+class Specification;
+} // namespace rendell
 
 namespace rendell {
 class IContext {
-protected:
-    IContext() = default;
-
 public:
-    ~IContext() = default;
+    IContext() = default;
+    virtual ~IContext() = default;
 
     virtual Specification *getSpecification() const = 0;
     virtual std::string getName() const = 0;
