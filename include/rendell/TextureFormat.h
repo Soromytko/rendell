@@ -1,4 +1,5 @@
 #pragma once
+#include <cstddef>
 
 namespace rendell {
 enum class TextureFormat {
@@ -14,6 +15,7 @@ enum class TextureFormat {
     BGR_INT,
     RGBA_INT,
     BGRA_INT,
-
 };
-}
+
+size_t getTextureFormatSize(TextureFormat format);
+} // namespace rendell

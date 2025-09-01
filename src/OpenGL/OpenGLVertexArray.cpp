@@ -1,20 +1,13 @@
-#include "OpenGLVertexArray.h"
+#include <OpenGL/OpenGLVertexArray.h>
+
+#include <OpenGL/OpenGLIndexBuffer.h>
+#include <OpenGL/OpenGLVertexBuffer.h>
+
+#include <cassert>
 
 namespace rendell {
-OpenGLVertexArray::OpenGLVertexArray()
-    : VertexArray() {
+OpenGLVertexArray::OpenGLVertexArray() {
     glCreateVertexArrays(1, &_vertexArrayId);
-}
-
-OpenGLVertexArray::OpenGLVertexArray(IndexBufferSharedPtr indexBuffer,
-                                     std::initializer_list<VertexBufferSharedPtr> buffers)
-    : VertexArray() {
-    glCreateVertexArrays(1, &_vertexArrayId);
-
-    setIndexBuffer(indexBuffer);
-    for (auto it = buffers.begin(); it != buffers.end(); it++) {
-        addVertexBuffer(*it);
-    }
 }
 
 OpenGLVertexArray::~OpenGLVertexArray() {
@@ -29,15 +22,14 @@ void OpenGLVertexArray::unbind() const {
     glBindVertexArray(0);
 }
 
-void OpenGLVertexArray::setIndexBuffer(IndexBufferSharedPtr indexBuffer) {
-    VertexArray::setIndexBuffer(indexBuffer);
-
+void OpenGLVertexArray::setIndexBuffer(const OpenGLIndexBuffer *indexBuffer) {
     if (!indexBuffer) {
         return;
     }
 
     bind();
     indexBuffer->bind();
+    _indexCount = indexBuffer->getCount();
 }
 
 static GLenum convertShaderTypeToOpenGLType(ShaderDataType type) {
@@ -54,14 +46,12 @@ static GLenum convertShaderTypeToOpenGLType(ShaderDataType type) {
     return 0;
 }
 
-void OpenGLVertexArray::addVertexBuffer(VertexBufferSharedPtr vertexBuffer) {
-    VertexArray::addVertexBuffer(vertexBuffer);
-
+void OpenGLVertexArray::addVertexBuffer(const OpenGLVertexBuffer *vertexBuffer) {
     bind();
     vertexBuffer->bind();
 
     int index = 0;
-    for (const VertexBufferLayout &layout : vertexBuffer->getLayouts()) {
+    for (const OpenGLVertexBufferLayout &layout : vertexBuffer->getLayouts()) {
         const GLint size = layout.getComponentCountByShaderType();
         const GLenum type = convertShaderTypeToOpenGLType(layout.getType());
         const GLboolean normalized = layout.getNormalized() ? GL_TRUE : GL_FALSE;

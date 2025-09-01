@@ -136,7 +136,11 @@ Rendell can be used with libraries that can open an operating system window (lik
 This is a sample of drawing a triangle using [Rendell](https://github.com/Soromytko/rendell) and [GLFW](https://github.com/glfw/glfw).
 
 ```
+#include <iostream>
+#include <rendell/init.h>
+#include <rendell/oop/rendell_oop.h>
 #include <rendell/rendell.h>
+#include <cassert>
 
 // GLFW specifics
 #if defined(_WIN32)
@@ -147,17 +151,18 @@ This is a sample of drawing a triangle using [Rendell](https://github.com/Soromy
 #include <GLFW/glfw3.h>
 #include <GLFW/glfw3native.h>
 
-std::vector<uint32_t> indices{ 0, 1, 2 };
+std::vector<uint32_t> indices{0, 1, 2};
 std::vector<float> vertices{
-	-0.5f, -0.5f, 0.0f,		1.0, 0.0, 0.0,
-	0.5f, -0.5f, 0.0f,		0.0, 1.0, 0.0,
-	0.0f, 0.5f, 0.0f,		0.0, 0.0, 1.0,
+    // Vertices
+    -0.5f, -0.5f, 0.0f,
+    1.0, 0.0, 0.0,
+    0.5f, -0.5f, 0.0f,
+    // Colors
+    0.0, 1.0, 0.0,
+    0.0f, 0.5f, 0.0f,
 };
-rendell::VertexBufferLayout vertexLayout{ rendell::ShaderDataType::float3, false, 0 };
-rendell::VertexBufferLayout colorLayout{ rendell::ShaderDataType::float3, false, 1 };
-
 std::string vertSrc = R"(
-	#version 330 core
+	#version 450 core
 	layout (location = 0) in vec3 aPos;
 	layout (location = 1) in vec3 aColor;
 	out vec3 vColor;
@@ -169,6 +174,7 @@ std::string vertSrc = R"(
 )";
 
 std::string fragSrc = R"(
+    #version 450 core
 	out vec4 FragColor;
 	in vec3 vColor;
 	void main()
@@ -177,88 +183,89 @@ std::string fragSrc = R"(
 	}
 )";
 
-bool initRendell(GLFWwindow* window)
-{
-	rendell::Initer initer;
-#if defined(_WIN32)
-	initer.nativeWindowHandle = (void*)glfwGetWin32Window(window);
-#elif defined(__linux__)
-	initer.nativeWindowHandle = (void*)(uintptr_t)glfwGetX11Window(window);
-	initer.x11Display = _mainWindow->getX11Display();
-#endif
-	return rendell::init(initer);
+void shaderCallback(bool success, const std::string &infoLog) {
+    std::cout << infoLog << std::endl;
+    assert(success);
 }
 
-int main(void)
-{
-	GLFWwindow* window;
+bool initRendell(GLFWwindow *window) {
+    rendell::Initer initer{.api = rendell::SpecificationAPI::OpenGL45};
+    if (!rendell::init(initer)) {
+        return false;
+    }
+    rendell::NativeView nativeView;
+    nativeView.nativeWindowHandle = (void *)glfwGetWin32Window(window);
+    if (!rendell::registerNativeView(nativeView)) {
+        return false;
+    }
+    return true;
+}
 
+int run(GLFWwindow *window) {
+    // Create index buffer
+    const auto indexBuffer = rendell::oop::makeIndexBuffer(indices.data(), indices.size());
+
+    // Create vertex buffer
+    const auto vertexBuffer = rendell::oop::makeVertexBuffer(vertices.data(), vertices.size());
+
+    // Create vertex assembly
+    const auto vertexAssembly = rendell::oop::makeVertexAssembly(
+        indexBuffer,
+        std::vector{vertexBuffer},
+        std::vector{rendell::VertexLayout()
+                        .addAttribute(0, rendell::ShaderDataType::float3, false, 0)
+                        .addAttribute(1, rendell::ShaderDataType::float3, false, 0)});
+
+    // Create shader program
+    const auto vertexShader = rendell::oop::makeVertexShader(vertSrc, shaderCallback);
+    const auto fragmentShader = rendell::oop::makeFragmentShader(fragSrc, shaderCallback);
+    const auto shaderProgram =
+        rendell::oop::makeShaderProgram(vertexShader, fragmentShader, shaderCallback);
+
+    while (!glfwWindowShouldClose(window)) {
+        rendell::setClearBits(rendell::c::colorBufferBit);
+        rendell::setClearColor(0, 0, 0, 1);
+
+        // Draw triangle with Rendell
+        vertexAssembly->use();
+        shaderProgram->use();
+        rendell::submit(rendell::DrawMode::Elements, rendell::PrimitiveTopology::Triangles);
+
+        rendell::renderFrame();
+
+        glfwPollEvents();
+    }
+
+    return 0;
+}
+
+int main(void) {
 #if defined(__linux__)
-	glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
+    glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
 #endif
-	// Disable automatic context creation
-	glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+    if (!glfwInit()) {
+        std::cerr << "Failed to initialize GLFW" << std::endl;
+        return -1;
+    }
 
-	if (!glfwInit())
-		return -1;
+    // Disable automatic context creation
+    glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
-	window = glfwCreateWindow(640, 480, "Hello from Rendell and GLFW", NULL, NULL);
-	if (!window) {
-		std::cerr << "Failed to initialize GLFW" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
+    GLFWwindow *window = glfwCreateWindow(640, 480, "Hello from Rendell and GLFW", NULL, NULL);
+    if (!window) {
+        std::cerr << "Failed to open GLFW window" << std::endl;
+        return -1;
+    }
 
-	glfwMakeContextCurrent(window);
+    if (!initRendell(window)) {
+        std::cerr << "Failed to initialize Rendell" << std::endl;
+        return -1;
+    }
 
-	if (!initRendell(window)) {
-		std::cerr << "Failed to initialize Rendell" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
+    const int result = run(window);
+    rendell::release();
+    glfwTerminate();
 
-	// Create index buffer
-	const auto indexBuffer = rendell::createIndexBuffer(indices);
-
-	// Create vertex buffer and layouts
-	const auto vertexBuffer = rendell::createVertexBuffer(vertices);
-	vertexBuffer->setLayouts({ vertexLayout, colorLayout });
-
-	// Create vertex array
-	const auto vertexArray = rendell::createVertexArray(indexBuffer, { vertexBuffer });
-
-	// Create and prepare shader program
-	const auto shaderProgram = rendell::createShaderProgram(vertSrc, fragSrc);
-	std::string infoLog;
-	if (!shaderProgram->compile(&infoLog)) {
-		std::cerr << infoLog << std::endl;
-		glfwTerminate();
-		rendell::release();
-		return -1;
-	}
-	if (!shaderProgram->link(&infoLog)) {
-		std::cerr << infoLog << std::endl;
-		glfwTerminate();
-		rendell::release();
-		return -1;
-	}
-	shaderProgram->freeSrc();
-
-	while (!glfwWindowShouldClose(window)) {
-		rendell::clearColor(0, 0, 0, 1);
-
-		// Draw triangle with Rendell
-		vertexArray->bind();
-		shaderProgram->bind();
-		rendell::drawTriangleElements(indexBuffer->getIndices().size());
-
-		rendell::swapBuffers();
-
-		glfwPollEvents();
-	}
-
-	glfwTerminate();
-	rendell::release();
-	return 0;
+    return result;
 }
 ```
