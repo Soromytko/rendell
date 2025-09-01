@@ -1,20 +1,11 @@
 #include "context_creation.h"
-#include "IContext.h"
 
 namespace rendell {
-IContextSharedPtr createContext(const Initer &initer) {
-    switch (initer.api) {
-    case SpecificationAPI::OpenGL:
-        return createOpenGLContext(initer);
-    }
-    return nullptr;
-}
-
-OpenGLContextSharedPtr createOpenGLContext(const Initer &initer) {
+OpenGLContextUniquePtr createOpenGLContext(const NativeView &nativeView) {
 #if defined(_WIN32)
-    return makeWindowsOpenGLContext(initer);
+    return makeUniqueWindowsOpenGLContext(nativeView);
 #elif defined(__linux__)
-    return makeLinuxOpenGLContext(initer);
+    return makeUniqueLinuxOpenGLContext(nativeView);
 #endif
     return nullptr;
 }

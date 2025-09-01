@@ -1,29 +1,31 @@
-#include "LinuxOpenGLContext.h"
-#include "../OpenGLSpecification.h"
+#include <OpenGL/Platform/LinuxOpenGLContext.h>
+
 #include "../glad_initialization.h"
-#include <cstring>
 #include <logging.h>
 
+#include <cstring>
+
 namespace rendell {
-static OpenGLSpecification s_openGLSpecification{};
-
-LinuxOpenGLContext::LinuxOpenGLContext(const Initer &initer) {
-    if (initer.nativeWindowHandle == nullptr) {
-        RENDELL_ERROR("Initer::nativeWindowHandle field is nullptr");
+LinuxOpenGLContext::LinuxOpenGLContext(const NativeView &nativeView) {
+    if (nativeView.nativeWindowHandle == nullptr) {
+        RENDELL_ERROR("NativeView::nativeWindowHandle field is nullptr");
         return;
     }
-    _window = static_cast<Window>(reinterpret_cast<size_t>(initer.nativeWindowHandle));
+    _window = static_cast<Window>(reinterpret_cast<size_t>(nativeView.nativeWindowHandle));
 
-    if (initer.x11Display == nullptr) {
-        RENDELL_ERROR("Initer::x11Display field is nullptr");
+    if (nativeView.x11Display == nullptr) {
+        RENDELL_ERROR("NativeView::x11Display field is nullptr");
         return;
     }
-    _display = reinterpret_cast<Display *>(initer.x11Display);
+    _display = reinterpret_cast<Display *>(nativeView.x11Display);
 
     _isInitialized = init();
     if (!_isInitialized) {
         RENDELL_ERROR("Failed to initialize X11 OpenGL context");
+        return;
     }
+
+    _name = "OpenGL version: " + std::string(get_OpenGL_version());
 }
 
 LinuxOpenGLContext::~LinuxOpenGLContext() {
@@ -32,12 +34,8 @@ LinuxOpenGLContext::~LinuxOpenGLContext() {
     }
 }
 
-Specification *LinuxOpenGLContext::getSpecification() const {
-    return &s_openGLSpecification;
-}
-
-std::string LinuxOpenGLContext::getName() const {
-    return "OpenGL version: " + std::string(get_OpenGL_version());
+const std::string &LinuxOpenGLContext::getName() const {
+    return _name;
 }
 
 bool LinuxOpenGLContext::isInitialized() const {
@@ -47,6 +45,15 @@ bool LinuxOpenGLContext::isInitialized() const {
 bool LinuxOpenGLContext::makeCurrent() {
     if (!glXMakeCurrent(_display, _window, _glContext)) {
         RENDELL_ERROR("Failed to make GL context current");
+        return false;
+    }
+
+    return true;
+}
+
+bool LinuxOpenGLContext::makeUncurrent() {
+    if (!glXMakeCurrent(_display, None, nullptr)) {
+        RENDELL_ERROR("Failed to release (make uncurrent) GL context");
         return false;
     }
 

@@ -1,6 +1,5 @@
 #include "glad_initialization.h"
 #include <glad/glad.h>
-#include <iostream>
 
 #if defined(_WIN32)
 #include <Windows.h>

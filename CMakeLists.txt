@@ -6,65 +6,134 @@ project(Rendell)
 
 set(SOURCE_FILES
     src/logging.cpp
+    src/ByteRingBuffer.cpp
 
+    src/init.cpp
+    src/hash.cpp
     src/rendell.cpp
     src/context_creation.cpp
-    src/IndexBuffer.cpp
-    src/VertexBuffer.cpp
-    src/VertexArray.cpp
-    src/VertexBufferLayout.cpp
-    src/ShaderProgram.cpp
-    src/Texture2D.cpp
-    src/Texture2DArray.cpp
-    src/ShaderBuffer.cpp
-    src/UniformBuffer.cpp
+    src/ResourceValidation.cpp
+    src/Color.cpp
+    src/CallbackTable.cpp
+    src/ResourceIdStorage.cpp
+    src/ResourceContext.cpp
+    src/RenderContext.cpp
+    src/ResourceContextPool.cpp
+    src/RenderContextPool.cpp
+    src/RenderPipelineStorage.cpp
+    src/ResourceExecutor.cpp
+    src/DataContainerStorage.cpp
+    src/TextureFormat.cpp
+    src/OpenGL/OpenGLShaderCompilation.cpp
+    src/OpenGL/OpenGLRenderPipeline.cpp
+    src/OpenGL/OpenGLResourceExecutor.cpp
+    src/OpenGL/OpenGLRenderExecutor.cpp
+    src/OpenGL/OpenGLResourceStorage.cpp
     src/OpenGL/glad_initialization.cpp
     src/OpenGL/OpenGLUtils.cpp
-    src/OpenGL/OpenGLSpecification.cpp
     src/OpenGL/OpenGLIndexBuffer.cpp
     src/OpenGL/OpenGLVertexBuffer.cpp
+    src/OpenGL/OpenGLVertexBufferLayout.cpp
     src/OpenGL/OpenGLVertexArray.cpp
     src/OpenGL/OpenGLShaderProgram.cpp
     src/OpenGL/OpenGLTexture2D.cpp
     src/OpenGL/OpenGLTexture2DArray.cpp
     src/OpenGL/OpenGLShaderBuffer.cpp
     src/OpenGL/OpenGLUniformBuffer.cpp
+    src/OpenGL/OpenGLVertexShader.cpp
+    src/OpenGL/OpenGLFragmentShader.cpp
 
+    src/oop/IndexBuffer.cpp
+    src/oop/VertexBuffer.cpp
+    src/oop/VertexAssembly.cpp
+    src/oop/ShaderBuffer.cpp
+    src/oop/UniformBuffer.cpp
+    src/oop/Texture2D.cpp
+    src/oop/Texture2DArray.cpp
+    src/oop/VertexShader.cpp
+    src/oop/FragmentShader.cpp
+    src/oop/ShaderProgram.cpp
 )
 
 set(HEADER_FILES
-    internal/gl/wglext.h
-    internal/logging.h
-
     include/rendell/rendell.h
-    include/rendell/rendell_static.h
-    include/rendell/IndexBuffer.h
-    include/rendell/VertexBuffer.h
-    include/rendell/VertexArray.h
-    include/rendell/VertexBufferLayout.h
-    include/rendell/ShaderProgram.h
-    include/rendell/Texture2D.h
-    include/rendell/Texture2DArray.h
-    include/rendell/ShaderBuffer.h
-    include/rendell/UniformBuffer.h
+    include/rendell/init_types.h
+    include/rendell/init.h
+    include/rendell/hash.h
+    include/rendell/consts.h
+    include/rendell/ResourceId.h
+    include/rendell/DataType.h
+    include/rendell/DrawType.h
+    include/rendell/Color.h
+    include/rendell/ResourceValidation.h
+    include/rendell/DataContainer.h
+    include/rendell/TextureFormat.h
+    include/rendell/IResourceContext.h
+    include/rendell/IRenderContext.h
+    include/rendell/VertexLayout.h
+    
+    internal/config.h
+    internal/IContext.h
+    internal/context_creation.h
+    internal/logging.h
+    internal/Command.h
+    internal/Pool.h
+    internal/ResourceContextPool.h
+    internal/RenderContextPool.h
+    internal/RenderPipelineStorage.h
+    internal/ResourceIdStorage.h
+    internal/ResourceIdStorages.h
+    internal/DrawCallState.h
+    internal/RenderPipeline.h
+    internal/ResourceContext.h
+    internal/RenderContext.h
+    internal/ResourceExecutor.h
+    internal/DataContainerStorage.h
+    internal/ResourceDataProvider.h
+    internal/CallbackTable.h
 
-    include/rendell/private/defines.h
+    internal/Buffers/Buffer.h
+    internal/Buffers/ByteBuffer.h
+    internal/Buffers/RingBuffer.h
+    internal/Buffers/ByteRingBuffer.h
 
-    src/context_creation.h
-    src/IContext.h
+    internal/OpenGL/OpenGLContext.h
+    internal/OpenGL/OpenGLRenderPipeline.h
+    internal/OpenGL/OpenGLResourceExecutor.h
+    internal/OpenGL/OpenGLRenderExecutor.h
+    internal/OpenGL/OpenGLIndexBuffer.h
+    internal/OpenGL/OpenGLVertexBuffer.h
+    internal/OpenGL/OpenGLVertexBufferLayout.h
+    internal/OpenGL/OpenGLVertexArray.h
+    internal/OpenGL/OpenGLShaderProgram.h
+    internal/OpenGL/OpenGLTexture2D.h
+    internal/OpenGL/OpenGLTexture2DArray.h
+    internal/OpenGL/OpenGLShaderBuffer.h
+    internal/OpenGL/OpenGLUniformBuffer.h
+    internal/OpenGL/OpenGLVertexShader.h
+    internal/OpenGL/OpenGLFragmentShader.h
+    internal/OpenGL/OpenGLResourceStorage.h
+
+    # OpenGL specific
+    internal/gl/wglext.h
+
     src/OpenGL/glad_initialization.h
-    src/OpenGL/OpenGLContext.h
+    src/OpenGL/OpenGLShaderCompilation.h
     src/OpenGL/OpenGLUtils.h
-    src/OpenGL/OpenGLSpecification.h
-    src/OpenGL/OpenGLIndexBuffer.h
-    src/OpenGL/OpenGLVertexBuffer.h
-    src/OpenGL/OpenGLVertexArray.h
-    src/OpenGL/OpenGLShaderProgram.h
-    src/OpenGL/OpenGLTexture2D.h
-    src/OpenGL/OpenGLTexture2DArray.h
-    src/OpenGL/OpenGLShaderBuffer.h
-    src/OpenGL/OpenGLUniformBuffer.h
 
+    include/rendell/oop/raii.h
+    include/rendell/oop/rendell_oop.h
+    include/rendell/oop/IndexBuffer.h
+    include/rendell/oop/VertexBuffer.h
+    include/rendell/oop/VertexAssembly.h
+    include/rendell/oop/ShaderBuffer.h
+    include/rendell/oop/UniformBuffer.h
+    include/rendell/oop/Texture2D.h
+    include/rendell/oop/Texture2DArray.h
+    include/rendell/oop/VertexShader.h
+    include/rendell/oop/FragmentShader.h
+    include/rendell/oop/ShaderProgram.h
+    include/rendell/oop/Uniform.h
 )
 
 set(WINDOWS_SOURCES
@@ -72,7 +141,7 @@ set(WINDOWS_SOURCES
 )
 
 set(WINDOWS_HEADERS
-    src/OpenGL/Platform/WindowsOpenGLContext.h
+    internal/OpenGL/Platform/WindowsOpenGLContext.h
 )
 
 set(LINUX_SOURCES
@@ -80,7 +149,7 @@ set(LINUX_SOURCES
 )
 
 set(LINUX_HEADERS
-    src/OpenGL/Platform/LinuxOpenGLContext.h
+    internal/OpenGL/Platform/LinuxOpenGLContext.h
 )
 
 add_library(rendell STATIC ${SOURCE_FILES} ${HEADER_FILES})
