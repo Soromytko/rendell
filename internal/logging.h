@@ -1,18 +1,18 @@
 #pragma once
 #include <format>
-#include <logx/logx.h>
+#include <logr/logr.h>
 
 namespace rendell {
-class RendellLogger final : public logx::Logger {
+class RendellLogger final : public logr::Logger {
 public:
     RendellLogger();
     ~RendellLogger() = default;
 
 private:
-    const char *getLevelName_Unsafe(logx::Level level) const override;
+    const char *getLevelName_Unsafe(logr::Level level) const override;
 };
 
-logx::Logger *get_logger();
+logr::Logger *get_logger();
 } // namespace rendell
 
 #define RENDELL_CRITICAL(formatStr, ...)                                                           \

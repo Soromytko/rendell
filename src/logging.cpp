@@ -2,14 +2,14 @@
 
 namespace rendell {
 RendellLogger::RendellLogger()
-    : logx::Logger() {
+    : logr::Logger() {
 }
 
-const char *RendellLogger::getLevelName_Unsafe(logx::Level level) const {
-    static const std::unordered_map<logx::Level, const char *> levelNames{
-        {logx::Level::critical, "RENDELL::CRITICAL"}, {logx::Level::error, "RENDELL::ERROR"},
-        {logx::Level::warning, "RENDELL::WARNING"},   {logx::Level::info, "RENDELL::INFO"},
-        {logx::Level::debug, "RENDELL::DEBUG"},       {logx::Level::trace, "RENDELL::TRACE"},
+const char *RendellLogger::getLevelName_Unsafe(logr::Level level) const {
+    static const std::unordered_map<logr::Level, const char *> levelNames{
+        {logr::Level::critical, "RENDELL::CRITICAL"}, {logr::Level::error, "RENDELL::ERROR"},
+        {logr::Level::warning, "RENDELL::WARNING"},   {logr::Level::info, "RENDELL::INFO"},
+        {logr::Level::debug, "RENDELL::DEBUG"},       {logr::Level::trace, "RENDELL::TRACE"},
     };
 
     auto it = levelNames.find(level);
@@ -20,9 +20,9 @@ const char *RendellLogger::getLevelName_Unsafe(logx::Level level) const {
     return nullptr;
 }
 
-static std::unique_ptr<logx::Logger> s_logger{nullptr};
+static std::unique_ptr<logr::Logger> s_logger{nullptr};
 
-logx::Logger *get_logger() {
+logr::Logger *get_logger() {
     if (!s_logger) {
         s_logger = std::make_unique<RendellLogger>();
     }

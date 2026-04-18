@@ -181,6 +181,6 @@ endif()
 add_subdirectory(glad)
 target_link_libraries(rendell PRIVATE glad)
 
-# logx
-add_subdirectory(logx)
-target_link_libraries(rendell PRIVATE logx)
+# logr
+add_subdirectory(logr)
+target_link_libraries(rendell PRIVATE logr)

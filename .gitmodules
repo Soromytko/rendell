@@ -1,3 +1,3 @@
-[submodule "logx"]
-	path = logx
-	url = https://github.com/Soromytko/logx
+[submodule "logr"]
+	path = logr
+	url = https://github.com/Soromytko/logr
