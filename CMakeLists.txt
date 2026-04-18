@@ -180,3 +180,7 @@ endif()
 # Glad
 add_subdirectory(glad)
 target_link_libraries(rendell PRIVATE glad)
+
+# logx
+add_subdirectory(logx)
+target_link_libraries(rendell PRIVATE logx)
