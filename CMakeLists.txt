@@ -182,5 +182,8 @@ add_subdirectory(glad)
 target_link_libraries(rendell PRIVATE glad)
 
 # logr
-add_subdirectory(logr)
+
+if(NOT TARGET logr)
+    add_subdirectory(logr)
+endif()
 target_link_libraries(rendell PRIVATE logr)
