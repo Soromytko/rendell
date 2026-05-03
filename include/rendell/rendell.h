@@ -75,6 +75,7 @@ void setClearColor(float r, float g, float b, float a);
 void setClearColor(Color color);
 void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 void setScissors(int x, int y, int width, int height);
+void setVertexCount(uint32_t count);
 void setDrawType(DrawMode drawMode, PrimitiveTopology primitiveTopology,
                  uint32_t instanceCount = 0);
 

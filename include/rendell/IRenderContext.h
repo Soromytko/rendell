@@ -14,6 +14,7 @@ public:
     virtual void setClearColor(Color color) = 0;
     virtual void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
     virtual void setScissors(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
+    virtual void setVertexCount(uint32_t vertexCount) = 0;
     virtual void setDrawType(DrawMode drawMode, PrimitiveTopology primitiveTopology,
                              uint32_t instanceCount = 0) = 0;
 

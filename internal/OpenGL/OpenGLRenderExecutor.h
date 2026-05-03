@@ -19,7 +19,7 @@ private:
                      OpenGLShaderProgram *shaderProgram);
     void executeCommands(const DrawCallState &drawCallState, const ByteBuffer &commandBuffer,
                          OpenGLShaderProgram *shaderProgram);
-    void draw(const DrawCallState &drawCallState, OpenGLVertexArray *vertexArray);
+    void draw(const DrawCallState &drawCallState, int overrideVertexCount = -1);
 
     void updateScissorsState();
     void setScissorsActivity(bool active);

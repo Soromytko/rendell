@@ -17,6 +17,8 @@ struct ResourceId {
     uint16_t version{0};
 
     bool operator==(const ResourceId &) const = default;
+
+    inline bool isValid() const { return version > 0; };
 };
 
 struct UniformId : public ResourceId {};

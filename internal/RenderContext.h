@@ -18,6 +18,7 @@ public:
     void setClearColor(Color color) override;
     void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override;
     void setScissors(uint32_t x, uint32_t y, uint32_t width, uint32_t height) override;
+    void setVertexCount(uint32_t vertexCount) override;
     void setDrawType(DrawMode drawMode, PrimitiveTopology primitiveTopology,
                      uint32_t instanceCount = 0) override;
 

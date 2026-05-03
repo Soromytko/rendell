@@ -25,10 +25,6 @@ void OpenGLRenderExecutor::execute(const DrawCallStateList &drawCallStateList,
 
         // VertexAssembly
         OpenGLVertexArray *vertexArray = processVertexAssembly(drawCallState);
-        if (!vertexArray) {
-            // TODO: warning or error;
-            continue;
-        }
 
         // Uniforms
         setUniforms(drawCallState, uniformBuffer, shaderProgram);
@@ -37,12 +33,16 @@ void OpenGLRenderExecutor::execute(const DrawCallStateList &drawCallStateList,
         executeCommands(drawCallState, commandBuffer, shaderProgram);
 
         // Draw
-        draw(drawCallState, vertexArray);
+        const int vertexCount = vertexArray ? static_cast<int>(vertexArray->getIndexCount()) : -1;
+        draw(drawCallState, vertexCount);
     }
 }
 
 OpenGLShaderProgram *
 OpenGLRenderExecutor::processShaderProgram(const DrawCallState &drawCallState) {
+    if (!drawCallState.shaderProgramId.isValid()) {
+        return nullptr;
+    }
     OpenGLShaderProgram *shaderProgram = shaderProgram =
         getShaderProgramStorage().find(drawCallState.shaderProgramId.index).get();
     if (drawCallState.shaderProgramId != s_currentShaderProgramId) {
@@ -53,6 +53,9 @@ OpenGLRenderExecutor::processShaderProgram(const DrawCallState &drawCallState) {
 }
 
 OpenGLVertexArray *OpenGLRenderExecutor::processVertexAssembly(const DrawCallState &drawCallState) {
+    if (!drawCallState.vertexAssemblyId.isValid()) {
+        return nullptr;
+    }
     OpenGLVertexArray *vertexArray =
         getVertexArrayBufferStorage().find(drawCallState.vertexAssemblyId.index).get();
     if (drawCallState.vertexAssemblyId != s_currentVertexAssemblyId) {
@@ -249,14 +252,14 @@ static GLenum getGLMode(PrimitiveTopology primitiveTopology) {
     return GL_TRIANGLES;
 }
 
-void OpenGLRenderExecutor::draw(const DrawCallState &drawCallState,
-                                OpenGLVertexArray *vertexArray) {
+void OpenGLRenderExecutor::draw(const DrawCallState &drawCallState, int overrideVertexCount) {
     updateScissorsState();
 
     glClear(getGLClearBits(drawCallState.clearBits));
 
     const GLenum glMode = getGLMode(drawCallState.primitiveTopology);
-    const int count = static_cast<int>(vertexArray->getIndexCount());
+    const int count = overrideVertexCount >= 0 ? overrideVertexCount
+                                               : static_cast<int>(drawCallState.vertexCount);
     switch (drawCallState.drawMode) {
     case DrawMode::Arrays: {
         glDrawArrays(glMode, 0, count);

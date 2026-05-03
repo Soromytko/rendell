@@ -298,6 +298,10 @@ void setScissors(int x, int y, int width, int height) {
     getMainThreadRenderContext()->setScissors(x, y, width, height);
 }
 
+void setVertexCount(uint32_t count) {
+    getMainThreadRenderContext()->setVertexCount(count);
+}
+
 void setDrawType(DrawMode drawMode, PrimitiveTopology primitiveTopology, uint32_t instanceCount) {
     getMainThreadRenderContext()->setDrawType(drawMode, primitiveTopology, instanceCount);
 }

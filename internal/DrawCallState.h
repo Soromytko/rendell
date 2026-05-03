@@ -18,6 +18,7 @@ struct DrawCallState final {
     bitfield clearBits{0};
     DrawMode drawMode{DrawMode::Elements};
     PrimitiveTopology primitiveTopology{PrimitiveTopology::Triangles};
+    uint32_t vertexCount{0};
     uint32_t instanceCount{0};
 
     void reset() { *this = DrawCallState(); }

@@ -42,6 +42,10 @@ void RenderContext::setScissors(uint32_t x, uint32_t y, uint32_t width, uint32_t
     _commandBuffer << cmdData.type << cmdData;
 }
 
+void RenderContext::setVertexCount(uint32_t vertexCount) {
+    _currentDrawCallState.vertexCount = vertexCount;
+}
+
 void RenderContext::setDrawType(DrawMode drawMode, PrimitiveTopology primitiveTopology,
                                 uint32_t instanceCount) {
     _currentDrawCallState.drawMode = drawMode;
