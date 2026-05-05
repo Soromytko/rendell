@@ -8,9 +8,10 @@ OpenGLTexture2DArray::OpenGLTexture2DArray(uint32_t width, uint32_t height, uint
     : _format(format) {
     glCreateTextures(GL_TEXTURE_2D_ARRAY, 1, &_id);
 
-    glTextureStorage3D(_id, 1, convertTextureFormatToSizedFormat(_format),
-                       static_cast<GLsizei>(width), static_cast<GLsizei>(height),
-                       static_cast<GLsizei>(count));
+    const auto formatInfo = getOpenGLTextureFormatInfo(_format);
+
+    glTextureStorage3D(_id, 1, formatInfo.internalFormat, static_cast<GLsizei>(width),
+                       static_cast<GLsizei>(height), static_cast<GLsizei>(count));
 
     glTextureParameteri(_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTextureParameteri(_id, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -24,9 +25,10 @@ OpenGLTexture2DArray::~OpenGLTexture2DArray() {
 
 void OpenGLTexture2DArray::setSubTextureData(uint32_t index, uint32_t width, uint32_t height,
                                              const byte_t *pixels) {
+    const auto formatInfo = getOpenGLTextureFormatInfo(_format);
     glTextureSubImage3D(_id, 0, 0, 0, static_cast<GLint>(index), static_cast<GLint>(width),
-                        static_cast<GLint>(height), 1, convertTextureFormatToBaseFormat(_format),
-                        GL_UNSIGNED_BYTE, static_cast<const void *>(pixels));
+                        static_cast<GLint>(height), 1, formatInfo.format, formatInfo.type,
+                        static_cast<const void *>(pixels));
 }
 
 void OpenGLTexture2DArray::bind(GLuint textureBlock) const {

@@ -12,12 +12,14 @@ OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height, TextureFormat 
     , _format(format) {
     glCreateTextures(GL_TEXTURE_2D, 1, &_textureId);
 
-    glTextureStorage2D(_textureId, 1, convertTextureFormatToSizedFormat(format),
-                       static_cast<GLsizei>(width), static_cast<GLsizei>(height));
+    const auto formatInfo = getOpenGLTextureFormatInfo(_format);
+
+    glTextureStorage2D(_textureId, 1, formatInfo.internalFormat, static_cast<GLsizei>(width),
+                       static_cast<GLsizei>(height));
 
     glTextureSubImage2D(_textureId, 0, 0, 0, static_cast<GLsizei>(width),
-                        static_cast<GLsizei>(height), convertTextureFormatToBaseFormat(format),
-                        GL_UNSIGNED_BYTE, static_cast<const void *>(pixels));
+                        static_cast<GLsizei>(height), formatInfo.format, formatInfo.type,
+                        static_cast<const void *>(pixels));
 
     glTextureParameteri(_textureId, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTextureParameteri(_textureId, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -46,10 +48,12 @@ void OpenGLTexture2D::setSubData(uint32_t width, uint32_t height, const byte_t *
         height = _height - heightOffset;
     }
 
+    const auto formatInfo = getOpenGLTextureFormatInfo(_format);
+
     glTextureSubImage2D(_textureId, 0, static_cast<GLint>(widthOffset),
                         static_cast<GLint>(heightOffset), static_cast<GLsizei>(width),
-                        static_cast<GLsizei>(height), convertTextureFormatToBaseFormat(_format),
-                        GL_UNSIGNED_BYTE, static_cast<const void *>(pixels));
+                        static_cast<GLsizei>(height), formatInfo.format, formatInfo.type,
+                        static_cast<const void *>(pixels));
 }
 
 void OpenGLTexture2D::bind(GLuint textureBlock) const {

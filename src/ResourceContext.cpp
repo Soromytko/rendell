@@ -130,7 +130,7 @@ Texture2DId ResourceContext::createTexture2D(uint32_t width, uint32_t height, Te
     cmdData.height = height;
     cmdData.format = format;
     cmdData.dataKey = _resourceDataProvider->byteContainerStorage.store(
-        ByteContainer(pixels, width * height * getTextureFormatSize(format)));
+        ByteContainer(pixels, width * height * getTextureFormatInfo(format).blockSize));
     _resourceCommandBuffer << cmdData.type << cmdData;
     return cmdData.id;
 }
@@ -302,7 +302,7 @@ void ResourceContext::setSubData(Texture2DId texture2DId, uint32_t width, uint32
     cmdData.widthOffset = widthOffset;
     cmdData.heightOffset = heightOffset;
     cmdData.dataKey = _resourceDataProvider->byteContainerStorage.store(
-        ByteContainer(pixels, width * height * getTextureFormatSize(textureFormat)));
+        ByteContainer(pixels, width * height * getTextureFormatInfo(textureFormat).blockSize));
     _resourceCommandBuffer << cmdData.type << cmdData;
 }
 
@@ -320,7 +320,7 @@ void ResourceContext::setSubData(Texture2DArrayId texture2DArrayId, uint32_t ind
     cmdData.widthOffset = widthOffset;
     cmdData.heightOffset = heightOffset;
     cmdData.dataKey = _resourceDataProvider->byteContainerStorage.store(
-        ByteContainer(pixels, width * height * getTextureFormatSize(textureFormat)));
+        ByteContainer(pixels, width * height * getTextureFormatInfo(textureFormat).blockSize));
     _resourceCommandBuffer << cmdData.type << cmdData;
 }
 

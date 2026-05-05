@@ -3,7 +3,12 @@
 #include <rendell/TextureFormat.h>
 
 namespace rendell {
-GLint convertTextureFormatToBaseFormat(TextureFormat format);
-GLint convertTextureFormatToSizedFormat(TextureFormat format);
+struct OpenGLTextureFormatInfo {
+    TextureFormat textureFormat;
+    GLenum internalFormat;
+    GLenum format;
+    GLenum type;
+};
 
+const OpenGLTextureFormatInfo &getOpenGLTextureFormatInfo(TextureFormat format);
 } // namespace rendell
