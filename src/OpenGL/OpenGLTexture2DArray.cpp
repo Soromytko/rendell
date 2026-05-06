@@ -1,6 +1,6 @@
 #include <OpenGL/OpenGLTexture2DArray.h>
 
-#include "OpenGLUtils.h"
+#include "OpenGLTextureFormat.h"
 
 namespace rendell {
 OpenGLTexture2DArray::OpenGLTexture2DArray(uint32_t width, uint32_t height, uint32_t count,

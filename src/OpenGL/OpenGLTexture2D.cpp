@@ -2,7 +2,7 @@
 
 #include <logging.h>
 
-#include "OpenGLUtils.h"
+#include "OpenGLTextureFormat.h"
 
 namespace rendell {
 OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height, TextureFormat format,

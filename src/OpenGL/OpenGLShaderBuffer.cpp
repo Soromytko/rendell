@@ -1,7 +1,5 @@
 ﻿#include <OpenGL/OpenGLShaderBuffer.h>
 
-#include "OpenGLUtils.h"
-
 namespace rendell {
 OpenGLShaderBuffer::OpenGLShaderBuffer(const byte_t *data, size_t size, bool isDynamic) {
     glGenBuffers(1, &_ssbo);

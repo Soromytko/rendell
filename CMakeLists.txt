@@ -30,7 +30,7 @@ set(SOURCE_FILES
     src/OpenGL/OpenGLRenderExecutor.cpp
     src/OpenGL/OpenGLResourceStorage.cpp
     src/OpenGL/glad_initialization.cpp
-    src/OpenGL/OpenGLUtils.cpp
+    src/OpenGL/OpenGLTextureFormat.cpp
     src/OpenGL/OpenGLIndexBuffer.cpp
     src/OpenGL/OpenGLVertexBuffer.cpp
     src/OpenGL/OpenGLVertexBufferLayout.cpp
@@ -119,7 +119,7 @@ set(HEADER_FILES
 
     src/OpenGL/glad_initialization.h
     src/OpenGL/OpenGLShaderCompilation.h
-    src/OpenGL/OpenGLUtils.h
+    src/OpenGL/OpenGLTextureFormat.h
 
     include/rendell/oop/raii.h
     include/rendell/oop/rendell_oop.h
