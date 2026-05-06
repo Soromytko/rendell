@@ -19,10 +19,10 @@ OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height, TextureFormat 
                         static_cast<GLsizei>(height), convertTextureFormatToBaseFormat(format),
                         GL_UNSIGNED_BYTE, static_cast<const void *>(pixels));
 
-    glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTextureParameteri(_textureId, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(_textureId, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTextureParameteri(_textureId, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTextureParameteri(_textureId, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 OpenGLTexture2D::~OpenGLTexture2D() {
