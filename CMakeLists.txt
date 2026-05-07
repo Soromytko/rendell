@@ -26,6 +26,7 @@ set(SOURCE_FILES
     src/TextureFormat.cpp
     src/OpenGL/OpenGLShaderCompilation.cpp
     src/OpenGL/OpenGLRenderPipeline.cpp
+    src/OpenGL/OpenGLRenderPipelineSync.cpp
     src/OpenGL/OpenGLResourceExecutor.cpp
     src/OpenGL/OpenGLRenderExecutor.cpp
     src/OpenGL/OpenGLResourceStorage.cpp
@@ -99,6 +100,7 @@ set(HEADER_FILES
 
     internal/OpenGL/OpenGLContext.h
     internal/OpenGL/OpenGLRenderPipeline.h
+    internal/OpenGL/OpenGLRenderPipelineSync.h
     internal/OpenGL/OpenGLResourceExecutor.h
     internal/OpenGL/OpenGLRenderExecutor.h
     internal/OpenGL/OpenGLIndexBuffer.h

@@ -10,6 +10,7 @@ enum class SpecificationAPI {
 
 struct Initer {
     SpecificationAPI api = SpecificationAPI::OpenGL45;
+    bool useSeparateRenderThread = true;
 };
 
 struct NativeView {

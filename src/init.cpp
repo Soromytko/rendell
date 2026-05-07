@@ -36,8 +36,8 @@ void release() {
 }
 
 NativeViewId registerNativeView(NativeView nativeView) {
-    const NativeViewId nativeViewId =
-        RenderPipelineStorage::getInstance()->createRenderPipeline(s_initer.api, nativeView);
+    const NativeViewId nativeViewId = RenderPipelineStorage::getInstance()->createRenderPipeline(
+        s_initer.api, nativeView, s_initer.useSeparateRenderThread);
     s_nativeViews.push_back(nativeViewId);
     return nativeViewId;
 }

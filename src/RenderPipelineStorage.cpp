@@ -1,6 +1,7 @@
 #include <RenderPipelineStorage.h>
 
 #include <OpenGL/OpenGLRenderPipeline.h>
+#include <OpenGL/OpenGLRenderPipelineSync.h>
 #include <logging.h>
 
 namespace rendell {
@@ -19,6 +20,26 @@ void RenderPipelineStorage::release() {
 RenderPipelineStorage *RenderPipelineStorage::getInstance() {
     assert(s_renderPipelineStorage);
     return s_renderPipelineStorage;
+}
+
+static RenderPipelineSharedPtr createSpecificRenderPipelineSync(SpecificationAPI api,
+                                                                NativeView nativeView) {
+    switch (api) {
+    case SpecificationAPI::OpenGL45: {
+        return std::make_shared<OpenGLRenderPipelineSync>(nativeView);
+    }
+    case SpecificationAPI::Vulkan: {
+        return nullptr;
+    }
+    case SpecificationAPI::DirectX12: {
+        return nullptr;
+    }
+    default: {
+        RENDELL_CRITICAL("Unknown graphics API!");
+        assert(false);
+    }
+    }
+    return nullptr;
 }
 
 static RenderPipelineSharedPtr createSpecificRenderPipeline(SpecificationAPI api,
@@ -51,8 +72,11 @@ const std::vector<NativeViewId> &RenderPipelineStorage::getNativeViewIds() const
 }
 
 NativeViewId RenderPipelineStorage::createRenderPipeline(SpecificationAPI api,
-                                                         NativeView nativeView) {
-    RenderPipelineSharedPtr renderPipeline = createSpecificRenderPipeline(api, nativeView);
+                                                         NativeView nativeView,
+                                                         bool useSeparateRenderThread) {
+    RenderPipelineSharedPtr renderPipeline =
+        useSeparateRenderThread ? createSpecificRenderPipeline(api, nativeView)
+                                : createSpecificRenderPipelineSync(api, nativeView);
     assert(renderPipeline);
     if (!renderPipeline->isInitialized()) {
         return 0;

@@ -19,7 +19,8 @@ public:
 
     const std::vector<NativeViewId> &getNativeViewIds() const;
 
-    NativeViewId createRenderPipeline(SpecificationAPI api, NativeView nativeView);
+    NativeViewId createRenderPipeline(SpecificationAPI api, NativeView nativeView,
+                                      bool useSeparateRenderThread);
     void releaseRenderPipeline(NativeViewId nativeViewId);
     RenderPipelineSharedPtr getRenderPipeline(NativeViewId nativeViewId) const;
 
