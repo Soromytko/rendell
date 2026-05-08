@@ -15,25 +15,25 @@ public:
         std::unique_lock<std::mutex> lock(_mutex);
         _conditionVariable.wait(lock, [this] { return !_data.empty(); });
 
-        T result = _data.front();
+        T result = std::move(_data.front());
         _data.pop();
         _count--;
-        return result;
+        return std::move(result);
     }
 
-    void push(const T &item) {
+    void push(T &&item) {
         {
             std::lock_guard<std::mutex> lock(_mutex);
-            _data.push(item);
+            _data.push(std::move(item));
             _count++;
         }
         _conditionVariable.notify_one();
     }
 
 private:
-    size_t _size;
-    size_t _count;
-    std::queue<T> _data;
+    size_t _size{};
+    size_t _count{};
+    std::queue<T> _data{};
 
     std::mutex _mutex;
     std::condition_variable _conditionVariable;

@@ -8,11 +8,11 @@ namespace rendell {
 ByteRingBuffer::ByteRingBuffer(size_t chunkCapacity)
     : _chunkCapacity(chunkCapacity) {
     _headChunk = createChunk(_chunkCapacity);
-    _tailChunk = _headChunk;
+    _tailChunk = _headChunk.get();
 }
 
-ByteRingBuffer::ChunkSharedPtr ByteRingBuffer::createChunk(size_t capacity) const {
-    ChunkSharedPtr chunk = std::make_shared<Chunk>(capacity);
+ByteRingBuffer::ChunkPtr ByteRingBuffer::createChunk(size_t capacity) const {
+    ChunkPtr chunk = std::make_unique<Chunk>(capacity);
     return chunk;
 }
 
@@ -26,8 +26,8 @@ void ByteRingBuffer::write(const uint8_t *inputData, size_t dataSize) {
         if (remain > 0) {
             assert(_tailChunk->isFull());
             if (!_tailChunk->getNext()) {
-                ChunkSharedPtr newTailChunk = createChunk(_chunkCapacity);
-                _tailChunk->setNext(newTailChunk);
+                ChunkPtr newTailChunk = createChunk(_chunkCapacity);
+                _tailChunk->setNext(std::move(newTailChunk));
             }
             _tailChunk = _tailChunk->getNext();
             assert(_tailChunk);
@@ -44,8 +44,8 @@ void ByteRingBuffer::read(uint8_t *outputData, size_t dataSize) {
 
         if (_headChunk->isEmpty()) {
             // TODO: Debug warning?
-            assert(_headChunk != _tailChunk);
-            _headChunk = _headChunk->getNext();
+            assert(_headChunk.get() != _tailChunk);
+            _headChunk = std::move(_headChunk->releaseNext());
         }
     }
 }
@@ -54,9 +54,9 @@ void ByteRingBuffer::reset() {
     Chunk *chunk = _headChunk.get();
     while (chunk) {
         chunk->reset();
-        chunk = chunk->getNext().get();
+        chunk = chunk->getNext();
     }
-    _tailChunk = _headChunk;
+    _tailChunk = _headChunk.get();
 }
 
 ByteRingBuffer::Chunk::Chunk(size_t capacity) {
@@ -65,8 +65,8 @@ ByteRingBuffer::Chunk::Chunk(size_t capacity) {
     _data.reset(rawData);
 }
 
-void ByteRingBuffer::Chunk::setNext(ChunkSharedPtr next) {
-    _next = next;
+void ByteRingBuffer::Chunk::setNext(ChunkPtr next) {
+    _next = std::move(next);
 }
 
 size_t ByteRingBuffer::Chunk::write(const uint8_t *inputData, size_t dataSize) {

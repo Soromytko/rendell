@@ -2,8 +2,6 @@
 #include "RenderPipeline.h"
 #include <rendell/init_types.h>
 
-#include <functional>
-
 namespace rendell {
 class RenderPipelineStorage final {
 public:
@@ -22,10 +20,10 @@ public:
     NativeViewId createRenderPipeline(SpecificationAPI api, NativeView nativeView,
                                       bool useSeparateRenderThread);
     void releaseRenderPipeline(NativeViewId nativeViewId);
-    RenderPipelineSharedPtr getRenderPipeline(NativeViewId nativeViewId) const;
+    RenderPipeline *getRenderPipeline(NativeViewId nativeViewId) const;
 
 private:
     std::vector<NativeViewId> _nativeViewIds;
-    std::vector<RenderPipelineSharedPtr> _renderPipelines;
+    std::vector<std::unique_ptr<RenderPipeline>> _renderPipelines;
 };
 } // namespace rendell

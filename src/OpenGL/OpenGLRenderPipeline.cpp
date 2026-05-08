@@ -41,14 +41,14 @@ void OpenGLRenderPipeline::run() {
     _renderThread = std::thread(&OpenGLRenderPipeline::rendering, this);
 }
 
-void OpenGLRenderPipeline::submitResourceContext(ResourceContext *resourceContext) {
+void OpenGLRenderPipeline::submitResourceContext(std::unique_ptr<ResourceContext> resourceContext) {
     std::lock_guard<std::mutex> lock(_renderingMutex);
-    _resourceContextBuffer.push(resourceContext);
+    _resourceContextBuffer.push(std::move(resourceContext));
 }
 
-void OpenGLRenderPipeline::submitRenderContext(RenderContext *renderContext) {
+void OpenGLRenderPipeline::submitRenderContext(std::unique_ptr<RenderContext> renderContext) {
     std::lock_guard<std::mutex> lock(_renderingMutex);
-    _renderContextBuffer.push(renderContext);
+    _renderContextBuffer.push(std::move(renderContext));
 }
 
 void OpenGLRenderPipeline::waitAndRender() {
@@ -69,7 +69,7 @@ void OpenGLRenderPipeline::rendering() {
         // Execute ResourceContext
         {
             while (!_resourceContextBuffer.isEmpty()) {
-                ResourceContext *resourceContext = _resourceContextBuffer.pop();
+                auto resourceContext = _resourceContextBuffer.pop();
                 assert(resourceContext);
 
                 const ByteBuffer &commandBuffer = resourceContext->getCommandBuffer();
@@ -79,14 +79,14 @@ void OpenGLRenderPipeline::rendering() {
                 _resourceExecutor.execute(commandBuffer, dataProvider);
 
                 resourceContext->reset();
-                _resourceContextReleasedCallback(resourceContext);
+                _resourceContextReleasedCallback(std::move(resourceContext));
             }
         }
 
         // Execute RenderContext.
         {
             while (!_renderContextBuffer.isEmpty()) {
-                RenderContext *renderContext = _renderContextBuffer.pop();
+                auto renderContext = _renderContextBuffer.pop();
                 assert(renderContext);
 
                 const DrawCallStateList &drawCallStateList = renderContext->getDrawCallStateList();
@@ -96,7 +96,7 @@ void OpenGLRenderPipeline::rendering() {
                 _renderExecutor.execute(drawCallStateList, uniformBuffer, commandBuffer);
 
                 renderContext->reset();
-                _renderContextReleasedCallback(renderContext);
+                _renderContextReleasedCallback(std::move(renderContext));
             }
             _context->swapBuffers();
         }

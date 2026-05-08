@@ -1,12 +1,9 @@
 #pragma once
-#include <rendell/DataType.h>
 #include <rendell/ResourceId.h>
 #include <rendell/VertexLayout.h>
-#include <rendell/oop/IndexBuffer.h>
 #include <rendell/oop/VertexBuffer.h>
 #include <rendell/oop/raii.h>
 
-#include <initializer_list>
 #include <vector>
 
 namespace rendell {
@@ -16,8 +13,7 @@ void setVertexAssembly(VertexAssemblyId vertexAssemblyId);
 namespace oop {
 class VertexAssembly final {
 public:
-    VertexAssembly(IndexBufferSharedPtr indexBuffer,
-                   std::vector<VertexBufferSharedPtr> vertexBuffers,
+    VertexAssembly(IndexBufferId indexBufferId, std::vector<VertexBufferId> vertexBufferIds,
                    std::vector<VertexLayout> vertexLayouts = {});
     ~VertexAssembly();
 
@@ -30,7 +26,6 @@ public:
 private:
     VertexAssemblyId _id;
 
-    IndexBufferSharedPtr _indexBuffer;
     std::vector<VertexBufferSharedPtr> _vertexBuffers;
 };
 

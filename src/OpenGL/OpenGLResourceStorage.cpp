@@ -11,8 +11,8 @@ static OpenGLResourceStorage<OpenGLUniformBufferUniquePtr> s_uniformBufferStorag
 static OpenGLResourceStorage<OpenGLShaderBufferUniquePtr> s_shaderBufferStorage;
 static OpenGLResourceStorage<OpenGLTexture2DUniquePtr> s_texture2DStorage;
 static OpenGLResourceStorage<OpenGLTexture2DArrayUniquePtr> s_texture2DArrayStorage;
-static OpenGLResourceStorage<OpenGLVertexShaderSharedPtr> s_vertexShaderStorage;
-static OpenGLResourceStorage<OpenGLFragmentShaderSharedPtr> s_fragmentShaderStorage;
+static OpenGLResourceStorage<OpenGLVertexShaderUniquePtr> s_vertexShaderStorage;
+static OpenGLResourceStorage<OpenGLFragmentShaderUniquePtr> s_fragmentShaderStorage;
 static OpenGLResourceStorage<OpenGLShaderProgramUniquePtr> s_shaderProgramStorage;
 
 static std::unordered_map<size_t, std::string> s_uniformNames;
@@ -47,11 +47,11 @@ OpenGLResourceStorage<OpenGLTexture2DArrayUniquePtr> &getTexture2DArrayStorage()
     return s_texture2DArrayStorage;
 }
 
-OpenGLResourceStorage<OpenGLVertexShaderSharedPtr> &getVertexShaderStorage() {
+OpenGLResourceStorage<OpenGLVertexShaderUniquePtr> &getVertexShaderStorage() {
     return s_vertexShaderStorage;
 }
 
-OpenGLResourceStorage<OpenGLFragmentShaderSharedPtr> &getFragmentShaderStorage() {
+OpenGLResourceStorage<OpenGLFragmentShaderUniquePtr> &getFragmentShaderStorage() {
     return s_fragmentShaderStorage;
 }
 

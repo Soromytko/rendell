@@ -5,59 +5,116 @@
 #include <logging.h>
 #include <rendell/DataType.h>
 
+#include <ContextPool.h>
+
 #include "RenderContext.h"
-#include "RenderContextPool.h"
 #include "RenderPipeline.h"
 #include "ResourceContext.h"
-#include "ResourceContextPool.h"
 
 #include <memory>
-#include <mutex>
-#include <thread>
 
 // Static data
 namespace rendell {
-static ResourceContext *s_resourceContext{nullptr};
-static RenderContext *s_renderContext{nullptr};
+class ResourceContextPool final : public ContextPool<ResourceContext> {
+} static s_resourceContextPool(config::resourceContextPoolSize);
 
-static ResourceContext *getMainThreadResourceContext() {
+class RenderContextPool final : public ContextPool<RenderContext> {
+} static s_renderContextPool(config::renderContextPoolSize);
+
+static std::unique_ptr<ResourceContext> s_resourceContext{nullptr};
+static std::unique_ptr<RenderContext> s_renderContext{nullptr};
+
+static const std::unique_ptr<ResourceContext> &getMainThreadResourceContext() {
     if (!s_resourceContext) {
-        s_resourceContext = ResourceContextPool::getInstance()->getResourceContext();
+        s_resourceContext = s_resourceContextPool.getContext();
     }
     assert(s_resourceContext);
     return s_resourceContext;
 }
 
-static RenderContext *getMainThreadRenderContext() {
+static const std::unique_ptr<RenderContext> &getMainThreadRenderContext() {
     if (!s_renderContext) {
-        s_renderContext = RenderContextPool::getInstance()->getRenderContext();
+        s_renderContext = s_renderContextPool.getContext();
     }
     assert(s_renderContext);
     return s_renderContext;
+}
+
+template <typename ToResource, typename FromResource>
+static std::unique_ptr<ToResource> castResource(std::unique_ptr<FromResource> context) {
+    assert(dynamic_cast<ToResource *>(context.get()) != nullptr);
+    return std::unique_ptr<ToResource>(static_cast<ToResource *>(context.release()));
+}
+
+static RenderPipeline *getRenderPipeline(NativeViewId nativeViewid);
+static void submitResourceContext(RenderPipeline *renderPipeline,
+                                  std::unique_ptr<ResourceContext> resourceContext);
+static void submitRenderContext(RenderPipeline *renderPipeline,
+                                std::unique_ptr<RenderContext> renderContext);
+
+static void endResourceCommands(std::unique_ptr<IResourceContext> resourceContext,
+                                NativeViewId nativeViewid) {
+    auto casted = castResource<ResourceContext>(std::move(resourceContext));
+    submitResourceContext(getRenderPipeline(nativeViewid), std::move(casted));
+}
+
+static void endRenderCommands(std::unique_ptr<IRenderContext> renderContext,
+                              NativeViewId nativeViewid) {
+    auto casted = castResource<RenderContext>(std::move(renderContext));
+    submitRenderContext(getRenderPipeline(nativeViewid), std::move(casted));
 }
 } // namespace rendell
 
 // Implementation
 namespace rendell {
-static void submitResourceContext(RenderPipelineSharedPtr renderPipeline,
-                                  ResourceContext *resourceContext) {
+static NativeViewId getMainNativeViewId();
+
+void ContextWrapper<IResourceContext>::end() {
+    if (_context) {
+        const NativeViewId nativeViewId = getMainNativeViewId();
+        endResourceCommands(std::move(_context), nativeViewId);
+    }
+}
+
+void ContextWrapper<IResourceContext>::end(NativeViewId nativeViewId) {
+    if (_context) {
+        endResourceCommands(std::move(_context), nativeViewId);
+    }
+}
+
+void ContextWrapper<IRenderContext>::end() {
+    if (_context) {
+        const NativeViewId nativeViewId = getMainNativeViewId();
+        endRenderCommands(std::move(_context), nativeViewId);
+    }
+}
+
+void ContextWrapper<IRenderContext>::end(NativeViewId nativeViewId) {
+    if (_context) {
+        endRenderCommands(std::move(_context), nativeViewId);
+    }
+}
+
+static void submitResourceContext(RenderPipeline *renderPipeline,
+                                  std::unique_ptr<ResourceContext> resourceContext) {
     assert(renderPipeline);
     assert(resourceContext);
-    renderPipeline->submitResourceContext(resourceContext);
+    renderPipeline->submitResourceContext(std::move(resourceContext));
     renderPipeline->setResourceContextReleasedCallback(
-        [](ResourceContext *releasedResourceContext) {
-            ResourceContextPool::getInstance()->returnResourceContext(releasedResourceContext);
+        [](std::unique_ptr<ResourceContext> releasedResourceContext) {
+            s_resourceContextPool.returnContext(std::move(releasedResourceContext));
         });
 }
 
-static void submitRenderContext(RenderPipelineSharedPtr renderPipeline,
-                                RenderContext *renderContext) {
+static void submitRenderContext(RenderPipeline *renderPipeline,
+                                std::unique_ptr<RenderContext> renderContext) {
     assert(renderPipeline);
     assert(renderContext);
-    renderPipeline->submitRenderContext(renderContext);
-    renderPipeline->setRenderContextReleasedCallback([](RenderContext *releasedRenderContext) {
-        RenderContextPool::getInstance()->returnRenderContext(releasedRenderContext);
-    });
+    renderPipeline->submitRenderContext(std::move(renderContext));
+    renderPipeline->setRenderContextReleasedCallback(
+        [](std::unique_ptr<RenderContext> releasedRenderContext) {
+            s_renderContextPool.returnContext(std::move(releasedRenderContext));
+        });
 }
 
 IndexBufferId createIndexBuffer(const index_t *data, size_t size) {
@@ -402,47 +459,22 @@ static NativeViewId getMainNativeViewId() {
     return nativeViewIds[0];
 }
 
-static RenderPipelineSharedPtr getRenderPipeline(NativeViewId nativeViewid) {
-    RenderPipelineSharedPtr result =
-        RenderPipelineStorage::getInstance()->getRenderPipeline(nativeViewid);
+static RenderPipeline *getRenderPipeline(NativeViewId nativeViewid) {
+    RenderPipeline *result = RenderPipelineStorage::getInstance()->getRenderPipeline(nativeViewid);
     assert(result);
     return result;
 }
 
-IResourceContext *beginResourceCommands() {
-    ResourceContext *resourceContext = ResourceContextPool::getInstance()->getResourceContext();
+ResourceContextWrapper beginResourceCommands() {
+    auto resourceContext = s_resourceContextPool.getContext();
     assert(resourceContext);
-    return resourceContext;
+    return ResourceContextWrapper(std::move(resourceContext));
 }
 
-void endResourceCommands(IResourceContext *resourceContext) {
-    const NativeViewId nativeViewId = getMainNativeViewId();
-    endResourceCommands(resourceContext, nativeViewId);
-}
-
-void endResourceCommands(IResourceContext *resourceContext, NativeViewId nativeViewid) {
-    ResourceContext *castedResourceContext = dynamic_cast<ResourceContext *>(resourceContext);
-    assert(castedResourceContext);
-    RenderPipelineSharedPtr renderPipeline = getRenderPipeline(nativeViewid);
-    submitResourceContext(renderPipeline, castedResourceContext);
-}
-
-IRenderContext *beginRenderCommands() {
-    RenderContext *renderContext = RenderContextPool::getInstance()->getRenderContext();
+RenderContextWrapper beginRenderCommands() {
+    auto renderContext = s_renderContextPool.getContext();
     assert(renderContext);
-    return renderContext;
-}
-
-void endRenderCommands(IRenderContext *renderContext) {
-    const NativeViewId nativeVeiwId = getMainNativeViewId();
-    endRenderCommands(renderContext, nativeVeiwId);
-}
-
-void endRenderCommands(IRenderContext *renderContext, NativeViewId nativeViewId) {
-    RenderContext *castedRenderContext = dynamic_cast<RenderContext *>(renderContext);
-    assert(castedRenderContext);
-    RenderPipelineSharedPtr renderPipeline = getRenderPipeline(nativeViewId);
-    submitRenderContext(renderPipeline, castedRenderContext);
+    return RenderContextWrapper(std::move(renderContext));
 }
 
 void renderFrame() {
@@ -451,16 +483,16 @@ void renderFrame() {
 }
 
 void renderFrame(NativeViewId nativeViewId) {
-    RenderPipelineSharedPtr renderPipeline =
+    RenderPipeline *renderPipeline =
         RenderPipelineStorage::getInstance()->getRenderPipeline(nativeViewId);
 
     if (s_resourceContext) {
-        submitResourceContext(renderPipeline, s_resourceContext);
+        submitResourceContext(renderPipeline, std::move(s_resourceContext));
         s_resourceContext = nullptr;
     }
 
     if (s_renderContext) {
-        submitRenderContext(renderPipeline, s_renderContext);
+        submitRenderContext(renderPipeline, std::move(s_renderContext));
         s_renderContext = nullptr;
     }
 

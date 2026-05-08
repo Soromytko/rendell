@@ -18,8 +18,8 @@ public:
 
     void run() override;
 
-    void submitResourceContext(ResourceContext *resourceContext) override;
-    void submitRenderContext(RenderContext *renderContext) override;
+    void submitResourceContext(std::unique_ptr<ResourceContext> resourceContext) override;
+    void submitRenderContext(std::unique_ptr<RenderContext> renderContext) override;
 
     void waitAndRender() override;
 
@@ -30,7 +30,7 @@ private:
     OpenGLResourceExecutor _resourceExecutor;
     OpenGLRenderExecutor _renderExecutor;
 
-    RingBuffer<ResourceContext *> _resourceContextBuffer;
-    RingBuffer<RenderContext *> _renderContextBuffer;
+    RingBuffer<std::unique_ptr<ResourceContext>> _resourceContextBuffer;
+    RingBuffer<std::unique_ptr<RenderContext>> _renderContextBuffer;
 };
 } // namespace rendell

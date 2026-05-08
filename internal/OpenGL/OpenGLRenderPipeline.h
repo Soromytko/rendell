@@ -6,9 +6,9 @@
 #include "OpenGLResourceExecutor.h"
 #include <Buffers/RingBuffer.h>
 #include <rendell/init_types.h>
-#include <rendell/oop/raii.h>
 
 #include <condition_variable>
+#include <memory>
 #include <mutex>
 #include <thread>
 
@@ -23,8 +23,8 @@ public:
 
     void run() override;
 
-    void submitResourceContext(ResourceContext *resourceContext) override;
-    void submitRenderContext(RenderContext *renderContext) override;
+    void submitResourceContext(std::unique_ptr<ResourceContext> resourceContext) override;
+    void submitRenderContext(std::unique_ptr<RenderContext> renderContext) override;
 
     void waitAndRender() override;
 
@@ -37,8 +37,8 @@ private:
     OpenGLResourceExecutor _resourceExecutor;
     OpenGLRenderExecutor _renderExecutor;
 
-    RingBuffer<ResourceContext *> _resourceContextBuffer;
-    RingBuffer<RenderContext *> _renderContextBuffer;
+    RingBuffer<std::unique_ptr<ResourceContext>> _resourceContextBuffer;
+    RingBuffer<std::unique_ptr<RenderContext>> _renderContextBuffer;
 
     std::mutex _renderingMutex;
 
@@ -47,6 +47,4 @@ private:
     bool _running{false};
     bool _hasRenderTask{false};
 };
-
-RENDELL_USE_RAII_FACTORY(OpenGLRenderPipeline)
 } // namespace rendell

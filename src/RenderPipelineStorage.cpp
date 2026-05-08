@@ -22,11 +22,11 @@ RenderPipelineStorage *RenderPipelineStorage::getInstance() {
     return s_renderPipelineStorage;
 }
 
-static RenderPipelineSharedPtr createSpecificRenderPipelineSync(SpecificationAPI api,
-                                                                NativeView nativeView) {
+static std::unique_ptr<RenderPipeline> createSpecificRenderPipelineSync(SpecificationAPI api,
+                                                                        NativeView nativeView) {
     switch (api) {
     case SpecificationAPI::OpenGL45: {
-        return std::make_shared<OpenGLRenderPipelineSync>(nativeView);
+        return std::make_unique<OpenGLRenderPipelineSync>(nativeView);
     }
     case SpecificationAPI::Vulkan: {
         return nullptr;
@@ -42,11 +42,11 @@ static RenderPipelineSharedPtr createSpecificRenderPipelineSync(SpecificationAPI
     return nullptr;
 }
 
-static RenderPipelineSharedPtr createSpecificRenderPipeline(SpecificationAPI api,
-                                                            NativeView nativeView) {
+static std::unique_ptr<RenderPipeline> createSpecificRenderPipeline(SpecificationAPI api,
+                                                                    NativeView nativeView) {
     switch (api) {
     case SpecificationAPI::OpenGL45: {
-        return makeOpenGLRenderPipeline(nativeView);
+        return std::make_unique<OpenGLRenderPipeline>(nativeView);
     }
     case SpecificationAPI::Vulkan: {
         return nullptr;
@@ -74,7 +74,7 @@ const std::vector<NativeViewId> &RenderPipelineStorage::getNativeViewIds() const
 NativeViewId RenderPipelineStorage::createRenderPipeline(SpecificationAPI api,
                                                          NativeView nativeView,
                                                          bool useSeparateRenderThread) {
-    RenderPipelineSharedPtr renderPipeline =
+    std::unique_ptr<RenderPipeline> renderPipeline =
         useSeparateRenderThread ? createSpecificRenderPipeline(api, nativeView)
                                 : createSpecificRenderPipelineSync(api, nativeView);
     assert(renderPipeline);
@@ -87,10 +87,12 @@ NativeViewId RenderPipelineStorage::createRenderPipeline(SpecificationAPI api,
 
     NativeViewId nativeViewId = generateNativeViewId();
 
-    _nativeViewIds.push_back(nativeViewId);
-    _renderPipelines.push_back(renderPipeline);
+    RenderPipeline *rawRenderPipelinePtr = renderPipeline.get();
 
-    renderPipeline->run();
+    _nativeViewIds.push_back(nativeViewId);
+    _renderPipelines.push_back(std::move(renderPipeline));
+
+    rawRenderPipelinePtr->run();
 
     return nativeViewId;
 }
@@ -104,14 +106,14 @@ void RenderPipelineStorage::releaseRenderPipeline(NativeViewId nativeViewId) {
     _renderPipelines.erase(_renderPipelines.begin() + index);
 }
 
-RenderPipelineSharedPtr RenderPipelineStorage::getRenderPipeline(NativeViewId nativeViewId) const {
+RenderPipeline *RenderPipelineStorage::getRenderPipeline(NativeViewId nativeViewId) const {
     assert(nativeViewId != InvalidNativeViewId);
     const size_t index = static_cast<size_t>(nativeViewId - 1);
     if (index >= _renderPipelines.size()) {
         // TODO: warning!
         return nullptr;
     }
-    return _renderPipelines[index];
+    return _renderPipelines[index].get();
 }
 
 } // namespace rendell

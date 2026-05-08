@@ -47,8 +47,8 @@ OpenGLResourceStorage<OpenGLUniformBufferUniquePtr> &getUniformBufferStorage();
 OpenGLResourceStorage<OpenGLShaderBufferUniquePtr> &getShaderBufferStorage();
 OpenGLResourceStorage<OpenGLTexture2DUniquePtr> &getTexture2DStorage();
 OpenGLResourceStorage<OpenGLTexture2DArrayUniquePtr> &getTexture2DArrayStorage();
-OpenGLResourceStorage<OpenGLVertexShaderSharedPtr> &getVertexShaderStorage();
-OpenGLResourceStorage<OpenGLFragmentShaderSharedPtr> &getFragmentShaderStorage();
+OpenGLResourceStorage<OpenGLVertexShaderUniquePtr> &getVertexShaderStorage();
+OpenGLResourceStorage<OpenGLFragmentShaderUniquePtr> &getFragmentShaderStorage();
 OpenGLResourceStorage<OpenGLShaderProgramUniquePtr> &getShaderProgramStorage();
 
 void storeUniformName(size_t key, std::string &&name);

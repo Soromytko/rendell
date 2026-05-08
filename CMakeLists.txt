@@ -18,8 +18,6 @@ set(SOURCE_FILES
     src/ResourceIdStorage.cpp
     src/ResourceContext.cpp
     src/RenderContext.cpp
-    src/ResourceContextPool.cpp
-    src/RenderContextPool.cpp
     src/RenderPipelineStorage.cpp
     src/ResourceExecutor.cpp
     src/DataContainerStorage.cpp
@@ -79,8 +77,7 @@ set(HEADER_FILES
     internal/logging.h
     internal/Command.h
     internal/Pool.h
-    internal/ResourceContextPool.h
-    internal/RenderContextPool.h
+    internal/ContextPool.h
     internal/RenderPipelineStorage.h
     internal/ResourceIdStorage.h
     internal/ResourceIdStorages.h

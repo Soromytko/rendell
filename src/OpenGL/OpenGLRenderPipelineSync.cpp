@@ -30,12 +30,13 @@ void OpenGLRenderPipelineSync::run() {
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
-void OpenGLRenderPipelineSync::submitResourceContext(ResourceContext *resourceContext) {
-    _resourceContextBuffer.push(resourceContext);
+void OpenGLRenderPipelineSync::submitResourceContext(
+    std::unique_ptr<ResourceContext> resourceContext) {
+    _resourceContextBuffer.push(std::move(resourceContext));
 }
 
-void OpenGLRenderPipelineSync::submitRenderContext(RenderContext *renderContext) {
-    _renderContextBuffer.push(renderContext);
+void OpenGLRenderPipelineSync::submitRenderContext(std::unique_ptr<RenderContext> renderContext) {
+    _renderContextBuffer.push(std::move(renderContext));
 }
 
 void OpenGLRenderPipelineSync::waitAndRender() {
@@ -45,7 +46,7 @@ void OpenGLRenderPipelineSync::waitAndRender() {
 void OpenGLRenderPipelineSync::render() {
     // Execute ResourceContext.
     while (!_resourceContextBuffer.isEmpty()) {
-        ResourceContext *resourceContext = _resourceContextBuffer.pop();
+        auto resourceContext = _resourceContextBuffer.pop();
         assert(resourceContext);
 
         const ByteBuffer &commandBuffer = resourceContext->getCommandBuffer();
@@ -54,12 +55,12 @@ void OpenGLRenderPipelineSync::render() {
         _resourceExecutor.execute(commandBuffer, dataProvider);
 
         resourceContext->reset();
-        _resourceContextReleasedCallback(resourceContext);
+        _resourceContextReleasedCallback(std::move(resourceContext));
     }
 
     // Execute RenderContext.
     while (!_renderContextBuffer.isEmpty()) {
-        RenderContext *renderContext = _renderContextBuffer.pop();
+        auto renderContext = _renderContextBuffer.pop();
         assert(renderContext);
 
         const DrawCallStateList &drawCallStateList = renderContext->getDrawCallStateList();
@@ -69,7 +70,7 @@ void OpenGLRenderPipelineSync::render() {
         _renderExecutor.execute(drawCallStateList, uniformBuffer, commandBuffer);
 
         renderContext->reset();
-        _renderContextReleasedCallback(renderContext);
+        _renderContextReleasedCallback(std::move(renderContext));
     }
     _context->swapBuffers();
 }

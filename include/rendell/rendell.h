@@ -10,6 +10,38 @@
 #include "init_types.h"
 
 namespace rendell {
+template <typename TResource> class ContextWrapper {
+public:
+    ContextWrapper(const ContextWrapper &) = delete;
+
+    ContextWrapper(ContextWrapper &&other) { _context = std::move(other._context); }
+
+    ContextWrapper(std::unique_ptr<TResource> context)
+        : _context(std::move(context)) {
+        assert(_context);
+    }
+
+    ~ContextWrapper() { end(); }
+
+    void end();
+    void end(NativeViewId nativeViewId);
+
+    const TResource *operator->() const { return _context.get(); }
+
+private:
+    std::unique_ptr<TResource> _context;
+};
+
+class ResourceContextWrapper final : public ContextWrapper<IResourceContext> {
+    using ContextWrapper<IResourceContext>::ContextWrapper;
+};
+
+class RenderContextWrapper final : public ContextWrapper<IRenderContext> {
+    using ContextWrapper<IRenderContext>::ContextWrapper;
+};
+} // namespace rendell
+
+namespace rendell {
 IndexBufferId createIndexBuffer(const index_t *data, size_t size);
 IndexBufferId createIndexBuffer(const IndexContainer &data);
 DynamicIndexBufferId createDynamicIndexBuffer(size_t size);
@@ -99,13 +131,8 @@ void submit();
 void submit(ShaderProgramId shaderProgramId);
 void submit(DrawMode drawMode, PrimitiveTopology primitiveTopology);
 
-IResourceContext *beginResourceCommands();
-void endResourceCommands(IResourceContext *resourceContext);
-void endResourceCommands(IResourceContext *resourceContext, NativeViewId nativeViewid);
-
-IRenderContext *beginRenderCommands();
-void endRenderCommands(IRenderContext *renderContext);
-void endRenderCommands(IRenderContext *renderContext, NativeViewId nativeViewId);
+ResourceContextWrapper beginResourceCommands();
+RenderContextWrapper beginRenderCommands();
 
 void renderFrame();
 void renderFrame(NativeViewId nativeFrameId);

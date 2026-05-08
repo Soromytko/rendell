@@ -5,12 +5,15 @@
 #include "raii.h"
 
 #include <functional>
+#include <memory>
 
 namespace rendell {
 class RenderPipeline {
 public:
-    using ResourceContextReleasedCallback = std::function<void(ResourceContext *resourceContext)>;
-    using RenderContextReleasedCallback = std::function<void(RenderContext *renderContext)>;
+    using ResourceContextReleasedCallback =
+        std::function<void(std::unique_ptr<ResourceContext> resourceContext)>;
+    using RenderContextReleasedCallback =
+        std::function<void(std::unique_ptr<RenderContext> renderContext)>;
 
     RenderPipeline() = default;
     virtual ~RenderPipeline() = default;
@@ -28,8 +31,8 @@ public:
 
     virtual void run() = 0;
 
-    virtual void submitResourceContext(ResourceContext *resourceContext) = 0;
-    virtual void submitRenderContext(RenderContext *renderContext) = 0;
+    virtual void submitResourceContext(std::unique_ptr<ResourceContext> resourceContext) = 0;
+    virtual void submitRenderContext(std::unique_ptr<RenderContext> renderContext) = 0;
 
     virtual void waitAndRender() = 0;
 
@@ -37,6 +40,5 @@ protected:
     ResourceContextReleasedCallback _resourceContextReleasedCallback;
     RenderContextReleasedCallback _renderContextReleasedCallback;
 };
-
 RENDELL_USE_RAII(RenderPipeline)
 } // namespace rendell

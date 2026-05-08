@@ -11,10 +11,10 @@ template <typename T> class RingBuffer final {
 private:
     struct Chunk;
 
-    using ChunkSharedPtr = std::shared_ptr<Chunk>;
+    using ChunkPtr = std::unique_ptr<Chunk>;
 
     struct Chunk final {
-        ChunkSharedPtr next{nullptr};
+        ChunkPtr next{nullptr};
         size_t tail{0};
         size_t head{0};
         size_t length{0};
@@ -35,17 +35,17 @@ private:
 
         void push(T value) {
             assert(!isFull());
-            data[tail] = value;
+            data[tail] = std::move(value);
             tail = (tail + 1) % data.size();
             length++;
         }
 
         T pop() {
             assert(!isEmpty());
-            T result = data[head];
+            T result = std::move(data[head]);
             head = (head + 1) % data.size();
             length--;
-            return result;
+            return std::move(result);
         }
     };
 
@@ -53,7 +53,7 @@ public:
     RingBuffer(size_t chunkCapacity = config::ringBufferChunkCapacity) {
         _chunkCapacity = chunkCapacity;
         _headChunk = createChunk(_chunkCapacity);
-        _tailChunk = _headChunk;
+        _tailChunk = _headChunk.get();
     }
 
     ~RingBuffer() = default;
@@ -69,41 +69,36 @@ public:
             currentChunk->reset();
             currentChunk = currentChunk->next.get();
         }
-        _tailChunk = _headChunk;
+        _tailChunk = _headChunk.get();
     }
 
-    void push(const T &value) {
+    void push(T value) {
         if (_tailChunk->isFull()) {
             if (!_tailChunk->next) {
                 _tailChunk->next = createChunk(_chunkCapacity);
             }
-            _tailChunk = _tailChunk->next;
+            _tailChunk = _tailChunk->next.get();
         }
-        _tailChunk->push(value);
+        _tailChunk->push(std::move(value));
         _length++;
     }
 
     T pop() {
         assert(_length > 0);
         T result = _headChunk->pop();
-        if (_headChunk->isEmpty() && _headChunk != _tailChunk) {
-            _headChunk = _headChunk->next;
+        if (_headChunk->isEmpty() && _headChunk.get() != _tailChunk) {
+            _headChunk = std::move(_headChunk->next);
         }
         _length--;
         return result;
     }
 
 private:
-    ChunkSharedPtr createChunk(size_t capacity) {
-        ChunkSharedPtr chunk = std::make_shared<Chunk>(capacity);
-        return chunk;
-    }
+    inline ChunkPtr createChunk(size_t capacity) const { return std::make_unique<Chunk>(capacity); }
 
-    ChunkSharedPtr _headChunk;
-    ChunkSharedPtr _tailChunk;
+    ChunkPtr _headChunk;
+    Chunk *_tailChunk;
     size_t _chunkCapacity;
     size_t _length{0};
 };
 } // namespace rendell
-
-namespace rendell {} // namespace rendell

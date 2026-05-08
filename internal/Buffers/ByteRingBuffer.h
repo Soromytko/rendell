@@ -1,7 +1,6 @@
 #pragma once
 #include <algorithm>
 #include <memory>
-#include <vector>
 
 #include <config.h>
 
@@ -10,7 +9,7 @@ class ByteRingBuffer final {
 private:
     class Chunk;
 
-    using ChunkSharedPtr = std::shared_ptr<Chunk>;
+    using ChunkPtr = std::unique_ptr<Chunk>;
 
     class Chunk final {
     public:
@@ -20,9 +19,11 @@ private:
 
         inline bool isEmpty() const { return _currentDataSize == 0; }
 
-        inline ChunkSharedPtr getNext() const { return _next; }
+        inline Chunk *getNext() const { return _next.get(); }
 
-        void setNext(ChunkSharedPtr next);
+        inline ChunkPtr releaseNext() { return std::move(_next); }
+
+        void setNext(ChunkPtr next);
 
         size_t write(const uint8_t *data, size_t dataSize);
         size_t read(uint8_t *dataSource, size_t dataSize);
@@ -30,7 +31,7 @@ private:
         void reset();
 
     private:
-        ChunkSharedPtr _next{nullptr};
+        ChunkPtr _next{nullptr};
         size_t _tail{0};
         size_t _head{0};
         size_t _currentDataSize{0};
@@ -65,13 +66,13 @@ public:
     void reset();
 
 private:
-    ChunkSharedPtr createChunk(size_t capacity) const;
+    ChunkPtr createChunk(size_t capacity) const;
 
     void write(const uint8_t *inputData, size_t dataSize);
     void read(uint8_t *outputData, size_t dataSize);
 
-    ChunkSharedPtr _headChunk;
-    ChunkSharedPtr _tailChunk;
+    ChunkPtr _headChunk;
+    Chunk *_tailChunk;
     size_t _chunkCapacity;
     size_t _length{0};
 };

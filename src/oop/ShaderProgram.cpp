@@ -3,15 +3,14 @@
 
 namespace rendell {
 namespace oop {
-ShaderProgram::ShaderProgram(VertexShaderSharedPtr vertexShader,
-                             FragmentShaderSharedPtr fragmentShader, ResultCallback callback) {
-    const auto internalCallback = [vertexShader, fragmentShader,
-                                   callback](bool success, const std::string &result) {
+ShaderProgram::ShaderProgram(VertexShaderId vertexShaderId, FragmentShaderId fragmentShaderId,
+                             ResultCallback callback) {
+    const auto internalCallback = [callback](bool success, const std::string &result) {
         if (callback) {
             callback(success, result);
         }
     };
-    _id = createShaderProgram(vertexShader->getId(), fragmentShader->getId(), callback);
+    _id = createShaderProgram(vertexShaderId, fragmentShaderId, callback);
 }
 
 ShaderProgram::~ShaderProgram() {

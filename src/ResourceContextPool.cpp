@@ -1,6 +1,6 @@
 #include <ResourceContextPool.h>
+#include <ResourceContextPool.h>
 
-#include <algorithm>
 #include <cassert>
 #include <memory>
 
@@ -14,6 +14,8 @@ void ResourceContextPool::init(size_t size) {
 
 void ResourceContextPool::release() {
     assert(s_ResourceContextPool);
+    assert(s_ResourceContextPool.getCount() == _size &&
+           "Attempting to destroy pool while resources are still in use!");
     s_ResourceContextPool.reset();
 }
 
@@ -31,43 +33,29 @@ size_t ResourceContextPool::getSize() const {
 }
 
 size_t ResourceContextPool::getCount() const {
-    return _freed.getCount();
+    return _pool.getCount();
 }
 
 ResourceContext *ResourceContextPool::getResourceContext() {
-    ResourceContextSharedPtr result = _freed.pop();
-    assert(result);
-    std::lock_guard<std::mutex> lock(_mutex);
-    _used.insert(result);
-    return result.get();
+    std::unique_ptr<ResourceContext> context = _pool.pop();
+    assert(context);
+    return context.release();
 }
 
-void ResourceContextPool::returnResourceContext(ResourceContext *resourceContext) {
-
-    ResourceContextSharedPtr resourceContextPtr;
-    {
-        std::lock_guard<std::mutex> lock(_mutex);
-        auto it = std::find_if(_used.begin(), _used.end(),
-                               [&](const ResourceContextSharedPtr &currentResourceContext) {
-                                   return currentResourceContext.get() == resourceContext;
-                               });
-        assert(it != _used.end());
-        resourceContextPtr = *it;
-        _used.erase(it);
-    }
-    assert(resourceContextPtr);
-    _freed.push(resourceContextPtr);
+void ResourceContextPool::returnResourceContext(ResourceContext *context) {
+    assert(context);
+    _pool.push(std::unique_ptr<ResourceContext>(context));
 }
 
 void ResourceContextPool::setSize(size_t size) {
     assert(size >= 0);
     if (_size < size) {
         for (size_t i = 0; i < size - _size; i++) {
-            _freed.push(makeResourceContext());
+            _pool.push(std::make_unique<ResourceContext>());
             _size++;
         }
     } else if (_size > size) {
-        _freed.pop();
+        _pool.pop();
         _size--;
     }
 }

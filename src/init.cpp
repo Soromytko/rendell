@@ -1,9 +1,7 @@
 #include <rendell/init.h>
 
 #include "context_creation.h"
-#include <RenderContextPool.h>
 #include <RenderPipelineStorage.h>
-#include <ResourceContextPool.h>
 #include <config.h>
 
 #include <cassert>
@@ -23,16 +21,12 @@ bool init(const Initer &initer) {
     s_initer = initer;
 
     RenderPipelineStorage::init();
-    ResourceContextPool::init(config::resourceContextPoolSize);
-    RenderContextPool::init(config::renderContextPoolSize);
 
     return true;
 }
 
 void release() {
     RenderPipelineStorage::release();
-    ResourceContextPool::release();
-    RenderContextPool::release();
 }
 
 NativeViewId registerNativeView(NativeView nativeView) {

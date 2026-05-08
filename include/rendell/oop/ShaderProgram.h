@@ -1,8 +1,6 @@
 #pragma once
 #include <rendell/DataType.h>
 #include <rendell/ResourceId.h>
-#include <rendell/oop/FragmentShader.h>
-#include <rendell/oop/VertexShader.h>
 #include <rendell/oop/raii.h>
 
 namespace rendell {
@@ -12,7 +10,7 @@ void setShaderProgram(ShaderProgramId texture2DId);
 namespace oop {
 class ShaderProgram final {
 public:
-    ShaderProgram(VertexShaderSharedPtr vertexShader, FragmentShaderSharedPtr fragmentShader,
+    ShaderProgram(VertexShaderId vertexShaderId, FragmentShaderId fragmentShaderId,
                   ResultCallback callback = nullptr);
     ~ShaderProgram();
 
