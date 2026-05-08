@@ -39,12 +39,15 @@ void ByteRingBuffer::read(uint8_t *outputData, size_t dataSize) {
     size_t totalRead = 0;
     while (totalRead < dataSize) {
         const size_t read = _headChunk->read(outputData + totalRead, dataSize - totalRead);
-        totalRead += read;
-        _length -= totalRead;
 
-        if (_headChunk->isEmpty()) {
-            // TODO: Debug warning?
-            assert(_headChunk.get() != _tailChunk);
+        if (read == 0) {
+            break;
+        }
+
+        totalRead += read;
+        _length -= read;
+
+        if (_headChunk->isEmpty() && _headChunk->getNext()) {
             _headChunk = std::move(_headChunk->releaseNext());
         }
     }
