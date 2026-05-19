@@ -95,6 +95,8 @@ set(HEADER_FILES
     internal/Buffers/RingBuffer.h
     internal/Buffers/ByteRingBuffer.h
 
+    internal/utils/MPMC_Queue.h
+
     internal/OpenGL/OpenGLContext.h
     internal/OpenGL/OpenGLRenderPipeline.h
     internal/OpenGL/OpenGLRenderPipelineSync.h
