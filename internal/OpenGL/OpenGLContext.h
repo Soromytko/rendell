@@ -9,13 +9,15 @@
 #error "OpenGL is not supported on this platform!"
 #endif
 
+#include <memory>
+
 namespace rendell {
 #if defined(_WIN32)
 using OpenGLContext = WindowsOpenGLContext;
-using OpenGLContextUniquePtr = WindowsOpenGLContextUniquePtr;
+using OpenGLContextUniquePtr = std::unique_ptr<WindowsOpenGLContext>;
 #elif defined(__linux__)
 using OpenGLContext = LinuxOpenGLContext;
-using OpenGLContextUniquePtr = LinuxOpenGLContextUniquePtr;
+using OpenGLContextUniquePtr = std::unique_ptr<LinuxOpenGLContext>;
 #else
 #error "Unknown or unsupported operating system!"
 #endif

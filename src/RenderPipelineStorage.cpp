@@ -5,28 +5,14 @@
 #include <logging.h>
 
 namespace rendell {
-RenderPipelineStorage *s_renderPipelineStorage = nullptr;
+static std::unique_ptr<RenderPipeline>
+createSpecificRenderPipelineSync(SpecificationAPI api, NativeView nativeView,
+                                 OpenGLRenderPipeline::Callbacks callbacks) {
+    assert(callbacks.isValid());
 
-void RenderPipelineStorage::init() {
-    assert(!s_renderPipelineStorage);
-    s_renderPipelineStorage = new RenderPipelineStorage();
-}
-
-void RenderPipelineStorage::release() {
-    assert(s_renderPipelineStorage);
-    delete s_renderPipelineStorage;
-}
-
-RenderPipelineStorage *RenderPipelineStorage::getInstance() {
-    assert(s_renderPipelineStorage);
-    return s_renderPipelineStorage;
-}
-
-static std::unique_ptr<RenderPipeline> createSpecificRenderPipelineSync(SpecificationAPI api,
-                                                                        NativeView nativeView) {
     switch (api) {
     case SpecificationAPI::OpenGL45: {
-        return std::make_unique<OpenGLRenderPipelineSync>(nativeView);
+        return std::make_unique<OpenGLRenderPipelineSync>(nativeView, callbacks);
     }
     case SpecificationAPI::Vulkan: {
         return nullptr;
@@ -42,11 +28,14 @@ static std::unique_ptr<RenderPipeline> createSpecificRenderPipelineSync(Specific
     return nullptr;
 }
 
-static std::unique_ptr<RenderPipeline> createSpecificRenderPipeline(SpecificationAPI api,
-                                                                    NativeView nativeView) {
+static std::unique_ptr<RenderPipeline>
+createSpecificRenderPipeline(SpecificationAPI api, NativeView nativeView,
+                             OpenGLRenderPipeline::Callbacks callbacks) {
+    assert(callbacks.isValid());
+
     switch (api) {
     case SpecificationAPI::OpenGL45: {
-        return std::make_unique<OpenGLRenderPipeline>(nativeView);
+        return std::make_unique<OpenGLRenderPipeline>(nativeView, callbacks);
     }
     case SpecificationAPI::Vulkan: {
         return nullptr;
@@ -67,6 +56,13 @@ static NativeViewId generateNativeViewId() {
     return counter++;
 }
 
+RenderPipelineStorage::RenderPipelineStorage(ReturnResourceCommandBufferCallback resourceCallback,
+                                             ReturnRenderCommandBufferCallback renderCallback)
+    : _resourceCallback(resourceCallback)
+    , _renderCallback(renderCallback) {
+    assert(resourceCallback != nullptr && renderCallback != nullptr);
+}
+
 const std::vector<NativeViewId> &RenderPipelineStorage::getNativeViewIds() const {
     return _nativeViewIds;
 }
@@ -74,9 +70,13 @@ const std::vector<NativeViewId> &RenderPipelineStorage::getNativeViewIds() const
 NativeViewId RenderPipelineStorage::createRenderPipeline(SpecificationAPI api,
                                                          NativeView nativeView,
                                                          bool useSeparateRenderThread) {
+    RenderPipeline::Callbacks callbacks = {
+        .returnResourceCommandBuffer = _resourceCallback,
+        .returnRenderCommandBuffer = _renderCallback,
+    };
     std::unique_ptr<RenderPipeline> renderPipeline =
-        useSeparateRenderThread ? createSpecificRenderPipeline(api, nativeView)
-                                : createSpecificRenderPipelineSync(api, nativeView);
+        useSeparateRenderThread ? createSpecificRenderPipeline(api, nativeView, callbacks)
+                                : createSpecificRenderPipelineSync(api, nativeView, callbacks);
     assert(renderPipeline);
     if (!renderPipeline->isInitialized()) {
         return 0;
@@ -97,13 +97,16 @@ NativeViewId RenderPipelineStorage::createRenderPipeline(SpecificationAPI api,
     return nativeViewId;
 }
 
-void RenderPipelineStorage::releaseRenderPipeline(NativeViewId nativeViewId) {
+bool RenderPipelineStorage::releaseRenderPipeline(NativeViewId nativeViewId) {
+    assert(_nativeViewIds.size() == _renderPipelines.size());
     assert(nativeViewId != InvalidNativeViewId);
     const size_t index = static_cast<size_t>(nativeViewId - 1);
-    assert(_nativeViewIds.size() == _renderPipelines.size());
-    assert(index < _renderPipelines.size());
-    _nativeViewIds.erase(_nativeViewIds.begin() + index);
-    _renderPipelines.erase(_renderPipelines.begin() + index);
+    if (index < _renderPipelines.size()) {
+        _nativeViewIds.erase(_nativeViewIds.begin() + index);
+        _renderPipelines.erase(_renderPipelines.begin() + index);
+        return true;
+    }
+    return false;
 }
 
 RenderPipeline *RenderPipelineStorage::getRenderPipeline(NativeViewId nativeViewId) const {

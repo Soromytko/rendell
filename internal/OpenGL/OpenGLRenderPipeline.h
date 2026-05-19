@@ -8,23 +8,29 @@
 #include <rendell/init_types.h>
 
 #include <condition_variable>
-#include <memory>
 #include <mutex>
 #include <thread>
 
 namespace rendell {
+class ResourceCommandBuffer;
+class RenderCommandBuffer;
+
 class OpenGLRenderPipeline final : public RenderPipeline {
 public:
-    OpenGLRenderPipeline(NativeView nativeView);
+    OpenGLRenderPipeline(NativeView nativeView, Callbacks callbacks);
     ~OpenGLRenderPipeline();
 
     bool isInitialized() const override;
     const IContext *getContext() const override;
 
+    const ReleasedResourceIds &getReleasedResourceIds() const override {
+        return _resourceExecutor.getReleasedResourceIds();
+    }
+
     void run() override;
 
-    void submitResourceContext(std::unique_ptr<ResourceContext> resourceContext) override;
-    void submitRenderContext(std::unique_ptr<RenderContext> renderContext) override;
+    void submitResourceContext(ResourceCommandBuffer *buffer) override;
+    void submitRenderContext(RenderCommandBuffer *buffer) override;
 
     void waitAndRender() override;
 
@@ -37,8 +43,8 @@ private:
     OpenGLResourceExecutor _resourceExecutor;
     OpenGLRenderExecutor _renderExecutor;
 
-    RingBuffer<std::unique_ptr<ResourceContext>> _resourceContextBuffer;
-    RingBuffer<std::unique_ptr<RenderContext>> _renderContextBuffer;
+    RingBuffer<ResourceCommandBuffer *> _resourceCommandBuffers;
+    RingBuffer<RenderCommandBuffer *> _renderCommandBuffers;
 
     std::mutex _renderingMutex;
 

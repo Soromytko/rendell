@@ -11,6 +11,10 @@ enum class SpecificationAPI {
 struct Initer {
     SpecificationAPI api = SpecificationAPI::OpenGL45;
     bool useSeparateRenderThread = true;
+    uint16_t maxResourceIdCount = 0xFFFF;
+    uint16_t maxResourceCommandBufferPerFrame = 100;
+    uint16_t maxRenderCommandBufferPerFrame = 100;
+    size_t garbageCollectorLockFreeCapacity = 0xFFFF;
 };
 
 struct NativeView {

@@ -1,7 +1,6 @@
 #pragma once
 #include "OpenGLIndexBuffer.h"
 #include <glad/glad.h>
-#include <rendell/oop/raii.h>
 
 namespace rendell {
 class OpenGLIndexBuffer;
@@ -26,7 +25,5 @@ private:
     size_t _indexCount{};
     GLuint _vertexArrayId{};
 };
-
-RENDELL_USE_RAII_FACTORY(OpenGLVertexArray)
 
 } // namespace rendell

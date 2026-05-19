@@ -1,5 +1,6 @@
 #include <OpenGL/OpenGLRenderExecutor.h>
 
+#include <Buffers/ByteBuffer.h>
 #include <Command.h>
 #include <OpenGL/OpenGLResourceStorage.h>
 #include <logging.h>

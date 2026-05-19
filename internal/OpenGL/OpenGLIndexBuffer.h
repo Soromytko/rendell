@@ -1,7 +1,6 @@
 #pragma once
 #include <glad/glad.h>
 #include <rendell/DataType.h>
-#include <rendell/oop/raii.h>
 
 namespace rendell {
 class OpenGLIndexBuffer final {
@@ -21,5 +20,4 @@ private:
     GLuint _bufferId{};
 };
 
-RENDELL_USE_RAII_FACTORY(OpenGLIndexBuffer)
 } // namespace rendell

@@ -44,6 +44,4 @@ public:
 private:
     ByteBuffer _buffer;
 };
-
-RENDELL_USE_RAII_FACTORY(ResourceCommandBuffer)
 } // namespace rendell

@@ -1,10 +1,14 @@
 #include <ResourceExecutor.h>
+
+#include <Buffers/ByteBuffer.h>
+#include <ResourceDataProvider.h>
+
 #include <cassert>
 
 namespace rendell {
 void ResourceExecutor::execute(const ByteBuffer &resourceBuffer,
-                               ResourceDataProviderSharedPtr resourceDataProvider) {
-    _resourceDataProvider = resourceDataProvider;
+                               ResourceDataProvider &resourceDataProvider) {
+    _resourceDataProvider = &resourceDataProvider;
     ByteBufferReader bufferReader(resourceBuffer);
     while (!bufferReader.isEmpty()) {
         assert(bufferReader.canRead(sizeof(CmdType)));

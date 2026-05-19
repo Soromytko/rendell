@@ -1,7 +1,6 @@
 #pragma once
 #include <glad/glad.h>
 #include <rendell/DataType.h>
-#include <rendell/oop/raii.h>
 
 namespace rendell {
 class OpenGLShaderBuffer final {
@@ -19,5 +18,4 @@ private:
     mutable uint32_t _binding{0};
 };
 
-RENDELL_USE_RAII_FACTORY(OpenGLShaderBuffer)
 } // namespace rendell

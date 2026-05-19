@@ -1,11 +1,13 @@
 #include "context_creation.h"
 
+#include <memory>
+
 namespace rendell {
 OpenGLContextUniquePtr createOpenGLContext(const NativeView &nativeView) {
 #if defined(_WIN32)
-    return makeUniqueWindowsOpenGLContext(nativeView);
+    return std::make_unique<WindowsOpenGLContext>(nativeView);
 #elif defined(__linux__)
-    return makeUniqueLinuxOpenGLContext(nativeView);
+    return std::make_unique<LinuxOpenGLContext>(nativeView);
 #endif
     return nullptr;
 }

@@ -1,7 +1,6 @@
 #pragma once
 #include <rendell/ResourceId.h>
 
-#include <config.h>
 #include <utils/MPMC_Queue.h>
 
 #include <algorithm>
@@ -24,7 +23,7 @@ private:
     std::unique_ptr<Resource[]> _resources;
 
 public:
-    ResourceIdStorage(uint16_t size = config::resourceStorageIdCapacity)
+    ResourceIdStorage(uint16_t size)
         : _size(size)
         , _freeQueue(size)
         , _resources(std::make_unique<Resource[]>(size)) {

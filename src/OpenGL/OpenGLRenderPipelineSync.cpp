@@ -1,16 +1,29 @@
 #include <OpenGL/OpenGLRenderPipelineSync.h>
 
 #include <OpenGL/OpenGLResourceStorage.h>
-#include <RenderContext.h>
-#include <ResourceContext.h>
+#include <RendellExtractor.h>
+#include <RenderCommandBufferImpl.h>
+#include <ResourceCommandBufferImpl.h>
 #include <context_creation.h>
+#include <rendell/RenderCommandBuffer.h>
+#include <rendell/ResourceCommandBuffer.h>
 
 namespace rendell {
-OpenGLRenderPipelineSync::OpenGLRenderPipelineSync(NativeView nativeView) {
+OpenGLRenderPipelineSync::OpenGLRenderPipelineSync(NativeView nativeView, Callbacks callbacks)
+    : RenderPipeline(callbacks) {
     _context = createOpenGLContext(nativeView);
 }
 
 OpenGLRenderPipelineSync::~OpenGLRenderPipelineSync() {
+    // Return buffers
+    {
+        while (!_resourceCommandBuffers.isEmpty()) {
+            _callbacks.returnResourceCommandBuffer(_resourceCommandBuffers.pop());
+        }
+        while (!_renderCommandBuffers.isEmpty()) {
+            _callbacks.returnRenderCommandBuffer(_renderCommandBuffers.pop());
+        }
+    }
     releaseOpenGLResourceStorages();
     _context.reset();
 }
@@ -30,49 +43,55 @@ void OpenGLRenderPipelineSync::run() {
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 }
 
-void OpenGLRenderPipelineSync::submitResourceContext(
-    std::unique_ptr<ResourceContext> resourceContext) {
-    _resourceContextBuffer.push(std::move(resourceContext));
+void OpenGLRenderPipelineSync::submitResourceContext(ResourceCommandBuffer *buffer) {
+    _resourceCommandBuffers.push(buffer);
 }
 
-void OpenGLRenderPipelineSync::submitRenderContext(std::unique_ptr<RenderContext> renderContext) {
-    _renderContextBuffer.push(std::move(renderContext));
+void OpenGLRenderPipelineSync::submitRenderContext(RenderCommandBuffer *buffer) {
+    _renderCommandBuffers.push(buffer);
 }
 
 void OpenGLRenderPipelineSync::waitAndRender() {
+    _resourceExecutor.resetReleasedResourceIds();
     render();
 }
 
 void OpenGLRenderPipelineSync::render() {
-    // Execute ResourceContext.
-    while (!_resourceContextBuffer.isEmpty()) {
-        auto resourceContext = _resourceContextBuffer.pop();
-        assert(resourceContext);
+    // Execute ResourceContext
+    {
+        while (!_resourceCommandBuffers.isEmpty()) {
+            auto resourceCommandBuffer = _resourceCommandBuffers.pop();
+            assert(resourceCommandBuffer);
 
-        const ByteBuffer &commandBuffer = resourceContext->getCommandBuffer();
-        ResourceDataProviderSharedPtr dataProvider = resourceContext->getResourceDataProvider();
-        assert(dataProvider);
-        _resourceExecutor.execute(commandBuffer, dataProvider);
+            ResourceCommandBufferImpl &impl = RendellExtractor::extractImpl(*resourceCommandBuffer);
+            const ByteBuffer &commandBuffer = impl.resourceCommandBuffer;
+            ResourceDataProvider &dataProvider = impl.resourceDataProvider;
+            _resourceExecutor.execute(commandBuffer, dataProvider);
 
-        resourceContext->reset();
-        _resourceContextReleasedCallback(std::move(resourceContext));
+            impl.reset();
+            _callbacks.returnResourceCommandBuffer(resourceCommandBuffer);
+        }
     }
 
     // Execute RenderContext.
-    while (!_renderContextBuffer.isEmpty()) {
-        auto renderContext = _renderContextBuffer.pop();
-        assert(renderContext);
+    {
+        while (!_renderCommandBuffers.isEmpty()) {
+            auto renderCommandBuffer = _renderCommandBuffers.pop();
+            assert(renderCommandBuffer);
 
-        const DrawCallStateList &drawCallStateList = renderContext->getDrawCallStateList();
-        const ByteBuffer &uniformBuffer = renderContext->getUniformBuffer();
-        const ByteBuffer &commandBuffer = renderContext->getCommandBuffer();
+            RenderCommandBufferImpl &impl = RendellExtractor::extractImpl(*renderCommandBuffer);
 
-        _renderExecutor.execute(drawCallStateList, uniformBuffer, commandBuffer);
+            const DrawCallStateList &drawCallStateList = impl.drawCallStates;
+            const ByteBuffer &uniformBuffer = impl.uniformBuffer;
+            const ByteBuffer &commandBuffer = impl.commandBuffer;
 
-        renderContext->reset();
-        _renderContextReleasedCallback(std::move(renderContext));
+            _renderExecutor.execute(drawCallStateList, uniformBuffer, commandBuffer);
+
+            impl.reset();
+            _callbacks.returnRenderCommandBuffer(renderCommandBuffer);
+        }
+        _context->swapBuffers();
     }
-    _context->swapBuffers();
 }
 
 } // namespace rendell

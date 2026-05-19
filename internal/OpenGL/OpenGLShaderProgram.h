@@ -1,6 +1,5 @@
 #pragma once
 #include <glad/glad.h>
-#include <rendell/oop/raii.h>
 
 #include <cstdint>
 #include <string>
@@ -65,6 +64,4 @@ private:
     mutable std::unordered_map<std::string, GLint, TransparentHash, TransparentEqual>
         _uniformIndexCache;
 };
-
-RENDELL_USE_RAII_FACTORY(OpenGLShaderProgram)
 } // namespace rendell

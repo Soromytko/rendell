@@ -1,44 +1,46 @@
 #pragma once
 #include "IContext.h"
-#include "RenderContext.h"
-#include "ResourceContext.h"
-#include "raii.h"
+#include <rendell/RenderCommandBuffer.h>
+#include <rendell/ResourceCommandBuffer.h>
 
+#include <cassert>
 #include <functional>
-#include <memory>
 
 namespace rendell {
+struct ReleasedResourceIds;
+
 class RenderPipeline {
 public:
-    using ResourceContextReleasedCallback =
-        std::function<void(std::unique_ptr<ResourceContext> resourceContext)>;
-    using RenderContextReleasedCallback =
-        std::function<void(std::unique_ptr<RenderContext> renderContext)>;
+    struct Callbacks {
+        using ReturnResourceCommandBuffer = std::function<void(ResourceCommandBuffer *buffer)>;
+        using ReturnRenderCommandBuffer = std::function<void(RenderCommandBuffer *buffer)>;
+        ReturnResourceCommandBuffer returnResourceCommandBuffer;
+        ReturnRenderCommandBuffer returnRenderCommandBuffer;
 
-    RenderPipeline() = default;
+        inline bool isValid() const noexcept {
+            return returnResourceCommandBuffer != nullptr && returnRenderCommandBuffer != nullptr;
+        }
+    };
+
+    RenderPipeline(Callbacks callback)
+        : _callbacks(callback) {
+        assert(_callbacks.isValid());
+    }
+
     virtual ~RenderPipeline() = default;
-
-    inline void setResourceContextReleasedCallback(ResourceContextReleasedCallback callback) {
-        _resourceContextReleasedCallback = callback;
-    }
-
-    inline void setRenderContextReleasedCallback(RenderContextReleasedCallback callback) {
-        _renderContextReleasedCallback = callback;
-    }
 
     virtual bool isInitialized() const = 0;
     virtual const IContext *getContext() const = 0;
+    virtual const ReleasedResourceIds &getReleasedResourceIds() const = 0;
 
     virtual void run() = 0;
 
-    virtual void submitResourceContext(std::unique_ptr<ResourceContext> resourceContext) = 0;
-    virtual void submitRenderContext(std::unique_ptr<RenderContext> renderContext) = 0;
+    virtual void submitResourceContext(ResourceCommandBuffer *buffer) = 0;
+    virtual void submitRenderContext(RenderCommandBuffer *buffer) = 0;
 
     virtual void waitAndRender() = 0;
 
 protected:
-    ResourceContextReleasedCallback _resourceContextReleasedCallback;
-    RenderContextReleasedCallback _renderContextReleasedCallback;
+    Callbacks _callbacks;
 };
-RENDELL_USE_RAII(RenderPipeline)
 } // namespace rendell

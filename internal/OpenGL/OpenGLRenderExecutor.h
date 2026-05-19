@@ -1,8 +1,8 @@
 #pragma once
-#include "Buffers/ByteBuffer.h"
 #include <DrawCallState.h>
 
 namespace rendell {
+class ByteBuffer;
 class OpenGLShaderProgram;
 class OpenGLVertexArray;
 

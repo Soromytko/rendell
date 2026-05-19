@@ -1,10 +1,8 @@
 #pragma once
 #include "DataContainerStorage.h"
-#include "raii.h"
 #include <rendell/DataType.h>
-
-#include <string>
-#include <unordered_map>
+#include <rendell/ResourceId.h>
+#include <rendell/VertexLayout.h>
 
 namespace rendell {
 struct ResourceDataProvider final {
@@ -15,6 +13,4 @@ struct ResourceDataProvider final {
     DataContainerStorage<byte_t> byteContainerStorage;
     DataContainerStorage<char> stringContainerStorage;
 };
-
-RENDELL_USE_RAII_FACTORY(ResourceDataProvider)
 } // namespace rendell

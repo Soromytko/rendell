@@ -1,6 +1,5 @@
 #pragma once
 #include <IContext.h>
-#include <raii.h>
 #include <rendell/init_types.h>
 
 #include <string>
@@ -37,6 +36,4 @@ private:
     XVisualInfo *_visualInfo{nullptr};
     bool _isInitialized{false};
 };
-
-RENDELL_USE_RAII_FACTORY(LinuxOpenGLContext)
 } // namespace rendell

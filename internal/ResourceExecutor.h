@@ -1,17 +1,19 @@
 #pragma once
-#pragma once
 #include "Command.h"
-#include "ResourceDataProvider.h"
-#include <Buffers/ByteBuffer.h>
+#include <ReleasedResourceIds.h>
 
 namespace rendell {
+class ByteBuffer;
+struct ResourceDataProvider;
+
 class ResourceExecutor {
 public:
-    ResourceExecutor() = default;
+    ResourceExecutor()
+        : _releasedResourceId(1024) {}
+
     virtual ~ResourceExecutor() = default;
 
-    void execute(const ByteBuffer &resourceBuffer,
-                 ResourceDataProviderSharedPtr resourceDataProvider);
+    void execute(const ByteBuffer &resourceBuffer, ResourceDataProvider &resourceDataProvider);
 
     virtual void createIndexBuffer(const CreateIndexBufferCmdData &cmd) = 0;
     virtual void createVertexBuffer(const CreateVertexBufferCmdData &cmd) = 0;
@@ -43,7 +45,14 @@ public:
     virtual void destroyShaderProgram(const DestroyShaderProgramCmdData &cmd) = 0;
     virtual void destroyUniform(const DestroyUniformCmdData &cmd) = 0;
 
+    void resetReleasedResourceIds() noexcept { _releasedResourceId.reset(); }
+
+    const ReleasedResourceIds &getReleasedResourceIds() const noexcept {
+        return _releasedResourceId;
+    }
+
 protected:
-    ResourceDataProviderSharedPtr _resourceDataProvider;
+    ResourceDataProvider *_resourceDataProvider{};
+    ReleasedResourceIds _releasedResourceId;
 };
 } // namespace rendell

@@ -1,6 +1,4 @@
 #pragma once
-#include <raii.h>
-
 #include <memory>
 #include <string>
 
@@ -16,7 +14,4 @@ public:
     virtual bool makeUncurrent() = 0;
     virtual bool swapBuffers() = 0;
 };
-
-RENDELL_USE_RAII(IContext)
-
 } // namespace rendell

@@ -2,7 +2,6 @@
 #include "OpenGLVertexBufferLayout.h"
 #include <glad/glad.h>
 #include <rendell/DataType.h>
-#include <rendell/oop/raii.h>
 
 namespace rendell {
 class OpenGLVertexBuffer final {
@@ -27,6 +26,4 @@ private:
     int _stride = 0;
     std::vector<OpenGLVertexBufferLayout> _layouts{};
 };
-
-RENDELL_USE_RAII_FACTORY(OpenGLVertexBuffer)
 } // namespace rendell

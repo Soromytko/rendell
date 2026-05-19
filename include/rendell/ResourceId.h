@@ -1,6 +1,5 @@
 #pragma once
 #include <cstdint>
-#include <type_traits>
 
 #define RENDELL_DECLARE_FINAL_RESOURCE_ID(name)                                                    \
     struct name final : public ResourceId {};
@@ -10,6 +9,9 @@
 
 #define RENDELL_DECLARE_UNIFORM_RESOURCE_ID(name)                                                  \
     struct name final : public UniformId {};
+
+using InstanceId = uint16_t;
+constexpr InstanceId InvalidInstanceId = 0;
 
 namespace rendell {
 struct ResourceId {

@@ -1,6 +1,5 @@
 #pragma once
 #include <IContext.h>
-#include <raii.h>
 #include <rendell/init_types.h>
 
 #include <Windows.h>
@@ -31,6 +30,4 @@ private:
 
     bool _isInitialized{false};
 };
-
-RENDELL_USE_RAII_FACTORY(WindowsOpenGLContext)
 } // namespace rendell

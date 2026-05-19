@@ -1,7 +1,7 @@
 #pragma once
 #include "ResourceId.h"
 
-#include <cstddef>
+#include <type_traits>
 
 namespace rendell {
 struct ResourceIdHash {

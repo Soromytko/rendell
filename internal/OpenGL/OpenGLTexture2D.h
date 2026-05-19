@@ -2,7 +2,6 @@
 #include <glad/glad.h>
 #include <rendell/DataType.h>
 #include <rendell/TextureFormat.h>
-#include <rendell/oop/raii.h>
 
 namespace rendell {
 class OpenGLTexture2D final {
@@ -23,5 +22,4 @@ private:
     mutable uint32_t _textureBlock{0};
 };
 
-RENDELL_USE_RAII_FACTORY(OpenGLTexture2D)
 } // namespace rendell

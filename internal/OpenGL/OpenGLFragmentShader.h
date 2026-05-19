@@ -1,6 +1,5 @@
 #pragma once
 #include <glad/glad.h>
-#include <rendell/oop/raii.h>
 
 #include <string>
 #include <string_view>
@@ -18,5 +17,4 @@ public:
 private:
     GLuint _shaderId{};
 };
-RENDELL_USE_RAII_FACTORY(OpenGLFragmentShader)
 } // namespace rendell

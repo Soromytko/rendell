@@ -40,16 +40,16 @@ private:
     std::vector<T> _storage;
 };
 
-OpenGLResourceStorage<OpenGLIndexBufferUniquePtr> &getIndexBufferStorage();
-OpenGLResourceStorage<OpenGLVertexBufferUniquePtr> &getVertexBufferStorage();
-OpenGLResourceStorage<OpenGLVertexArrayUniquePtr> &getVertexArrayBufferStorage();
-OpenGLResourceStorage<OpenGLUniformBufferUniquePtr> &getUniformBufferStorage();
-OpenGLResourceStorage<OpenGLShaderBufferUniquePtr> &getShaderBufferStorage();
-OpenGLResourceStorage<OpenGLTexture2DUniquePtr> &getTexture2DStorage();
-OpenGLResourceStorage<OpenGLTexture2DArrayUniquePtr> &getTexture2DArrayStorage();
-OpenGLResourceStorage<OpenGLVertexShaderUniquePtr> &getVertexShaderStorage();
-OpenGLResourceStorage<OpenGLFragmentShaderUniquePtr> &getFragmentShaderStorage();
-OpenGLResourceStorage<OpenGLShaderProgramUniquePtr> &getShaderProgramStorage();
+OpenGLResourceStorage<std::unique_ptr<OpenGLIndexBuffer>> &getIndexBufferStorage();
+OpenGLResourceStorage<std::unique_ptr<OpenGLVertexBuffer>> &getVertexBufferStorage();
+OpenGLResourceStorage<std::unique_ptr<OpenGLVertexArray>> &getVertexArrayBufferStorage();
+OpenGLResourceStorage<std::unique_ptr<OpenGLUniformBuffer>> &getUniformBufferStorage();
+OpenGLResourceStorage<std::unique_ptr<OpenGLShaderBuffer>> &getShaderBufferStorage();
+OpenGLResourceStorage<std::unique_ptr<OpenGLTexture2D>> &getTexture2DStorage();
+OpenGLResourceStorage<std::unique_ptr<OpenGLTexture2DArray>> &getTexture2DArrayStorage();
+OpenGLResourceStorage<std::unique_ptr<OpenGLVertexShader>> &getVertexShaderStorage();
+OpenGLResourceStorage<std::unique_ptr<OpenGLFragmentShader>> &getFragmentShaderStorage();
+OpenGLResourceStorage<std::unique_ptr<OpenGLShaderProgram>> &getShaderProgramStorage();
 
 void storeUniformName(size_t key, std::string &&name);
 const std::string &getUniformName(size_t key);

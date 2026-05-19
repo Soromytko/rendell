@@ -5,24 +5,24 @@
 namespace rendell {
 class RenderPipelineStorage final {
 public:
-    static void init();
-    static void release();
-    static RenderPipelineStorage *getInstance();
+    using ReturnResourceCommandBufferCallback = std::function<void(ResourceCommandBuffer *buffer)>;
+    using ReturnRenderCommandBufferCallback = std::function<void(RenderCommandBuffer *buffer)>;
 
-private:
-    RenderPipelineStorage() = default;
-
-public:
+    RenderPipelineStorage(ReturnResourceCommandBufferCallback resourceCallback,
+                          ReturnRenderCommandBufferCallback renderCallback);
     ~RenderPipelineStorage() = default;
 
     const std::vector<NativeViewId> &getNativeViewIds() const;
 
     NativeViewId createRenderPipeline(SpecificationAPI api, NativeView nativeView,
                                       bool useSeparateRenderThread);
-    void releaseRenderPipeline(NativeViewId nativeViewId);
+    bool releaseRenderPipeline(NativeViewId nativeViewId);
     RenderPipeline *getRenderPipeline(NativeViewId nativeViewId) const;
 
 private:
+    ReturnResourceCommandBufferCallback _resourceCallback;
+    ReturnRenderCommandBufferCallback _renderCallback;
+
     std::vector<NativeViewId> _nativeViewIds;
     std::vector<std::unique_ptr<RenderPipeline>> _renderPipelines;
 };

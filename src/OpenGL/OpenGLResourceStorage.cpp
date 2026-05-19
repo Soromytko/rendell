@@ -4,58 +4,58 @@
 #include <unordered_map>
 
 namespace rendell {
-static OpenGLResourceStorage<OpenGLIndexBufferUniquePtr> s_indexBufferStorage;
-static OpenGLResourceStorage<OpenGLVertexBufferUniquePtr> s_vertexBufferStorage;
-static OpenGLResourceStorage<OpenGLVertexArrayUniquePtr> s_vertexArrayBufferStorage;
-static OpenGLResourceStorage<OpenGLUniformBufferUniquePtr> s_uniformBufferStorage;
-static OpenGLResourceStorage<OpenGLShaderBufferUniquePtr> s_shaderBufferStorage;
-static OpenGLResourceStorage<OpenGLTexture2DUniquePtr> s_texture2DStorage;
-static OpenGLResourceStorage<OpenGLTexture2DArrayUniquePtr> s_texture2DArrayStorage;
-static OpenGLResourceStorage<OpenGLVertexShaderUniquePtr> s_vertexShaderStorage;
-static OpenGLResourceStorage<OpenGLFragmentShaderUniquePtr> s_fragmentShaderStorage;
-static OpenGLResourceStorage<OpenGLShaderProgramUniquePtr> s_shaderProgramStorage;
+static OpenGLResourceStorage<std::unique_ptr<OpenGLIndexBuffer>> s_indexBufferStorage;
+static OpenGLResourceStorage<std::unique_ptr<OpenGLVertexBuffer>> s_vertexBufferStorage;
+static OpenGLResourceStorage<std::unique_ptr<OpenGLVertexArray>> s_vertexArrayBufferStorage;
+static OpenGLResourceStorage<std::unique_ptr<OpenGLUniformBuffer>> s_uniformBufferStorage;
+static OpenGLResourceStorage<std::unique_ptr<OpenGLShaderBuffer>> s_shaderBufferStorage;
+static OpenGLResourceStorage<std::unique_ptr<OpenGLTexture2D>> s_texture2DStorage;
+static OpenGLResourceStorage<std::unique_ptr<OpenGLTexture2DArray>> s_texture2DArrayStorage;
+static OpenGLResourceStorage<std::unique_ptr<OpenGLVertexShader>> s_vertexShaderStorage;
+static OpenGLResourceStorage<std::unique_ptr<OpenGLFragmentShader>> s_fragmentShaderStorage;
+static OpenGLResourceStorage<std::unique_ptr<OpenGLShaderProgram>> s_shaderProgramStorage;
 
 static std::unordered_map<size_t, std::string> s_uniformNames;
 } // namespace rendell
 
 namespace rendell {
-OpenGLResourceStorage<OpenGLIndexBufferUniquePtr> &getIndexBufferStorage() {
+OpenGLResourceStorage<std::unique_ptr<OpenGLIndexBuffer>> &getIndexBufferStorage() {
     return s_indexBufferStorage;
 }
 
-OpenGLResourceStorage<OpenGLVertexBufferUniquePtr> &getVertexBufferStorage() {
+OpenGLResourceStorage<std::unique_ptr<OpenGLVertexBuffer>> &getVertexBufferStorage() {
     return s_vertexBufferStorage;
 }
 
-OpenGLResourceStorage<OpenGLVertexArrayUniquePtr> &getVertexArrayBufferStorage() {
+OpenGLResourceStorage<std::unique_ptr<OpenGLVertexArray>> &getVertexArrayBufferStorage() {
     return s_vertexArrayBufferStorage;
 }
 
-OpenGLResourceStorage<OpenGLUniformBufferUniquePtr> &getUniformBufferStorage() {
+OpenGLResourceStorage<std::unique_ptr<OpenGLUniformBuffer>> &getUniformBufferStorage() {
     return s_uniformBufferStorage;
 }
 
-OpenGLResourceStorage<OpenGLShaderBufferUniquePtr> &getShaderBufferStorage() {
+OpenGLResourceStorage<std::unique_ptr<OpenGLShaderBuffer>> &getShaderBufferStorage() {
     return s_shaderBufferStorage;
 }
 
-OpenGLResourceStorage<OpenGLTexture2DUniquePtr> &getTexture2DStorage() {
+OpenGLResourceStorage<std::unique_ptr<OpenGLTexture2D>> &getTexture2DStorage() {
     return s_texture2DStorage;
 }
 
-OpenGLResourceStorage<OpenGLTexture2DArrayUniquePtr> &getTexture2DArrayStorage() {
+OpenGLResourceStorage<std::unique_ptr<OpenGLTexture2DArray>> &getTexture2DArrayStorage() {
     return s_texture2DArrayStorage;
 }
 
-OpenGLResourceStorage<OpenGLVertexShaderUniquePtr> &getVertexShaderStorage() {
+OpenGLResourceStorage<std::unique_ptr<OpenGLVertexShader>> &getVertexShaderStorage() {
     return s_vertexShaderStorage;
 }
 
-OpenGLResourceStorage<OpenGLFragmentShaderUniquePtr> &getFragmentShaderStorage() {
+OpenGLResourceStorage<std::unique_ptr<OpenGLFragmentShader>> &getFragmentShaderStorage() {
     return s_fragmentShaderStorage;
 }
 
-OpenGLResourceStorage<OpenGLShaderProgramUniquePtr> &getShaderProgramStorage() {
+OpenGLResourceStorage<std::unique_ptr<OpenGLShaderProgram>> &getShaderProgramStorage() {
     return s_shaderProgramStorage;
 }
 

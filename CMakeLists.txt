@@ -8,20 +8,22 @@ set(SOURCE_FILES
     src/logging.cpp
     src/ByteRingBuffer.cpp
 
-    src/init.cpp
     src/hash.cpp
-    src/rendell.cpp
+    src/Instance.cpp
+    src/InstanceImpl.cpp
     src/context_creation.cpp
-    src/ResourceValidation.cpp
     src/Color.cpp
     src/CallbackTable.cpp
-    src/ResourceIdStorage.cpp
-    src/ResourceContext.cpp
-    src/RenderContext.cpp
+    src/ResourceCommandBuffer.cpp
+    src/ResourceCommandBufferImpl.cpp
+    src/RenderCommandBuffer.cpp
     src/RenderPipelineStorage.cpp
     src/ResourceExecutor.cpp
     src/DataContainerStorage.cpp
     src/TextureFormat.cpp
+    src/Service.cpp
+    src/GarbageCollector.cpp
+
     src/OpenGL/OpenGLShaderCompilation.cpp
     src/OpenGL/OpenGLRenderPipeline.cpp
     src/OpenGL/OpenGLRenderPipelineSync.cpp
@@ -42,52 +44,49 @@ set(SOURCE_FILES
     src/OpenGL/OpenGLVertexShader.cpp
     src/OpenGL/OpenGLFragmentShader.cpp
 
-    src/oop/IndexBuffer.cpp
-    src/oop/VertexBuffer.cpp
-    src/oop/VertexAssembly.cpp
-    src/oop/ShaderBuffer.cpp
-    src/oop/UniformBuffer.cpp
-    src/oop/Texture2D.cpp
-    src/oop/Texture2DArray.cpp
-    src/oop/VertexShader.cpp
-    src/oop/FragmentShader.cpp
-    src/oop/ShaderProgram.cpp
 )
 
 set(HEADER_FILES
-    include/rendell/rendell.h
     include/rendell/init_types.h
-    include/rendell/init.h
     include/rendell/hash.h
     include/rendell/consts.h
+
+    include/rendell/Instance.h
     include/rendell/ResourceId.h
     include/rendell/DataType.h
     include/rendell/DrawType.h
     include/rendell/Color.h
-    include/rendell/ResourceValidation.h
     include/rendell/DataContainer.h
     include/rendell/TextureFormat.h
-    include/rendell/IResourceContext.h
-    include/rendell/IRenderContext.h
+    include/rendell/ResourceCommandBuffer.h
+    include/rendell/RenderCommandBuffer.h
     include/rendell/VertexLayout.h
+    include/rendell/Service.h
+    include/rendell/GarbageCollector.h
+
+    internal/InstanceImpl.h
+    internal/RendellExtractor.h
+    internal/ResourceIdsAllocator.h
+    internal/ReleasedResourceIds.h
     
     internal/config.h
     internal/IContext.h
     internal/context_creation.h
     internal/logging.h
     internal/Command.h
-    internal/ContextPool.h
+    internal/Pool.h
+    internal/CommandBufferPool.h
     internal/RenderPipelineStorage.h
     internal/ResourceIdStorage.h
-    internal/ResourceIdStorages.h
     internal/DrawCallState.h
     internal/RenderPipeline.h
-    internal/ResourceContext.h
-    internal/RenderContext.h
+    internal/ResourceCommandBufferImpl.h
+    internal/RenderCommandBufferImpl.h
     internal/ResourceExecutor.h
     internal/DataContainerStorage.h
     internal/ResourceDataProvider.h
     internal/CallbackTable.h
+    internal/InstanceRegistry.h
 
     internal/Buffers/Buffer.h
     internal/Buffers/ByteBuffer.h
@@ -96,6 +95,7 @@ set(HEADER_FILES
 
     internal/utils/MPMC_Queue.h
     internal/utils/ConcurrentQueue.h
+    internal/utils/Registry.h
 
     internal/OpenGL/OpenGLContext.h
     internal/OpenGL/OpenGLRenderPipeline.h
@@ -115,26 +115,14 @@ set(HEADER_FILES
     internal/OpenGL/OpenGLFragmentShader.h
     internal/OpenGL/OpenGLResourceStorage.h
 
+    include/rendell/ResourceIdGuard.h
+
     # OpenGL specific
     internal/gl/wglext.h
 
     src/OpenGL/glad_initialization.h
     src/OpenGL/OpenGLShaderCompilation.h
     src/OpenGL/OpenGLTextureFormat.h
-
-    include/rendell/oop/raii.h
-    include/rendell/oop/rendell_oop.h
-    include/rendell/oop/IndexBuffer.h
-    include/rendell/oop/VertexBuffer.h
-    include/rendell/oop/VertexAssembly.h
-    include/rendell/oop/ShaderBuffer.h
-    include/rendell/oop/UniformBuffer.h
-    include/rendell/oop/Texture2D.h
-    include/rendell/oop/Texture2DArray.h
-    include/rendell/oop/VertexShader.h
-    include/rendell/oop/FragmentShader.h
-    include/rendell/oop/ShaderProgram.h
-    include/rendell/oop/Uniform.h
 )
 
 set(WINDOWS_SOURCES

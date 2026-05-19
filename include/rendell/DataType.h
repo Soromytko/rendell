@@ -5,7 +5,6 @@
 #include <functional>
 #include <memory>
 #include <string>
-#include <vector>
 
 namespace rendell {
 using index_t = uint32_t;

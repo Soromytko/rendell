@@ -1,12 +1,16 @@
 #include <OpenGL/OpenGLRenderPipeline.h>
 
 #include <OpenGL/OpenGLResourceStorage.h>
-#include <RenderContext.h>
-#include <ResourceContext.h>
+#include <RendellExtractor.h>
+#include <RenderCommandBufferImpl.h>
+#include <ResourceCommandBufferImpl.h>
 #include <context_creation.h>
+#include <rendell/RenderCommandBuffer.h>
+#include <rendell/ResourceCommandBuffer.h>
 
 namespace rendell {
-OpenGLRenderPipeline::OpenGLRenderPipeline(NativeView nativeView) {
+OpenGLRenderPipeline::OpenGLRenderPipeline(NativeView nativeView, Callbacks callbacks)
+    : RenderPipeline(callbacks) {
     _context = createOpenGLContext(nativeView);
 }
 
@@ -18,6 +22,16 @@ OpenGLRenderPipeline::~OpenGLRenderPipeline() {
     }
     if (_renderThread.joinable()) {
         _renderThread.join();
+    }
+
+    // Return buffers
+    {
+        while (!_resourceCommandBuffers.isEmpty()) {
+            _callbacks.returnResourceCommandBuffer(_resourceCommandBuffers.pop());
+        }
+        while (!_renderCommandBuffers.isEmpty()) {
+            _callbacks.returnRenderCommandBuffer(_renderCommandBuffers.pop());
+        }
     }
 
     releaseOpenGLResourceStorages();
@@ -41,19 +55,20 @@ void OpenGLRenderPipeline::run() {
     _renderThread = std::thread(&OpenGLRenderPipeline::rendering, this);
 }
 
-void OpenGLRenderPipeline::submitResourceContext(std::unique_ptr<ResourceContext> resourceContext) {
+void OpenGLRenderPipeline::submitResourceContext(ResourceCommandBuffer *buffer) {
     std::lock_guard<std::mutex> lock(_renderingMutex);
-    _resourceContextBuffer.push(std::move(resourceContext));
+    _resourceCommandBuffers.push(buffer);
 }
 
-void OpenGLRenderPipeline::submitRenderContext(std::unique_ptr<RenderContext> renderContext) {
+void OpenGLRenderPipeline::submitRenderContext(RenderCommandBuffer *buffer) {
     std::lock_guard<std::mutex> lock(_renderingMutex);
-    _renderContextBuffer.push(std::move(renderContext));
+    _renderCommandBuffers.push(buffer);
 }
 
 void OpenGLRenderPipeline::waitAndRender() {
     std::lock_guard<std::mutex> lock(_renderingMutex);
-    _hasRenderTask = !_resourceContextBuffer.isEmpty() || !_renderContextBuffer.isEmpty();
+    _resourceExecutor.resetReleasedResourceIds();
+    _hasRenderTask = !_resourceCommandBuffers.isEmpty() || !_renderCommandBuffers.isEmpty();
     if (_hasRenderTask) {
         _renderThreadCV.notify_one();
     }
@@ -68,35 +83,37 @@ void OpenGLRenderPipeline::rendering() {
 
         // Execute ResourceContext
         {
-            while (!_resourceContextBuffer.isEmpty()) {
-                auto resourceContext = _resourceContextBuffer.pop();
-                assert(resourceContext);
+            while (!_resourceCommandBuffers.isEmpty()) {
+                auto resourceCommandBuffer = _resourceCommandBuffers.pop();
+                assert(resourceCommandBuffer);
 
-                const ByteBuffer &commandBuffer = resourceContext->getCommandBuffer();
-                ResourceDataProviderSharedPtr dataProvider =
-                    resourceContext->getResourceDataProvider();
-                assert(dataProvider);
+                ResourceCommandBufferImpl &impl =
+                    RendellExtractor::extractImpl(*resourceCommandBuffer);
+                const ByteBuffer &commandBuffer = impl.resourceCommandBuffer;
+                ResourceDataProvider &dataProvider = impl.resourceDataProvider;
                 _resourceExecutor.execute(commandBuffer, dataProvider);
 
-                resourceContext->reset();
-                _resourceContextReleasedCallback(std::move(resourceContext));
+                impl.reset();
+                _callbacks.returnResourceCommandBuffer(resourceCommandBuffer);
             }
         }
 
         // Execute RenderContext.
         {
-            while (!_renderContextBuffer.isEmpty()) {
-                auto renderContext = _renderContextBuffer.pop();
-                assert(renderContext);
+            while (!_renderCommandBuffers.isEmpty()) {
+                auto renderCommandBuffer = _renderCommandBuffers.pop();
+                assert(renderCommandBuffer);
 
-                const DrawCallStateList &drawCallStateList = renderContext->getDrawCallStateList();
-                const ByteBuffer &uniformBuffer = renderContext->getUniformBuffer();
-                const ByteBuffer &commandBuffer = renderContext->getCommandBuffer();
+                RenderCommandBufferImpl &impl = RendellExtractor::extractImpl(*renderCommandBuffer);
+
+                const DrawCallStateList &drawCallStateList = impl.drawCallStates;
+                const ByteBuffer &uniformBuffer = impl.uniformBuffer;
+                const ByteBuffer &commandBuffer = impl.commandBuffer;
 
                 _renderExecutor.execute(drawCallStateList, uniformBuffer, commandBuffer);
 
-                renderContext->reset();
-                _renderContextReleasedCallback(std::move(renderContext));
+                impl.reset();
+                _callbacks.returnRenderCommandBuffer(renderCommandBuffer);
             }
             _context->swapBuffers();
         }

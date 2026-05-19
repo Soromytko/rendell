@@ -1,5 +1,5 @@
 #pragma once
-#include <rendell/RenderContext.h>
+#include <rendell/RenderCommandBuffer.h>
 
 namespace rendell {
 class RenderContextFactory final {
