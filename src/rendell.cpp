@@ -15,11 +15,11 @@
 
 // Static data
 namespace rendell {
-class ResourceContextPool final : public ContextPool<ResourceContext> {
-} static s_resourceContextPool(config::resourceContextPoolSize);
+using ResourceContextPool = ContextPool<ResourceContext>;
+using RenderContextPool = ContextPool<RenderContext>;
 
-class RenderContextPool final : public ContextPool<RenderContext> {
-} static s_renderContextPool(config::renderContextPoolSize);
+static ResourceContextPool s_resourceContextPool(config::resourceContextPoolSize);
+static RenderContextPool s_renderContextPool(config::renderContextPoolSize);
 
 static std::unique_ptr<ResourceContext> s_resourceContext{nullptr};
 static std::unique_ptr<RenderContext> s_renderContext{nullptr};

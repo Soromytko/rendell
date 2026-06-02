@@ -76,7 +76,6 @@ set(HEADER_FILES
     internal/context_creation.h
     internal/logging.h
     internal/Command.h
-    internal/Pool.h
     internal/ContextPool.h
     internal/RenderPipelineStorage.h
     internal/ResourceIdStorage.h
@@ -96,6 +95,7 @@ set(HEADER_FILES
     internal/Buffers/ByteRingBuffer.h
 
     internal/utils/MPMC_Queue.h
+    internal/utils/ConcurrentQueue.h
 
     internal/OpenGL/OpenGLContext.h
     internal/OpenGL/OpenGLRenderPipeline.h

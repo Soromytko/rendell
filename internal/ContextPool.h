@@ -1,14 +1,19 @@
 #pragma once
-#include "Pool.h"
+#include <utils/ConcurrentQueue.h>
 
 #include <memory>
 
 namespace rendell {
-template <typename TResource> class ContextPool {
+template <typename TResource> class ContextPool final {
 public:
     ContextPool(size_t size) { setSize(size); }
 
     ~ContextPool() = default;
+
+    ContextPool(const ContextPool &) = delete;
+    ContextPool &operator=(const ContextPool &) = delete;
+    ContextPool(ContextPool &&) = delete;
+    ContextPool &operator=(ContextPool &&) = delete;
 
     size_t getSize() const { return _size; }
 
@@ -42,6 +47,6 @@ private:
 
     size_t _size{0};
 
-    Pool<std::unique_ptr<TResource>> _pool{};
+    ConcurrentQueue<std::unique_ptr<TResource>> _pool{};
 };
 } // namespace rendell
