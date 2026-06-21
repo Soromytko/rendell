@@ -109,6 +109,16 @@ public:
     ShaderProgramIdGuard createShaderProgramGuard(VertexShaderId vertexShaderId,
                                         FragmentShaderId fragmentShaderId,
                                         ResultCallback callback = nullptr);
+    UniformInt1IdGuard createUniformInt1Guard(const std::string &name);
+    UniformInt2IdGuard createUniformInt2Guard(const std::string &name);
+    UniformInt3IdGuard createUniformInt3Guard(const std::string &name);
+    UniformInt4IdGuard createUniformInt4Guard(const std::string &name);
+    UniformFloat1IdGuard createUniformFloat1Guard(const std::string &name);
+    UniformFloat2IdGuard createUniformFloat2Guard(const std::string &name);
+    UniformFloat3IdGuard createUniformFloat3Guard(const std::string &name);
+    UniformFloat4IdGuard createUniformFloat4Guard(const std::string &name);
+    UniformMat4IdGuard createUniformMat4Guard(const std::string &name);
+    UniformSampler2DIdGuard createUniformSampler2DGuard(const std::string &name);
 
     void reset();
 

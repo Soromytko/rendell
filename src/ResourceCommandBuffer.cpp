@@ -524,6 +524,47 @@ ShaderProgramIdGuard ResourceCommandBuffer::createShaderProgramGuard(
                                 createShaderProgram(vertexShaderId, fragmentShaderId, callback));
 }
 
+UniformInt1IdGuard ResourceCommandBuffer::createUniformInt1Guard(const std::string &name) {
+    return UniformInt1IdGuard(_instanceId, createUniformInt1(name));
+}
+
+UniformInt2IdGuard ResourceCommandBuffer::createUniformInt2Guard(const std::string &name) {
+    return UniformInt2IdGuard(_instanceId, createUniformInt2(name));
+}
+
+UniformInt3IdGuard ResourceCommandBuffer::createUniformInt3Guard(const std::string &name) {
+    return UniformInt3IdGuard(_instanceId, createUniformInt3(name));
+}
+
+UniformInt4IdGuard ResourceCommandBuffer::createUniformInt4Guard(const std::string &name) {
+    return UniformInt4IdGuard(_instanceId, createUniformInt4(name));
+}
+
+UniformFloat1IdGuard ResourceCommandBuffer::createUniformFloat1Guard(const std::string &name) {
+    return UniformFloat1IdGuard(_instanceId, createUniformFloat1(name));
+}
+
+UniformFloat2IdGuard ResourceCommandBuffer::createUniformFloat2Guard(const std::string &name) {
+    return UniformFloat2IdGuard(_instanceId, createUniformFloat2(name));
+}
+
+UniformFloat3IdGuard ResourceCommandBuffer::createUniformFloat3Guard(const std::string &name) {
+    return UniformFloat3IdGuard(_instanceId, createUniformFloat3(name));
+}
+
+UniformFloat4IdGuard ResourceCommandBuffer::createUniformFloat4Guard(const std::string &name) {
+    return UniformFloat4IdGuard(_instanceId, createUniformFloat4(name));
+}
+
+UniformMat4IdGuard ResourceCommandBuffer::createUniformMat4Guard(const std::string &name) {
+    return UniformMat4IdGuard(_instanceId, createUniformMat4(name));
+}
+
+UniformSampler2DIdGuard
+ResourceCommandBuffer::createUniformSampler2DGuard(const std::string &name) {
+    return UniformSampler2DIdGuard(_instanceId, createUniformSampler2D(name));
+}
+
 void ResourceCommandBuffer::reset() {
     IMPL.reset();
 }
