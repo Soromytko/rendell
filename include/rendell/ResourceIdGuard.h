@@ -5,6 +5,7 @@
 #include <rendell/Service.h>
 
 #include <concepts>
+#include <utility>
 
 namespace rendell {
 template <typename TResourceId>
@@ -49,6 +50,8 @@ public:
             _instanceId = instanceId;
         }
     }
+
+    inline TResourceId release() noexcept { return std::exchange(_id, {}); }
 
     inline TResourceId getId() const noexcept { return _id; }
 
